@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn7ijw3b7e5b1"]
+
+[ext_resource type="Script" uid="uid://cqqqds1dg7smy" path="res://scenes/tile_board.gd" id="1_bw3vb"]
+
+[sub_resource type="TileSet" id="TileSet_tx6nw"]
+
+[sub_resource type="TileSet" id="TileSet_bw3vb"]
+
+[node name="Board" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_repeat = 2
+tile_set = SubResource("TileSet_tx6nw")
+format = 2
+script = ExtResource("1_bw3vb")
+board_size = 16
+
+[node name="Layer0" type="TileMapLayer" parent="TileMap"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+top_level = true
+texture_repeat = 2
+use_parent_material = true
+tile_set = SubResource("TileSet_bw3vb")
