@@ -1,5 +1,4 @@
 extends Node2D
-
 ## World Controller - Test/debug controls for gameplay
 ## Temporary script for testing the game loop
 
@@ -21,10 +20,10 @@ func _ready():
 	EventBus.gold_changed.connect(_on_gold_changed)
 	EventBus.wave_started.connect(_on_wave_started)
 	EventBus.wave_completed.connect(_on_wave_completed)
-	
+
 	_update_debug_label()
 	_spawn_king_base()
-	
+
 	if path_manager:
 		WaveManager.initialize(path_manager, enemy_container)
 		print("WaveManager initialized with PathManager")
@@ -37,7 +36,7 @@ func _input(event: InputEvent):
 
 		elif event.keycode == KEY_K:
 			_spawn_test_enemy()
-		
+
 		elif event.keycode == KEY_SPACE:
 			if not WaveManager.is_wave_active():
 				WaveManager.start_wave()
@@ -57,7 +56,7 @@ func _spawn_test_enemy():
 		Vector2(512, 100),
 		Vector2(512, 300),
 		Vector2(512, 500),
-		Vector2(512, 700)
+		Vector2(512, 700),
 	]
 	enemy.set_path(path)
 
@@ -84,9 +83,15 @@ func _update_debug_label():
 		if WaveManager.is_wave_active():
 			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
 		else:
-			wave_status = "Press SPACE to start wave %d/%d" % [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
-		
-		debug_label.text = "Gold: %d\n%s\nPress P to place Pawn tower (cost: 50)\nPress K to spawn test enemy\nRight-click to cancel placement" % [CurrencyManager.get_current_gold(), wave_status]
+			wave_status = (
+				"Press SPACE to start wave %d/%d"
+				% [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
+			)
+
+		debug_label.text = (
+			"Gold: %d\n%s\nPress P to place Pawn tower (cost: 50)\nPress K to spawn test enemy\nRight-click to cancel placement"
+			% [CurrencyManager.get_current_gold(), wave_status]
+		)
 
 
 func _spawn_king_base():
@@ -112,7 +117,9 @@ func _get_board_center_world_position() -> Vector2:
 	if not board:
 		return Vector2.ZERO
 
-	var start_index = board.chess_board_size + int(floor((board.cross_width - KING_FOOTPRINT_TILES) / 2.0))
+	var start_index = (
+		board.chess_board_size + int(floor((board.cross_width - KING_FOOTPRINT_TILES) / 2.0))
+	)
 	var center_index = start_index + float(KING_FOOTPRINT_TILES) / 2.0
 	var center = Vector2(center_index, center_index) * board.tile_size
 	return center

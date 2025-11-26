@@ -1,5 +1,4 @@
 extends Node
-
 ## Input Handler - Centralized input processing
 ## Detects clicks on towers and empty tiles
 

@@ -1,4 +1,5 @@
 extends "res://scripts/core/tower.gd"
+
 class_name KingBase
 
 ## King Base - Player's main base (must protect)
@@ -10,22 +11,21 @@ class_name KingBase
 var current_health: int
 
 signal king_health_changed(current: int, max: int)
-signal king_died()
+signal king_died
 
 
 func _ready():
 	tower_class = "King"
 	tower_name = "King"
 	description = "This is your base, please protect at all costs! Attacks in 1 tile in all directions"
-	
+
 	base_cost = 0
 	upgrade_cost = 0
-	
+
 	attack_damage = 9.0
 	attack_cooldown = 0.5
 	projectile_speed = 0.0
-	
-	
+
 	footprint_tiles = max(1, footprint_tiles)
 	grid_position = _compute_center_grid_position()
 	current_health = max_health
@@ -38,14 +38,14 @@ func get_attack_pattern() -> Array[Vector2i]:
 	var pattern: Array[Vector2i] = []
 
 	# All 8 adjacent tiles
-	pattern.append(Vector2i(1, 0))      # Right
-	pattern.append(Vector2i(-1, 0))     # Left
-	pattern.append(Vector2i(0, 1))      # Down
-	pattern.append(Vector2i(0, -1))     # Up
-	pattern.append(Vector2i(1, 1))      # Bottom-right
-	pattern.append(Vector2i(1, -1))     # Top-right
-	pattern.append(Vector2i(-1, 1))     # Bottom-left
-	pattern.append(Vector2i(-1, -1))    # Top-left
+	pattern.append(Vector2i(1, 0))  # Right
+	pattern.append(Vector2i(-1, 0))  # Left
+	pattern.append(Vector2i(0, 1))  # Down
+	pattern.append(Vector2i(0, -1))  # Up
+	pattern.append(Vector2i(1, 1))  # Bottom-right
+	pattern.append(Vector2i(1, -1))  # Top-right
+	pattern.append(Vector2i(-1, 1))  # Bottom-left
+	pattern.append(Vector2i(-1, -1))  # Top-left
 
 	return pattern
 

@@ -10,6 +10,7 @@ var spawn_parent: Node = null
 
 const ENEMY_SCENE = preload("res://scenes/enemies/test_enemy.tscn")
 
+
 func _ready():
 	print("WaveManager initialized")
 
@@ -52,65 +53,145 @@ func start_wave():
 
 func _create_procedural_waves():
 	wave_definitions.clear()
-	
-	wave_definitions.append(_create_wave(1, [
-		{"direction": "north", "count": 5, "delay": 1.0}
-	]))
-	
-	wave_definitions.append(_create_wave(2, [
-		{"direction": "south", "count": 7, "delay": 0.9}
-	]))
-	
-	wave_definitions.append(_create_wave(3, [
-		{"direction": "east", "count": 8, "delay": 0.8}
-	]))
-	
-	wave_definitions.append(_create_wave(4, [
-		{"direction": "west", "count": 8, "delay": 0.8}
-	]))
-	
-	wave_definitions.append(_create_wave(5, [
-		{"direction": "north", "count": 6, "delay": 0.8},
-		{"direction": "south", "count": 6, "delay": 0.8}
-	]))
-	
-	wave_definitions.append(_create_wave(6, [
-		{"direction": "east", "count": 7, "delay": 0.7},
-		{"direction": "west", "count": 7, "delay": 0.7}
-	]))
-	
-	wave_definitions.append(_create_wave(7, [
-		{"direction": "north", "count": 6, "delay": 0.6},
-		{"direction": "east", "count": 6, "delay": 0.6},
-		{"direction": "south", "count": 6, "delay": 0.6}
-	]))
-	
-	wave_definitions.append(_create_wave(8, [
-		{"direction": "north", "count": 6, "delay": 0.5},
-		{"direction": "east", "count": 6, "delay": 0.5},
-		{"direction": "south", "count": 6, "delay": 0.5},
-		{"direction": "west", "count": 6, "delay": 0.5}
-	]))
-	
-	wave_definitions.append(_create_wave(9, [
-		{"direction": "north", "count": 8, "delay": 0.4},
-		{"direction": "east", "count": 8, "delay": 0.4},
-		{"direction": "south", "count": 8, "delay": 0.4},
-		{"direction": "west", "count": 8, "delay": 0.4}
-	]))
-	
-	wave_definitions.append(_create_wave(10, [
-		{"direction": "north", "count": 10, "delay": 0.3},
-		{"direction": "east", "count": 10, "delay": 0.3},
-		{"direction": "south", "count": 10, "delay": 0.3},
-		{"direction": "west", "count": 10, "delay": 0.3}
-	]))
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				1,
+				[
+					{"direction": "north", "count": 5, "delay": 1.0},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				2,
+				[
+					{"direction": "south", "count": 7, "delay": 0.9},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				3,
+				[
+					{"direction": "east", "count": 8, "delay": 0.8},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				4,
+				[
+					{"direction": "west", "count": 8, "delay": 0.8},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				5,
+				[
+					{"direction": "north", "count": 6, "delay": 0.8},
+					{"direction": "south", "count": 6, "delay": 0.8},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				6,
+				[
+					{"direction": "east", "count": 7, "delay": 0.7},
+					{"direction": "west", "count": 7, "delay": 0.7},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				7,
+				[
+					{"direction": "north", "count": 6, "delay": 0.6},
+					{"direction": "east", "count": 6, "delay": 0.6},
+					{"direction": "south", "count": 6, "delay": 0.6},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				8,
+				[
+					{"direction": "north", "count": 6, "delay": 0.5},
+					{"direction": "east", "count": 6, "delay": 0.5},
+					{"direction": "south", "count": 6, "delay": 0.5},
+					{"direction": "west", "count": 6, "delay": 0.5},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				9,
+				[
+					{"direction": "north", "count": 8, "delay": 0.4},
+					{"direction": "east", "count": 8, "delay": 0.4},
+					{"direction": "south", "count": 8, "delay": 0.4},
+					{"direction": "west", "count": 8, "delay": 0.4},
+				],
+			),
+		)
+	)
+
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				10,
+				[
+					{"direction": "north", "count": 10, "delay": 0.3},
+					{"direction": "east", "count": 10, "delay": 0.3},
+					{"direction": "south", "count": 10, "delay": 0.3},
+					{"direction": "west", "count": 10, "delay": 0.3},
+				],
+			),
+		)
+	)
 
 
 func _create_wave(wave_num: int, spawn_data: Array) -> Dictionary:
 	return {
 		"wave_number": wave_num,
-		"spawn_data": spawn_data
+		"spawn_data": spawn_data,
 	}
 
 
@@ -118,42 +199,42 @@ func _spawn_wave_enemies():
 	if path_manager == null or spawn_parent == null:
 		push_error("WaveManager not properly initialized! Call initialize() first.")
 		return
-	
+
 	if current_wave <= 0 or current_wave > wave_definitions.size():
 		push_error("Invalid wave number: ", current_wave)
 		return
-	
+
 	var wave_def = wave_definitions[current_wave - 1]
 	var spawn_data_array = wave_def["spawn_data"]
-	
+
 	enemies_alive = 0
-	
+
 	for spawn_info in spawn_data_array:
 		var direction = spawn_info["direction"]
 		var count = spawn_info["count"]
 		var delay = spawn_info["delay"]
-		
+
 		enemies_alive += count
 		_spawn_enemies_from_direction(direction, count, delay)
-	
+
 	print("Wave ", current_wave, " spawning ", enemies_alive, " enemies")
 
 
 func _spawn_enemies_from_direction(direction: String, count: int, delay: float):
 	if path_manager == null or spawn_parent == null:
 		return
-	
+
 	for i in range(count):
 		if i > 0:
 			await get_tree().create_timer(delay).timeout
-		
+
 		var enemy = ENEMY_SCENE.instantiate()
 		spawn_parent.add_child(enemy)
-		
+
 		var path: Array[Vector2] = path_manager.get_direction_path(direction)
 		if enemy.has_method("set_path") and not path.is_empty():
 			enemy.set_path(path)
-		
+
 		if enemy.has_signal("enemy_died"):
 			enemy.enemy_died.connect(_on_enemy_instance_died)
 		if enemy.has_signal("enemy_reached_end"):
@@ -212,6 +293,7 @@ func get_current_wave() -> int:
 ## Check if a wave is in progress
 func is_wave_active() -> bool:
 	return wave_in_progress
+
 
 ## Reset waves to initial state
 func reset_waves():

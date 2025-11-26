@@ -1,22 +1,24 @@
 extends "res://scripts/core/tower.gd"
+
 class_name PawnTower
 
 ## Pawn Tower - Basic chess piece tower
 ## Attacks: 1 tile forward and 2 diagonal forward tiles
 ## Low cost, short range, good for early defense
 
+
 func _ready():
 	tower_name = "Pawn"
 	tower_class = "pawn"
 	description = "Attacks with a wave animation like swinging a sword. Basic defensive tower."
-	
+
 	base_cost = 1
 	upgrade_cost = 1
-	
+
 	attack_damage = 1.0
-	attack_cooldown = 1.0 
+	attack_cooldown = 1.0
 	projectile_speed = 0.0
-	
+
 	super._ready()
 	print("Pawn tower ready at grid position: ", grid_position)
 
