@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbis1nh5vhfm5"]
+
+[ext_resource type="Script" path="res://scripts/towers/queen_tower.gd" id="1"]
+
+[node name="Queen" type="Node2D"]
+script = ExtResource("1")

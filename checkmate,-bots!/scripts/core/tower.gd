@@ -1,12 +1,10 @@
 extends Node2D
 class_name Tower
 
-## Base tower class with attack range and targeting priority
-## Extend this for specific tower types (Bishop, Rook, Knight, etc.)
+## Base tower class for chess-pattern based tower defense
+## All towers use grid-based attack patterns (Pawn, Knight, Bishop, Rook, Queen, King)
 
 @export_group("Attack Properties")
-## Attack range radius in pixels
-@export var attack_range: float = 150.0
 ## Damage dealt per attack
 @export var attack_damage: float = 20.0
 ## Time between attacks in seconds
@@ -19,7 +17,7 @@ class_name Tower
 @export_enum("First", "Last", "Closest", "Strongest", "Weakest") var targeting_mode: String = "First"
 
 @export_group("Tower Type")
-## Tower class (e.g., "bishop", "rook", "knight")
+## Tower class (e.g., "pawn", "knight", "bishop", "rook", "queen", "king")
 @export var tower_class: String = "basic"
 ## Enemy classes this tower can attack (empty = all)
 @export var allowed_enemy_classes: Array[String] = []
@@ -34,7 +32,7 @@ class_name Tower
 var enemies_in_range: Array[Enemy] = []
 var current_target: Enemy = null
 var attack_timer: float = 0.0
-var range_area: Area2D = null
+var grid_position: Vector2i
 
 signal tower_attacked(target: Enemy)
 signal target_acquired(target: Enemy)
@@ -42,82 +40,56 @@ signal target_lost(target: Enemy)
 signal tower_upgraded(new_level: int)
 
 func _ready():
-	_setup_attack_range()
+	# Calculate grid position from world position
+	grid_position = GridSystem.world_to_grid(global_position)
 	_setup_visual()
 
 func _process(delta: float):
 	_update_attack_timer(delta)
+	_scan_for_enemies()
 	_update_targeting()
 	_attempt_attack()
 
-## Setup the Area2D that detects enemies in range
-func _setup_attack_range():
-	range_area = Area2D.new()
-	range_area.name = "AttackRange"
-	add_child(range_area)
-	
-	var collision_shape = CollisionShape2D.new()
-	var circle_shape = CircleShape2D.new()
-	circle_shape.radius = attack_range
-	collision_shape.shape = circle_shape
-	range_area.add_child(collision_shape)
-	
-	# Connect signals
-	range_area.body_entered.connect(_on_enemy_entered_range)
-	range_area.body_exited.connect(_on_enemy_exited_range)
-	
-	# Set collision layers (adjust based on your project settings)
-	range_area.collision_layer = 0
-	range_area.collision_mask = 2  # Assuming enemies are on layer 2
+## Override this in subclasses to define chess attack pattern
+## Returns array of grid offsets that this tower can attack
+func get_attack_pattern() -> Array[Vector2i]:
+	# Base implementation - override in subclasses
+	return []
 
-## Update the attack range (useful for upgrades)
-func set_attack_range(new_range: float):
-	attack_range = new_range
-	if range_area:
-		var collision_shape = range_area.get_child(0) as CollisionShape2D
-		if collision_shape and collision_shape.shape is CircleShape2D:
-			(collision_shape.shape as CircleShape2D).radius = attack_range
-	queue_redraw()
+## Scan for enemies in the tower's attack pattern
+func _scan_for_enemies():
+	enemies_in_range.clear()
 
-## Called when an enemy enters attack range
-func _on_enemy_entered_range(body: Node2D):
-	if body is Enemy:
-		var enemy = body as Enemy
-		
-		# Check class restrictions
-		if not _can_attack_enemy(enemy):
-			return
-		
-		if not enemies_in_range.has(enemy):
-			enemies_in_range.append(enemy)
-			# Connect to enemy's died signal to remove from list
-			if not enemy.enemy_died.is_connected(_on_enemy_died):
-				enemy.enemy_died.connect(_on_enemy_died)
+	var attack_tiles = get_attack_pattern()
+	if attack_tiles.is_empty():
+		return
 
-## Called when an enemy exits attack range
-func _on_enemy_exited_range(body: Node2D):
-	if body is Enemy:
-		_remove_enemy_from_range(body as Enemy)
+	# Get all enemies in the scene
+	var enemy_container = get_node_or_null("../../EnemyContainer")
+	if not enemy_container:
+		return
 
-## Remove an enemy from the tracking list
-func _remove_enemy_from_range(enemy: Enemy):
-	if enemies_in_range.has(enemy):
-		enemies_in_range.erase(enemy)
-	
-	if current_target == enemy:
-		current_target = null
-		target_lost.emit(enemy)
+	for enemy in enemy_container.get_children():
+		if not enemy is Enemy or not enemy.is_alive:
+			continue
 
-## Called when a tracked enemy dies
-func _on_enemy_died(enemy: Enemy):
-	_remove_enemy_from_range(enemy)
+		# Check if enemy is on one of our attack tiles
+		var enemy_grid_pos = GridSystem.world_to_grid(enemy.global_position)
+
+		for pattern_offset in attack_tiles:
+			var attack_tile = grid_position + pattern_offset
+			if enemy_grid_pos == attack_tile:
+				# Check class restrictions
+				if _can_attack_enemy(enemy):
+					enemies_in_range.append(enemy)
+				break
 
 ## Check if this tower can attack a specific enemy based on class restrictions
 func _can_attack_enemy(enemy: Enemy) -> bool:
 	# If no restrictions, can attack all
 	if allowed_enemy_classes.is_empty():
 		return true
-	
+
 	# Check if enemy class is in allowed list
 	return allowed_enemy_classes.has(enemy.get_enemy_class())
 
@@ -125,15 +97,16 @@ func _can_attack_enemy(enemy: Enemy) -> bool:
 func _update_targeting():
 	# Clean up dead/invalid enemies
 	enemies_in_range = enemies_in_range.filter(func(e): return is_instance_valid(e) and e.is_alive)
-	
+
 	if enemies_in_range.is_empty():
 		if current_target != null:
+			target_lost.emit(current_target)
 			current_target = null
 		return
-	
+
 	# Select target based on priority mode
 	var new_target = _select_target_by_priority()
-	
+
 	if new_target != current_target:
 		if current_target != null:
 			target_lost.emit(current_target)
@@ -145,22 +118,17 @@ func _update_targeting():
 func _select_target_by_priority() -> Enemy:
 	if enemies_in_range.is_empty():
 		return null
-	
+
 	match targeting_mode:
 		"First":
-			# Target enemy furthest along the path
 			return _get_first_enemy()
 		"Last":
-			# Target enemy least far along the path
 			return _get_last_enemy()
 		"Closest":
-			# Target closest enemy
 			return _get_closest_enemy()
 		"Strongest":
-			# Target enemy with most health
 			return _get_strongest_enemy()
 		"Weakest":
-			# Target enemy with least health
 			return _get_weakest_enemy()
 		_:
 			return enemies_in_range[0]
@@ -169,61 +137,61 @@ func _select_target_by_priority() -> Enemy:
 func _get_first_enemy() -> Enemy:
 	var best_enemy: Enemy = null
 	var best_progress: int = -1
-	
+
 	for enemy in enemies_in_range:
 		if enemy.current_waypoint_index > best_progress:
 			best_progress = enemy.current_waypoint_index
 			best_enemy = enemy
-	
+
 	return best_enemy
 
 ## Get the enemy least far along their path (Last targeting)
 func _get_last_enemy() -> Enemy:
 	var best_enemy: Enemy = null
 	var best_progress: int = 999999
-	
+
 	for enemy in enemies_in_range:
 		if enemy.current_waypoint_index < best_progress:
 			best_progress = enemy.current_waypoint_index
 			best_enemy = enemy
-	
+
 	return best_enemy
 
 ## Get the closest enemy (Closest targeting)
 func _get_closest_enemy() -> Enemy:
 	var best_enemy: Enemy = null
 	var best_distance: float = INF
-	
+
 	for enemy in enemies_in_range:
 		var distance = global_position.distance_to(enemy.global_position)
 		if distance < best_distance:
 			best_distance = distance
 			best_enemy = enemy
-	
+
 	return best_enemy
 
 ## Get the enemy with the most health (Strongest targeting)
 func _get_strongest_enemy() -> Enemy:
 	var best_enemy: Enemy = null
 	var best_health: float = -1.0
-	
+
 	for enemy in enemies_in_range:
 		if enemy.current_health > best_health:
 			best_health = enemy.current_health
 			best_enemy = enemy
-	
+
 	return best_enemy
 
 ## Get the enemy with the least health (Weakest targeting)
 func _get_weakest_enemy() -> Enemy:
 	var best_enemy: Enemy = null
 	var best_health: float = INF
-	
+
 	for enemy in enemies_in_range:
 		if enemy.current_health < best_health:
 			best_health = enemy.current_health
 			best_enemy = enemy
-	
+
 	return best_enemy
 
 ## Update the attack cooldown timer
@@ -235,11 +203,11 @@ func _update_attack_timer(delta: float):
 func _attempt_attack():
 	if current_target == null or attack_timer > 0:
 		return
-	
+
 	if not is_instance_valid(current_target) or not current_target.is_alive:
 		current_target = null
 		return
-	
+
 	_perform_attack()
 	attack_timer = attack_cooldown
 
@@ -247,14 +215,14 @@ func _attempt_attack():
 func _perform_attack():
 	if current_target == null:
 		return
-	
+
 	# Deal damage to target
 	current_target.take_damage(attack_damage, tower_class)
 	tower_attacked.emit(current_target)
-	
+
 	# TODO: Spawn projectile/visual effect here
 	# TODO: Play attack sound here
-	
+
 	_show_attack_effect()
 
 ## Visual indication of attack (placeholder)
@@ -265,13 +233,11 @@ func _show_attack_effect():
 ## Upgrade this tower to the next level
 func upgrade_tower():
 	tower_level += 1
-	
+
 	# Increase stats (adjust multipliers as needed)
 	attack_damage *= 1.2
 	attack_cooldown *= 0.9
-	attack_range *= 1.1
-	
-	set_attack_range(attack_range)
+
 	tower_upgraded.emit(tower_level)
 	queue_redraw()
 
