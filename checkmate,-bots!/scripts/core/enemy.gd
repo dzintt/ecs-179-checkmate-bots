@@ -79,6 +79,11 @@ func _move_along_path(_delta: float):
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
+	# Deal damage to the King
+	var king = get_tree().get_first_node_in_group("king")
+	if king and king.has_method("take_damage"):
+		king.take_damage(damage_to_base)
+	
 	enemy_reached_end.emit(self)
 	queue_free()
 

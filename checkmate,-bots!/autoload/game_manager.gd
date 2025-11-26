@@ -3,6 +3,8 @@ extends Node
 ## Game Manager - Core game state and flow control
 ## Singleton accessible via GameManager
 ## Manages game state machine, win/lose conditions, scene transitions
+var game_over_menu_scene = preload("res://scenes/game_over_menu.tscn")
+var game_over_menu_instance = null
 
 enum GameState {
 	MENU,
@@ -58,11 +60,19 @@ func resume_game():
 
 ## End the game (victory or defeat)
 func end_game(victory: bool):
+	if game_over_menu_instance:
+		return
+	
 	current_state = GameState.VICTORY if victory else GameState.GAME_OVER
 	game_state_changed.emit(current_state)
 	game_over.emit(victory)
+	
+	game_over_menu_instance = game_over_menu_scene.instantiate()
+	get_tree().root.add_child(game_over_menu_instance)
+	
 	print("Game over - Victory: ", victory)
 	# TODO: Show game over/victory screen
+	
 
 
 ## Check if all waves are completed

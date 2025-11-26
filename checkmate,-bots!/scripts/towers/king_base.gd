@@ -5,7 +5,7 @@ class_name KingBase
 ## Attacks: 1 tile in all 8 directions
 ## Has health pool - if destroyed, player loses
 
-@export var max_health: int = 100
+@export var max_health: int = 5
 @export var footprint_tiles: int = 2  # Occupies a 2x2 footprint on the grid
 var current_health: int
 
@@ -16,6 +16,7 @@ signal king_died()
 func _ready():
 	super._ready()
 	tower_class = "king"
+	add_to_group("king")
 	footprint_tiles = max(1, footprint_tiles)
 	grid_position = _compute_center_grid_position()
 	current_health = max_health

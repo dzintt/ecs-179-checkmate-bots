@@ -1,8 +1,8 @@
 [gd_scene load_steps=18 format=3 uid="uid://wmllul7wsveg"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
-[ext_resource type="Texture2D" path="res://assets/images/Background.png" id="1_ekxnf"]
-[ext_resource type="FontFile" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
+[ext_resource type="Script" uid="uid://dlq4xlt27i0uf" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://ciei3l0ww7j8u" path="res://assets/images/Background.png" id="1_ekxnf"]
+[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wu84c"]
 texture = ExtResource("1_ekxnf")
@@ -139,7 +139,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 18
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="Play" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
@@ -152,7 +152,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_bqqt6")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ekxnf")
 text = "Play"
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="Options" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
@@ -165,7 +165,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_8ln24")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_bqqt6")
 text = "Options"
 
-[node name="Button3" type="Button" parent="VBoxContainer"]
+[node name="How to play" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
@@ -178,7 +178,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_wu84c")
 text = "How to play"
 
-[node name="Button4" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
@@ -212,7 +212,7 @@ text = "Checkmate, Bots!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_how_to_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button4" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/How to play" to="." method="_on_how_to_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
