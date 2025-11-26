@@ -96,12 +96,31 @@ func _try_place_tower():
 		print("Cannot afford tower")
 		return
 
-	# TODO: Instantiate actual tower
-	print("TODO: Instantiate ", selected_tower_type, " tower at ", grid_pos)
+	# Instantiate tower
+	var tower_scene = _get_tower_scene(selected_tower_type)
+	if not tower_scene:
+		print("ERROR: Could not load tower scene for ", selected_tower_type)
+		return
 
-	# For now, just emit signal
+	var tower = tower_scene.instantiate()
 	var snapped_world_pos = GridSystem.grid_to_world(grid_pos)
-	EventBus.tower_placed.emit(null, snapped_world_pos, selected_tower_cost)
-	placement_completed.emit(null, snapped_world_pos)
+	tower.global_position = snapped_world_pos
+
+	if tower_container:
+		tower_container.add_child(tower)
+		print("Placed ", selected_tower_type, " tower at ", grid_pos)
+		EventBus.tower_placed.emit(tower, snapped_world_pos, selected_tower_cost)
+		placement_completed.emit(tower, snapped_world_pos)
+	else:
+		print("ERROR: TowerContainer not found!")
+		tower.queue_free()
 
 	_cancel_placement()
+
+
+## Get the tower scene based on type
+func _get_tower_scene(tower_type: String) -> PackedScene:
+	var scene_path = "res://scenes/towers/" + tower_type + ".tscn"
+	if ResourceLoader.exists(scene_path):
+		return load(scene_path)
+	return null

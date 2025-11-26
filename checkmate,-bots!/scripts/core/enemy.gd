@@ -103,10 +103,6 @@ func _die():
 	queue_free()
 
 
-## Get the enemy's current position (used by tower targeting)
-func get_position() -> Vector2:
-	return global_position
-
 ## Get the enemy's class type (used for class-based restrictions)
 func get_enemy_class() -> String:
 	return enemy_class
@@ -139,4 +135,3 @@ func _draw():
 		draw_rect(Rect2(bar_pos, Vector2(bar_width, bar_height)), Color.BLACK)
 		# Health
 		draw_rect(Rect2(bar_pos, Vector2(bar_width * health_percent, bar_height)), Color.GREEN)
-
