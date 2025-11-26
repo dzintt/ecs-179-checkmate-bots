@@ -212,3 +212,12 @@ func get_current_wave() -> int:
 ## Check if a wave is in progress
 func is_wave_active() -> bool:
 	return wave_in_progress
+
+## Reset waves to initial state
+func reset_waves():
+	current_wave = 0
+	wave_in_progress = false
+	enemies_alive = 0
+	# Clear any spawned enemies
+	get_tree().call_group("enemies", "queue_free")
+	print("Waves reset")
