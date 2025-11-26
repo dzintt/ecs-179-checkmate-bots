@@ -74,7 +74,7 @@ func _create_tile(pos: Vector2, is_light_or_spawn: bool, is_spawn: bool) -> Colo
 func get_tile_position(board_name: String, x: int, y: int) -> Vector2:
 	var board = get_node_or_null(board_name)
 	if board:
-		return board.position + Vector2(x * tile_size + tile_size / 2, y * tile_size + tile_size / 2)
+		return board.position + Vector2(x * tile_size + tile_size / 2.0, y * tile_size + tile_size / 2.0)
 	return Vector2.ZERO
 
 # I think we can put this in another file if we want
@@ -87,7 +87,7 @@ func _setup_camera():
 	var total_size = (chess_board_size * 2 + cross_width) * tile_size
 	
 	# Position camera at the center of the board
-	camera.position = Vector2(total_size / 2, total_size / 2)
+	camera.position = Vector2(total_size / 2.0, total_size / 2.0)
 	
 	var viewport_size = get_viewport().get_visible_rect().size
 	var zoom_x = viewport_size.x / (total_size * 1.1) # can adjust if bigger map

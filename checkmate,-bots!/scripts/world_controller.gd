@@ -8,6 +8,7 @@ extends Node2D
 @onready var enemy_container = $EnemyContainer
 @onready var tower_container = $TowerContainer
 @onready var debug_label = $CanvasLayer/DebugLabel
+@onready var path_manager = $PathManager
 
 # Preload enemy scene
 var enemy_scene = preload("res://scenes/enemies/test_enemy.tscn")
@@ -17,21 +18,30 @@ var king_instance: Node2D = null
 
 
 func _ready():
-	# Connect to currency changes to update UI
 	EventBus.gold_changed.connect(_on_gold_changed)
+	EventBus.wave_started.connect(_on_wave_started)
+	EventBus.wave_completed.connect(_on_wave_completed)
+	
 	_update_debug_label()
 	_spawn_king_base()
+	
+	if path_manager:
+		WaveManager.initialize(path_manager, enemy_container)
+		print("WaveManager initialized with PathManager")
 
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_P:
-			# Start placing a pawn tower
 			placement_system.start_placement("pawn", 50)
 
 		elif event.keycode == KEY_K:
-			# Spawn a test enemy
 			_spawn_test_enemy()
+		
+		elif event.keycode == KEY_SPACE:
+			if not WaveManager.is_wave_active():
+				WaveManager.start_wave()
+				print("Starting wave...")
 
 
 func _spawn_test_enemy():
@@ -58,9 +68,25 @@ func _on_gold_changed(new_amount: int):
 	_update_debug_label()
 
 
+func _on_wave_started(wave_num: int):
+	print("Wave ", wave_num, " started!")
+	_update_debug_label()
+
+
+func _on_wave_completed(wave_num: int):
+	print("Wave ", wave_num, " completed!")
+	_update_debug_label()
+
+
 func _update_debug_label():
 	if debug_label:
-		debug_label.text = "Gold: %d\nPress P to place Pawn tower (cost: 50)\nPress K to spawn test enemy\nRight-click to cancel placement" % CurrencyManager.get_current_gold()
+		var wave_status = ""
+		if WaveManager.is_wave_active():
+			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
+		else:
+			wave_status = "Press SPACE to start wave %d/%d" % [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
+		
+		debug_label.text = "Gold: %d\n%s\nPress P to place Pawn tower (cost: 50)\nPress K to spawn test enemy\nRight-click to cancel placement" % [CurrencyManager.get_current_gold(), wave_status]
 
 
 func _spawn_king_base():
@@ -87,6 +113,6 @@ func _get_board_center_world_position() -> Vector2:
 		return Vector2.ZERO
 
 	var start_index = board.chess_board_size + int(floor((board.cross_width - KING_FOOTPRINT_TILES) / 2.0))
-	var center_index = start_index + KING_FOOTPRINT_TILES / 2.0
+	var center_index = start_index + float(KING_FOOTPRINT_TILES) / 2.0
 	var center = Vector2(center_index, center_index) * board.tile_size
 	return center
