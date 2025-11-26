@@ -14,11 +14,22 @@ signal king_died()
 
 
 func _ready():
-	super._ready()
-	tower_class = "king"
+	tower_class = "King"
+	tower_name = "King"
+	description = "This is your base, please protect at all costs! Attacks in 1 tile in all directions"
+	
+	base_cost = 0
+	upgrade_cost = 0
+	
+	attack_damage = 9.0
+	attack_cooldown = 0.5
+	projectile_speed = 0.0
+	
+	
 	footprint_tiles = max(1, footprint_tiles)
 	grid_position = _compute_center_grid_position()
 	current_health = max_health
+	super._ready()
 	print("King initialized with ", current_health, " health")
 
 

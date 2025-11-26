@@ -6,9 +6,19 @@ class_name BishopTower
 ## Medium-high cost, strong map coverage if positioned well
 
 func _ready():
+	tower_name = "Bishop"
+	description = "Attacks all tiles in diagonal lines. Fires Projectiles at medium speed."
+	tower_class = "Bishop"
+	
+	base_cost = 5
+	upgrade_cost = 5
+	
+	attack_damage = 3.0
+	attack_cooldown = 1.25
+	projectile_speed = 2.0
+	
 	super._ready()
-	tower_class = "bishop"
-	print("Bishop tower ready")
+	print("Bishop tower ready", grid_position)
 
 
 ## Bishop attack pattern: All diagonal lines (up to board edge)
