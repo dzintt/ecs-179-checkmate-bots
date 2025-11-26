@@ -13,36 +13,39 @@ enum GameState {
 	WAVE_ACTIVE,
 	WAVE_COMPLETE,
 	GAME_OVER,
-	VICTORY
+	VICTORY,
 }
 
 var current_state: GameState = GameState.MENU
 
 # Signals
 signal game_state_changed(new_state: GameState)
-signal game_started()
-signal game_paused()
-signal game_resumed()
+signal game_started
+signal game_paused
+signal game_resumed
 signal game_over(victory: bool)
+
 
 func _ready():
 	print("GameManager initialized")
+
 
 ## Reset all game state
 func reset_game():
 	# Reset game manager state
 	current_state = GameState.MENU
 	game_over_menu_instance = null
-	
+
 	# Reset currency system
 	if CurrencyManager:
 		CurrencyManager.reset_gold()
-	
+
 	# Reset wave manager
 	if WaveManager:
 		WaveManager.reset_waves()
-	
+
 	print("Game state reset")
+
 
 ## Start a new game
 func start_game():
@@ -78,17 +81,16 @@ func resume_game():
 func end_game(victory: bool):
 	if game_over_menu_instance:
 		return
-	
+
 	current_state = GameState.VICTORY if victory else GameState.GAME_OVER
 	game_state_changed.emit(current_state)
 	game_over.emit(victory)
-	
+
 	game_over_menu_instance = game_over_menu_scene.instantiate()
 	get_tree().root.add_child(game_over_menu_instance)
-	
+
 	print("Game over - Victory: ", victory)
 	# TODO: Show game over/victory screen
-	
 
 
 ## Check if all waves are completed

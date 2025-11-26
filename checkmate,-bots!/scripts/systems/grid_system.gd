@@ -1,4 +1,5 @@
 extends Node
+
 class_name GridSystem
 
 ## Grid System - Utility functions for grid/world coordinate conversion
@@ -11,7 +12,7 @@ const TILE_SIZE: int = 64
 static func world_to_grid(world_pos: Vector2) -> Vector2i:
 	return Vector2i(
 		int(floor(world_pos.x / TILE_SIZE)),
-		int(floor(world_pos.y / TILE_SIZE))
+		int(floor(world_pos.y / TILE_SIZE)),
 	)
 
 
@@ -19,7 +20,7 @@ static func world_to_grid(world_pos: Vector2) -> Vector2i:
 static func grid_to_world(grid_pos: Vector2i) -> Vector2:
 	return Vector2(
 		grid_pos.x * TILE_SIZE + TILE_SIZE / 2.0,
-		grid_pos.y * TILE_SIZE + TILE_SIZE / 2.0
+		grid_pos.y * TILE_SIZE + TILE_SIZE / 2.0,
 	)
 
 

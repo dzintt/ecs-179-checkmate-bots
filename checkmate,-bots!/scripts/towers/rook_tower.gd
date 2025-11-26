@@ -1,22 +1,24 @@
 extends "res://scripts/core/tower.gd"
+
 class_name RookTower
 
 ## Rook Tower - Horizontal/vertical line attack
 ## Attacks: All horizontal and vertical lines
 ## High cost, strong lane control
 
+
 func _ready():
 	tower_name = "Rook"
 	tower_class = "rook"
 	description = "Fires projectiles in all L/R/U/D directions. Strong lane control."
-	
+
 	base_cost = 10
 	upgrade_cost = 10
-	
+
 	attack_damage = 5.0
 	attack_cooldown = 1.5
 	projectile_speed = 2.0
-		
+
 	super._ready()
 	print("Rook tower ready at grid position: ", grid_position)
 
@@ -27,10 +29,10 @@ func get_attack_pattern() -> Array[Vector2i]:
 
 	# Horizontal and vertical lines in all 4 directions (up to 8 tiles away)
 	for i in range(1, 9):
-		pattern.append(Vector2i(i, 0))      # Right
-		pattern.append(Vector2i(-i, 0))     # Left
-		pattern.append(Vector2i(0, i))      # Down
-		pattern.append(Vector2i(0, -i))     # Up
+		pattern.append(Vector2i(i, 0))  # Right
+		pattern.append(Vector2i(-i, 0))  # Left
+		pattern.append(Vector2i(0, i))  # Down
+		pattern.append(Vector2i(0, -i))  # Up
 
 	return pattern
 

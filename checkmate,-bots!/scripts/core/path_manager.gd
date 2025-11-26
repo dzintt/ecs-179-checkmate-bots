@@ -1,9 +1,9 @@
 extends Node2D
+
 class_name PathManager
 
 ## Manages enemy paths on the map
 ## Supports multiple directional paths (north, east, south, west) converging to center base
-
 
 @export_group("Path Configuration")
 ## Center position where the base is located (target for all paths)
@@ -26,7 +26,7 @@ var paths: Dictionary = {
 	"north": [],
 	"east": [],
 	"south": [],
-	"west": []
+	"west": [],
 }
 
 signal path_updated(direction: String, new_path: Array[Vector2])
@@ -35,42 +35,46 @@ signal path_updated(direction: String, new_path: Array[Vector2])
 func _ready():
 	_initialize_paths()
 
+
 func _initialize_paths():
 	_create_directional_paths()
-	
+
 	for direction in paths.keys():
 		path_updated.emit(direction, paths[direction])
+
 
 func _create_directional_paths():
 	paths["north"] = [
 		Vector2(base_position.x, 0),
-		base_position
+		base_position,
 	]
-	
+
 	paths["east"] = [
 		Vector2(map_width, base_position.y),
-		base_position
+		base_position,
 	]
-	
+
 	paths["south"] = [
 		Vector2(base_position.x, map_height),
-		base_position
+		base_position,
 	]
-	
+
 	paths["west"] = [
 		Vector2(0, base_position.y),
-		base_position
+		base_position,
 	]
+
 
 func get_direction_path(direction: String) -> Array[Vector2]:
 	if not paths.has(direction):
 		push_error("Invalid direction: " + direction)
 		return []
-	
+
 	var global_path: Array[Vector2] = []
 	for point in paths[direction]:
 		global_path.append(global_position + point)
 	return global_path
+
 
 # Can be used to show spawn point like portal effect, and display where enemies will come
 func get_start_position(direction: String) -> Vector2:

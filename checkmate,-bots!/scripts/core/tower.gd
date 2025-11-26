@@ -1,4 +1,5 @@
 extends Node2D
+
 class_name Tower
 
 ## Base tower class for chess-pattern based tower defense
@@ -9,7 +10,6 @@ class_name Tower
 @export var icon: Texture2D
 @export var description: String = "A basic tower"
 @export var tower_level: int = 1
-
 
 @export_group("Costs")
 @export var base_cost: int = 50
@@ -34,7 +34,6 @@ class_name Tower
 ## Enemy classes this tower can attack (empty = all)
 @export var allowed_enemy_classes: Array[String] = []
 
-
 var enemies_in_range: Array[Enemy] = []
 var current_target: Enemy = null
 var attack_timer: float = 0.0
@@ -45,10 +44,12 @@ signal target_acquired(target: Enemy)
 signal target_lost(target: Enemy)
 signal tower_upgraded(new_level: int)
 
+
 func _ready():
 	# Calculate grid position from world position
 	grid_position = GridSystem.world_to_grid(global_position)
 	_setup_visual()
+
 
 func _process(delta: float):
 	_update_attack_timer(delta)
@@ -56,11 +57,13 @@ func _process(delta: float):
 	_update_targeting()
 	_attempt_attack()
 
+
 ## Override this in subclasses to define chess attack pattern
 ## Returns array of grid offsets that this tower can attack
 func get_attack_pattern() -> Array[Vector2i]:
 	# Base implementation - override in subclasses
 	return []
+
 
 ## Scan for enemies in the tower's attack pattern
 func _scan_for_enemies():
@@ -90,6 +93,7 @@ func _scan_for_enemies():
 					enemies_in_range.append(enemy)
 				break
 
+
 ## Check if this tower can attack a specific enemy based on class restrictions
 func _can_attack_enemy(enemy: Enemy) -> bool:
 	# If no restrictions, can attack all
@@ -98,6 +102,7 @@ func _can_attack_enemy(enemy: Enemy) -> bool:
 
 	# Check if enemy class is in allowed list
 	return allowed_enemy_classes.has(enemy.get_enemy_class())
+
 
 ## Update current target based on targeting priority
 func _update_targeting():
@@ -120,6 +125,7 @@ func _update_targeting():
 		if current_target != null:
 			target_acquired.emit(current_target)
 
+
 ## Select the best target based on the targeting mode
 func _select_target_by_priority() -> Enemy:
 	if enemies_in_range.is_empty():
@@ -139,6 +145,7 @@ func _select_target_by_priority() -> Enemy:
 		_:
 			return enemies_in_range[0]
 
+
 ## Get the enemy furthest along their path (First targeting)
 func _get_first_enemy() -> Enemy:
 	var best_enemy: Enemy = null
@@ -151,6 +158,7 @@ func _get_first_enemy() -> Enemy:
 
 	return best_enemy
 
+
 ## Get the enemy least far along their path (Last targeting)
 func _get_last_enemy() -> Enemy:
 	var best_enemy: Enemy = null
@@ -162,6 +170,7 @@ func _get_last_enemy() -> Enemy:
 			best_enemy = enemy
 
 	return best_enemy
+
 
 ## Get the closest enemy (Closest targeting)
 func _get_closest_enemy() -> Enemy:
@@ -176,6 +185,7 @@ func _get_closest_enemy() -> Enemy:
 
 	return best_enemy
 
+
 ## Get the enemy with the most health (Strongest targeting)
 func _get_strongest_enemy() -> Enemy:
 	var best_enemy: Enemy = null
@@ -187,6 +197,7 @@ func _get_strongest_enemy() -> Enemy:
 			best_enemy = enemy
 
 	return best_enemy
+
 
 ## Get the enemy with the least health (Weakest targeting)
 func _get_weakest_enemy() -> Enemy:
@@ -200,10 +211,12 @@ func _get_weakest_enemy() -> Enemy:
 
 	return best_enemy
 
+
 ## Update the attack cooldown timer
 func _update_attack_timer(delta: float):
 	if attack_timer > 0:
 		attack_timer -= delta
+
 
 ## Attempt to attack the current target
 func _attempt_attack():
@@ -216,6 +229,7 @@ func _attempt_attack():
 
 	_perform_attack()
 	attack_timer = attack_cooldown
+
 
 ## Execute the attack on the current target
 func _perform_attack():
@@ -231,10 +245,12 @@ func _perform_attack():
 
 	_show_attack_effect()
 
+
 ## Visual indication of attack (placeholder)
 func _show_attack_effect():
 	# Draw a line to the target temporarily
 	queue_redraw()
+
 
 ## Upgrade this tower to the next level
 func upgrade_tower():
@@ -246,6 +262,7 @@ func upgrade_tower():
 
 	tower_upgraded.emit(tower_level)
 	queue_redraw()
+
 
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
