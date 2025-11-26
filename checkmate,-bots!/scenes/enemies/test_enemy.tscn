@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://test_enemy_001"]
+
+[ext_resource type="Script" path="res://scripts/core/enemy.gd" id="1"]
+
+[node name="TestEnemy" type="CharacterBody2D"]
+script = ExtResource("1")
+move_speed = 80.0
+max_health = 50.0
+currency_reward = 15
+enemy_class = "ground"
+enemy_color = Color(1, 0, 0, 1)
