@@ -1,10 +1,10 @@
 extends Node
-
 ## Currency Manager - Gold economy management
 ## Singleton accessible via CurrencyManager
 ## Tracks player gold, handles transactions
 
 var current_gold: int = 150  # Starting gold
+
 
 func _ready():
 	print("CurrencyManager initialized with ", current_gold, " gold")

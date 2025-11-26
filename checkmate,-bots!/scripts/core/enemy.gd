@@ -1,4 +1,5 @@
 extends CharacterBody2D
+
 class_name Enemy
 
 ## Enemy that follows a designated path
@@ -40,18 +41,20 @@ signal enemy_died(enemy: Enemy)
 signal enemy_reached_end(enemy: Enemy)
 signal health_changed(current: float, maximum: float)
 
+
 func _ready():
 	current_health = max_health
 	_setup_visual()
-	
+
+
 func _physics_process(delta: float):
 	if not is_active or not is_alive:
 		return
-	
+
 	if path_points.is_empty() or current_waypoint_index >= path_points.size():
 		_reach_end_of_path()
 		return
-	
+
 	_move_along_path(delta)
 
 
@@ -63,22 +66,28 @@ func set_path(new_path: Array[Vector2]):
 		global_position = path_points[0]
 	is_active = true
 
+
 func _move_along_path(_delta: float):
 	var target_position = path_points[current_waypoint_index]
 	var distance_to_target = global_position.distance_to(target_position)
-	
-	var reach_threshold = base_reach_distance if current_waypoint_index == path_points.size() - 1 else waypoint_threshold
-	
+
+	var reach_threshold = (
+		base_reach_distance
+		if current_waypoint_index == path_points.size() - 1
+		else waypoint_threshold
+	)
+
 	if distance_to_target <= reach_threshold:
 		current_waypoint_index += 1
 		if current_waypoint_index >= path_points.size():
 			_reach_end_of_path()
 			return
 		target_position = path_points[current_waypoint_index]
-	
+
 	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
+
 
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
@@ -87,23 +96,25 @@ func _reach_end_of_path():
 	var king = get_tree().get_first_node_in_group("king")
 	if king and king.has_method("take_damage"):
 		king.take_damage(damage_to_base)
-	
+
 	enemy_reached_end.emit(self)
 	queue_free()
+
 
 ## Apply damage to this enemy
 func take_damage(damage: float, _attacker_class: String = ""):
 	if not is_alive:
 		return
-	
+
 	# TODO: Implement class-based damage modifiers here
 	# Example: if _attacker_class == "bishop" and enemy_class == "armored": damage *= 1.5
-	
+
 	current_health -= damage
 	health_changed.emit(current_health, max_health)
-	
+
 	if current_health <= 0:
 		_die()
+
 
 ## Called when enemy health reaches zero
 func _die():
@@ -118,6 +129,7 @@ func _die():
 func get_enemy_class() -> String:
 	return enemy_class
 
+
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
 	# Create a simple colored circle as placeholder
@@ -126,18 +138,19 @@ func _setup_visual():
 	circle_shape.radius = 16
 	collision_shape.shape = circle_shape
 	add_child(collision_shape)
-	
+
 	queue_redraw()
+
 
 func _draw():
 	draw_circle(Vector2.ZERO, 16, enemy_color)
 	draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
-	
+
 	if is_alive:
 		var health_percent = current_health / max_health
 		var bar_width = 30
 		var bar_height = 4
 		var bar_pos = Vector2(-bar_width / 2.0, -25)
-		
+
 		draw_rect(Rect2(bar_pos, Vector2(bar_width, bar_height)), Color.BLACK)
 		draw_rect(Rect2(bar_pos, Vector2(bar_width * health_percent, bar_height)), Color.GREEN)

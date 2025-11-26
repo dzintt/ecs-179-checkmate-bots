@@ -1,5 +1,4 @@
 extends Node
-
 ## Placement System - Handles tower placement interaction
 ## Manages preview, validation, and tower instantiation
 
@@ -11,7 +10,7 @@ var is_placing: bool = false
 @onready var tower_container: Node2D
 
 signal placement_completed(tower: Node, position: Vector2)
-signal placement_cancelled()
+signal placement_cancelled
 
 
 func _ready():

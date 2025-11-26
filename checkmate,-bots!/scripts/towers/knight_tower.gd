@@ -1,22 +1,24 @@
 extends "res://scripts/core/tower.gd"
+
 class_name KnightTower
 
 ## Knight Tower - L-shaped attack pattern
 ## Attacks: L-shape (2+1 in any direction)
 ## Medium cost, unique coverage, ignores obstacles
 
+
 func _ready():
 	tower_name = "Knight"
 	tower_class = "knight"
 	description = "Attacks with earthquake animation, summons only in ONE direction. Unique L-shaped coverage."
-	
+
 	base_cost = 5
 	upgrade_cost = 5
-	
+
 	attack_damage = 5.0
 	attack_cooldown = 1.25
-	projectile_speed = 0.0 
-		
+	projectile_speed = 0.0
+
 	super._ready()
 	print("Knight tower ready at grid position: ", grid_position)
 
