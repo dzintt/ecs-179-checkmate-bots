@@ -15,6 +15,19 @@ run/main_scene="uid://wmllul7wsveg"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameManager="*res://autoload/game_manager.gd"
+EventBus="*res://autoload/event_bus.gd"
+CurrencyManager="*res://autoload/currency_manager.gd"
+WaveManager="*res://autoload/wave_manager.gd"
+
+[layer_names]
+
+2d_physics/layer_1="Towers"
+2d_physics/layer_2="Enemies"
+2d_physics/layer_3="King"
+
 [rendering]
 
 renderer/rendering_method="mobile"

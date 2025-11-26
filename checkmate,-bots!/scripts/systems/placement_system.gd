@@ -1,0 +1,107 @@
+extends Node
+
+## Placement System - Handles tower placement interaction
+## Manages preview, validation, and tower instantiation
+
+var selected_tower_type: String = ""
+var selected_tower_cost: int = 0
+var is_placing: bool = false
+
+@onready var placement_preview: Sprite2D = $PlacementPreview
+@onready var tower_container: Node2D
+
+signal placement_completed(tower: Node, position: Vector2)
+signal placement_cancelled()
+
+
+func _ready():
+	# Get tower container from parent World scene
+	tower_container = get_node_or_null("../TowerContainer")
+
+	if placement_preview:
+		placement_preview.hide()
+
+
+## Start tower placement mode
+func start_placement(tower_type: String, cost: int):
+	# Check if player can afford
+	if not CurrencyManager.can_afford(cost):
+		print("Cannot afford tower: ", tower_type, " (cost: ", cost, ")")
+		return
+
+	selected_tower_type = tower_type
+	selected_tower_cost = cost
+	is_placing = true
+
+	if placement_preview:
+		placement_preview.show()
+
+	print("Placement started: ", tower_type, " (cost: ", cost, ")")
+
+
+## Cancel placement mode
+func _cancel_placement():
+	is_placing = false
+	selected_tower_type = ""
+	selected_tower_cost = 0
+
+	if placement_preview:
+		placement_preview.hide()
+
+	placement_cancelled.emit()
+	print("Placement cancelled")
+
+
+## Handle input for placement
+func _input(event: InputEvent):
+	if not is_placing:
+		return
+
+	if event is InputEventMouseMotion:
+		_update_preview_position(event.position)
+
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			_try_place_tower()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			_cancel_placement()
+
+
+## Update placement preview position
+func _update_preview_position(screen_pos: Vector2):
+	if not placement_preview:
+		return
+
+	var world_pos = get_viewport().get_camera_2d().get_global_mouse_position()
+	var grid_pos = GridSystem.world_to_grid(world_pos)
+	var snapped_world_pos = GridSystem.grid_to_world(grid_pos)
+
+	placement_preview.global_position = snapped_world_pos
+
+	# TODO: Change preview color based on validity (green = valid, red = invalid)
+
+
+## Try to place tower at current position
+func _try_place_tower():
+	var world_pos = get_viewport().get_camera_2d().get_global_mouse_position()
+	var grid_pos = GridSystem.world_to_grid(world_pos)
+
+	# Validate placement
+	if not GridSystem.is_valid_placement_tile(grid_pos):
+		print("Invalid placement position")
+		return
+
+	# Check currency
+	if not CurrencyManager.spend_gold(selected_tower_cost):
+		print("Cannot afford tower")
+		return
+
+	# TODO: Instantiate actual tower
+	print("TODO: Instantiate ", selected_tower_type, " tower at ", grid_pos)
+
+	# For now, just emit signal
+	var snapped_world_pos = GridSystem.grid_to_world(grid_pos)
+	EventBus.tower_placed.emit(null, snapped_world_pos, selected_tower_cost)
+	placement_completed.emit(null, snapped_world_pos)
+
+	_cancel_placement()

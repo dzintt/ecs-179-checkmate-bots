@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://b1lxd0vx1i07j"
-path="res://.godot/imported/Super Cursed.ttf-4c42de12a14858eb6b774973197c1dc5.fontdata"
+path="res://.godot/imported/Super Cursed.ttf-3af98ddc40d31ac1bd59a273aa2c684d.fontdata"
 
 [deps]
 
-source_file="res://scenes/Super Cursed.ttf"
-dest_files=["res://.godot/imported/Super Cursed.ttf-4c42de12a14858eb6b774973197c1dc5.fontdata"]
+source_file="res://assets/fonts/Super Cursed.ttf"
+dest_files=["res://.godot/imported/Super Cursed.ttf-3af98ddc40d31ac1bd59a273aa2c684d.fontdata"]
 
 [params]
 
