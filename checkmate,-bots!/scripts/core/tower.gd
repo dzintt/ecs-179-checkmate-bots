@@ -4,6 +4,17 @@ class_name Tower
 ## Base tower class for chess-pattern based tower defense
 ## All towers use grid-based attack patterns (Pawn, Knight, Bishop, Rook, Queen, King)
 
+@export_group("Tower Info")
+@export var tower_name: String = "Tower"
+@export var icon: Texture2D
+@export var description: String = "A basic tower"
+@export var tower_level: int = 1
+
+
+@export_group("Costs")
+@export var base_cost: int = 50
+@export var upgrade_cost: int = 75
+
 @export_group("Attack Properties")
 ## Damage dealt per attack
 @export var attack_damage: float = 20.0
@@ -11,6 +22,7 @@ class_name Tower
 @export var attack_cooldown: float = 1.0
 ## Projectile speed (if using projectiles)
 @export var projectile_speed: float = 300.0
+@export var attack_pattern: AttackPattern
 
 @export_group("Targeting")
 ## Targeting priority mode
@@ -21,12 +33,6 @@ class_name Tower
 @export var tower_class: String = "basic"
 ## Enemy classes this tower can attack (empty = all)
 @export var allowed_enemy_classes: Array[String] = []
-
-@export_group("Upgrades")
-## Current tower level
-@export var tower_level: int = 1
-## Cost to upgrade to next level
-@export var upgrade_cost: int = 50
 
 
 var enemies_in_range: Array[Enemy] = []

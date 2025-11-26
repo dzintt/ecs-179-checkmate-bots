@@ -6,9 +6,19 @@ class_name PawnTower
 ## Low cost, short range, good for early defense
 
 func _ready():
-	super._ready()
+	tower_name = "Pawn"
 	tower_class = "pawn"
-	print("Pawn tower ready")
+	description = "Attacks with a wave animation like swinging a sword. Basic defensive tower."
+	
+	base_cost = 1
+	upgrade_cost = 1
+	
+	attack_damage = 1.0
+	attack_cooldown = 1.0 
+	projectile_speed = 0.0
+	
+	super._ready()
+	print("Pawn tower ready at grid position: ", grid_position)
 
 
 ## Pawn attack pattern: 1 tile forward + 2 diagonal forward

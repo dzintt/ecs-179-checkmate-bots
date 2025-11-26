@@ -3,6 +3,10 @@ class_name Enemy
 
 ## Enemy that follows a designated path
 ## Adjust speed, health, and other properties in the inspector
+@export_group("Enemy Info")
+@export var enemy_name: String = "Robot"
+@export var color: Color = Color.RED
+@export var description: String = "A basic robot enemy"
 
 @export_group("Movement")
 ## Speed at which the enemy moves along the path

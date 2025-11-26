@@ -6,9 +6,19 @@ class_name QueenTower
 ## Highest cost, strongest coverage and firepower
 
 func _ready():
-	super._ready()
+	tower_name = "Queen"
 	tower_class = "queen"
-	print("Queen tower ready")
+	description = "Fires projectiles in all L/R/U/D and diagonal directions. Supreme coverage and power."
+	
+	base_cost = 25
+	upgrade_cost = 25
+	
+	attack_damage = 9.0
+	attack_cooldown = 1.5
+	projectile_speed = 4.0
+		
+	super._ready()
+	print("Queen tower ready at grid position: ", grid_position)
 
 
 ## Queen attack pattern: Combines Rook + Bishop (all 8 directions)
