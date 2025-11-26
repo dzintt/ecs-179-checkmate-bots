@@ -13,6 +13,8 @@ class_name Enemy
 @export var move_speed: float = 100.0
 ## How close the enemy needs to be to a waypoint before moving to the next one
 @export var waypoint_threshold: float = 5.0
+## Distance to base before being destroyed (smooth entry)
+@export var base_reach_distance: float = 20.0
 
 @export_group("Stats")
 ## Enemy health points
@@ -61,36 +63,41 @@ func set_path(new_path: Array[Vector2]):
 		global_position = path_points[0]
 	is_active = true
 
-## Move towards the current waypoint
-func _move_along_path(delta: float):
+func _move_along_path(_delta: float):
 	var target_position = path_points[current_waypoint_index]
-	var direction = (target_position - global_position).normalized()
 	var distance_to_target = global_position.distance_to(target_position)
 	
-	# Check if we've reached the current waypoint
-	if distance_to_target <= waypoint_threshold:
+	var reach_threshold = base_reach_distance if current_waypoint_index == path_points.size() - 1 else waypoint_threshold
+	
+	if distance_to_target <= reach_threshold:
 		current_waypoint_index += 1
 		if current_waypoint_index >= path_points.size():
 			_reach_end_of_path()
 			return
+		target_position = path_points[current_waypoint_index]
 	
-	# Move towards the waypoint
+	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
 
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
+	# Deal damage to the King
+	var king = get_tree().get_first_node_in_group("king")
+	if king and king.has_method("take_damage"):
+		king.take_damage(damage_to_base)
+	
 	enemy_reached_end.emit(self)
 	queue_free()
 
 ## Apply damage to this enemy
-func take_damage(damage: float, attacker_class: String = ""):
+func take_damage(damage: float, _attacker_class: String = ""):
 	if not is_alive:
 		return
 	
 	# TODO: Implement class-based damage modifiers here
-	# Example: if attacker_class == "bishop" and enemy_class == "armored": damage *= 1.5
+	# Example: if _attacker_class == "bishop" and enemy_class == "armored": damage *= 1.5
 	
 	current_health -= damage
 	health_changed.emit(current_health, max_health)
@@ -120,22 +127,17 @@ func _setup_visual():
 	collision_shape.shape = circle_shape
 	add_child(collision_shape)
 	
-	# Add visual indicator
 	queue_redraw()
 
 func _draw():
-	# Draw a circle representing the enemy
 	draw_circle(Vector2.ZERO, 16, enemy_color)
 	draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
 	
-	# Draw health bar
 	if is_alive:
 		var health_percent = current_health / max_health
 		var bar_width = 30
 		var bar_height = 4
-		var bar_pos = Vector2(-bar_width / 2, -25)
+		var bar_pos = Vector2(-bar_width / 2.0, -25)
 		
-		# Background
 		draw_rect(Rect2(bar_pos, Vector2(bar_width, bar_height)), Color.BLACK)
-		# Health
 		draw_rect(Rect2(bar_pos, Vector2(bar_width * health_percent, bar_height)), Color.GREEN)
