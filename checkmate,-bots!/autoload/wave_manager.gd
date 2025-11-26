@@ -1,17 +1,14 @@
 extends Node
 
-## Wave Manager - Wave progression and enemy spawning
-## Singleton accessible via WaveManager
-## Controls wave flow, enemy spawning, difficulty scaling
-
 var current_wave: int = 0
 var max_waves: int = 10
 var wave_in_progress: bool = false
 var enemies_alive: int = 0
-var wave_definitions: Array = []  # Array[WaveDefinition] when resource is created
+var wave_definitions: Array = []
 var path_manager: PathManager = null
-var enemy_scene: PackedScene = null
 var spawn_parent: Node = null
+
+const ENEMY_SCENE = preload("res://scenes/enemies/test_enemy.tscn")
 
 func _ready():
 	print("WaveManager initialized")
@@ -20,8 +17,6 @@ func _ready():
 	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
 
 	_load_wave_definitions()
-	
-	enemy_scene = preload("res://scenes/enemies/test_enemy.tscn")
 
 
 func initialize(path_mgr: PathManager, spawn_node: Node):
@@ -145,27 +140,24 @@ func _spawn_wave_enemies():
 
 
 func _spawn_enemies_from_direction(direction: String, count: int, delay: float):
-	for i in range(count):
-		await get_tree().create_timer(delay * i).timeout
-		_spawn_single_enemy(direction)
-
-
-func _spawn_single_enemy(direction: String):
-	if enemy_scene == null or path_manager == null or spawn_parent == null:
+	if path_manager == null or spawn_parent == null:
 		return
 	
-	var enemy = enemy_scene.instantiate()
-	spawn_parent.add_child(enemy)
-	
-	if path_manager != null:
+	for i in range(count):
+		if i > 0:
+			await get_tree().create_timer(delay).timeout
+		
+		var enemy = ENEMY_SCENE.instantiate()
+		spawn_parent.add_child(enemy)
+		
 		var path: Array[Vector2] = path_manager.get_direction_path(direction)
 		if enemy.has_method("set_path") and not path.is_empty():
 			enemy.set_path(path)
-	
-	if enemy.has_signal("enemy_died"):
-		enemy.enemy_died.connect(_on_enemy_instance_died)
-	if enemy.has_signal("enemy_reached_end"):
-		enemy.enemy_reached_end.connect(_on_enemy_instance_reached_end)
+		
+		if enemy.has_signal("enemy_died"):
+			enemy.enemy_died.connect(_on_enemy_instance_died)
+		if enemy.has_signal("enemy_reached_end"):
+			enemy.enemy_reached_end.connect(_on_enemy_instance_reached_end)
 
 
 func _on_enemy_instance_died(enemy: Enemy):

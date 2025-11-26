@@ -72,41 +72,8 @@ func get_direction_path(direction: String) -> Array[Vector2]:
 		global_path.append(global_position + point)
 	return global_path
 
-func get_available_directions() -> Array[String]:
-	return ["north", "east", "south", "west"]
-
-func set_path(direction: String, new_path: Array[Vector2]):
-	if not paths.has(direction):
-		push_error("Invalid direction: " + direction)
-		return
-	
-	paths[direction] = new_path.duplicate()
-	path_updated.emit(direction, paths[direction])
-
-func get_path_length(direction: String) -> float:
-	if not paths.has(direction):
-		return 0.0
-	
-	var path_points = paths[direction]
-	var length: float = 0.0
-	for i in range(path_points.size() - 1):
-		length += path_points[i].distance_to(path_points[i + 1])
-	return length
-
-func is_path_valid(direction: String) -> bool:
-	if not paths.has(direction):
-		return false
-	return paths[direction].size() >= 2
-
+# Can be used to show spawn point like portal effect, and display where enemies will come
 func get_start_position(direction: String) -> Vector2:
 	if not paths.has(direction) or paths[direction].is_empty():
 		return Vector2.ZERO
 	return global_position + paths[direction][0]
-
-func get_end_position(direction: String) -> Vector2:
-	if not paths.has(direction) or paths[direction].is_empty():
-		return Vector2.ZERO
-	return global_position + paths[direction][-1]
-
-func get_base_position() -> Vector2:
-	return global_position + base_position
