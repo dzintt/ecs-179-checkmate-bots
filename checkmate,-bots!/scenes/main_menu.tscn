@@ -1,8 +1,8 @@
 [gd_scene load_steps=18 format=3 uid="uid://wmllul7wsveg"]
 
-[ext_resource type="Script" uid="uid://c7qm4iegj1c6q" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
-[ext_resource type="Texture2D" uid="uid://do1lbbf5tf1u" path="res://assets/images/Background.png" id="1_ekxnf"]
-[ext_resource type="FontFile" uid="uid://b1lxd0vx1i07j" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
+[ext_resource type="Texture2D" path="res://assets/images/Background.png" id="1_ekxnf"]
+[ext_resource type="FontFile" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wu84c"]
 texture = ExtResource("1_ekxnf")
