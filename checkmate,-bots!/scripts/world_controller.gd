@@ -18,13 +18,14 @@ func _ready():
 
 
 func _input(event: InputEvent):
-	if event.is_action_pressed("ui_accept"):  # P key
-		# Start placing a pawn tower
-		placement_system.start_placement("pawn", 50)
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_P:
+			# Start placing a pawn tower
+			placement_system.start_placement("pawn", 50)
 
-	elif event is InputEventKey and event.pressed and event.keycode == KEY_K:
-		# Spawn a test enemy
-		_spawn_test_enemy()
+		elif event.keycode == KEY_K:
+			# Spawn a test enemy
+			_spawn_test_enemy()
 
 
 func _spawn_test_enemy():

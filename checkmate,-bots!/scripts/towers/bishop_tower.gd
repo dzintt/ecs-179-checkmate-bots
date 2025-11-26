@@ -8,9 +8,21 @@ class_name BishopTower
 func _ready():
 	super._ready()
 	tower_class = "bishop"
-	use_grid_pattern = true
-
 	print("Bishop tower ready")
+
+
+## Bishop attack pattern: All diagonal lines (up to board edge)
+func get_attack_pattern() -> Array[Vector2i]:
+	var pattern: Array[Vector2i] = []
+
+	# Diagonal lines in all 4 directions (up to 8 tiles away for an 8x8 board)
+	for i in range(1, 9):
+		pattern.append(Vector2i(i, i))      # Bottom-right
+		pattern.append(Vector2i(i, -i))     # Top-right
+		pattern.append(Vector2i(-i, i))     # Bottom-left
+		pattern.append(Vector2i(-i, -i))    # Top-left
+
+	return pattern
 
 
 func _setup_visual():
@@ -22,7 +34,3 @@ func _draw():
 	# Placeholder: Draw a purple circle for bishop
 	draw_circle(Vector2.ZERO, 20, Color.PURPLE)
 	draw_circle(Vector2.ZERO, 20, Color.BLACK, false, 2.0)
-
-	if attack_range > 0:
-		draw_circle(Vector2.ZERO, attack_range, Color(0.6, 0.2, 0.8, 0.1))
-		draw_circle(Vector2.ZERO, attack_range, Color.PURPLE, false, 1.0)

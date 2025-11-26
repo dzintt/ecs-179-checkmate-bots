@@ -2,7 +2,7 @@ extends "res://scripts/core/tower.gd"
 class_name KingBase
 
 ## King Base - Player's main base (must protect)
-## Attacks: 1 tile in all 8 directions (circular range, small)
+## Attacks: 1 tile in all 8 directions
 ## Has health pool - if destroyed, player loses
 
 @export var max_health: int = 100
@@ -15,14 +15,25 @@ signal king_died()
 func _ready():
 	super._ready()
 	tower_class = "king"
-	use_grid_pattern = false  # King uses circular range
 	current_health = max_health
-
-	# Set smaller attack range for king
-	attack_range = 80.0
-	set_attack_range(attack_range)
-
 	print("King initialized with ", current_health, " health")
+
+
+## King attack pattern: 1 tile in all 8 directions (adjacent tiles)
+func get_attack_pattern() -> Array[Vector2i]:
+	var pattern: Array[Vector2i] = []
+
+	# All 8 adjacent tiles
+	pattern.append(Vector2i(1, 0))      # Right
+	pattern.append(Vector2i(-1, 0))     # Left
+	pattern.append(Vector2i(0, 1))      # Down
+	pattern.append(Vector2i(0, -1))     # Up
+	pattern.append(Vector2i(1, 1))      # Bottom-right
+	pattern.append(Vector2i(1, -1))     # Top-right
+	pattern.append(Vector2i(-1, 1))     # Bottom-left
+	pattern.append(Vector2i(-1, -1))    # Top-left
+
+	return pattern
 
 
 ## King takes damage from enemies reaching base
@@ -60,11 +71,6 @@ func _draw():
 	# Draw health percentage as inner circle
 	var health_percent = float(current_health) / float(max_health)
 	draw_circle(Vector2.ZERO, 25, Color(1, health_percent, health_percent, 0.7))
-
-	# Draw attack range
-	if attack_range > 0:
-		draw_circle(Vector2.ZERO, attack_range, Color(1, 0.2, 0.2, 0.1))
-		draw_circle(Vector2.ZERO, attack_range, Color.DARK_RED, false, 1.0)
 
 	# Draw health bar above king
 	var bar_width = 64
