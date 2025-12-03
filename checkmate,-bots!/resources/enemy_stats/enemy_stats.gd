@@ -12,4 +12,11 @@ class_name EnemyStats
 @export var color: Color = Color.RED
 @export var description: String = "A basic robot enemy"
 
+## NEW: logical class used by towers (e.g. "pawn", "runner", "shield", "caster", "bomber")
+@export var enemy_class: String = "ground"
+
+## NEW: behavior tag to drive special logic
+## "basic", "runner", "shield", "caster", "bomber" etc.
+@export var behavior_tag: StringName = "basic"
+
 # TODO: Add sprite/texture when ready

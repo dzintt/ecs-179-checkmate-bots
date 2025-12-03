@@ -174,4 +174,3 @@ func get_end_position() -> Vector2:
 	if path_points.is_empty():
 		return Vector2.ZERO
 	return global_position + path_points[-1]
-
