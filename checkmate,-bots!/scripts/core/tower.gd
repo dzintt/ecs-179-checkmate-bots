@@ -237,7 +237,8 @@ func _perform_attack():
 		return
 
 	# Deal damage to target
-	current_target.take_damage(attack_damage, tower_class)
+	var final_damage = load("res://scripts/core/damage_engine.gd").calculate_damage(tower_class, current_target, attack_damage)
+	current_target.take_damage(final_damage, tower_class)
 	tower_attacked.emit(current_target)
 
 	# TODO: Spawn projectile/visual effect here

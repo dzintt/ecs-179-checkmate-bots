@@ -10,7 +10,7 @@ class_name BishopTower
 func _ready():
 	tower_name = "Bishop"
 	description = "Attacks all tiles in diagonal lines. Fires Projectiles at medium speed."
-	tower_class = "Bishop"
+	tower_class = "bishop"
 
 	base_cost = 5
 	upgrade_cost = 5

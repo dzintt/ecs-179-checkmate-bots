@@ -16,7 +16,7 @@ signal king_died
 
 func _ready():
 	tower_class = "King"
-	tower_name = "King"
+	tower_name = "king"
 	description = "This is your base, please protect at all costs! Attacks in 1 tile in all directions"
 
 	base_cost = 0
