@@ -1,4 +1,5 @@
 extends CharacterBody2D
+
 class_name Enemy
 
 ## Enemy that follows a designated path
@@ -59,10 +60,12 @@ signal enemy_died(enemy: Enemy)
 signal enemy_reached_end(enemy: Enemy)
 signal health_changed(current: float, maximum: float)
 
+
 func _ready():
 	_apply_preset()              
 	current_health = max_health
 	_setup_visual()
+
 
 func _physics_process(delta: float):
 	if not is_alive:
@@ -123,6 +126,7 @@ func _move_along_path(delta: float):
 	velocity = direction * move_speed
 	move_and_slide()
 
+
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
@@ -139,17 +143,29 @@ func _reach_end_of_path():
 func _start_attacking_king():
 	_is_attacking_king = true
 	_attack_cooldown = 0.0  # immediate first hit
+	# Deal damage to the King
+	var king = get_tree().get_first_node_in_group("king")
+	if king and king.has_method("take_damage"):
+		king.take_damage(damage_to_base)
+
+	enemy_reached_end.emit(self)
+	queue_free()
+
 
 ## Apply damage to this enemy
 func take_damage(damage: float, attacker_class: String = ""):
 	if not is_alive:
 		return
 
+	# TODO: Implement class-based damage modifiers here
+	# Example: if _attacker_class == "bishop" and enemy_class == "armored": damage *= 1.5
+
 	current_health -= damage
 	health_changed.emit(current_health, max_health)
 
 	if current_health <= 0:
 		_die()
+
 
 ## Called when enemy health reaches zero
 func _die():
@@ -168,6 +184,7 @@ func get_enemy_position() -> Vector2:
 func get_enemy_class() -> String:
 	return enemy_class
 
+
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
 	# Create a simple colored circle as placeholder
@@ -179,6 +196,7 @@ func _setup_visual():
 
 	# Add visual indicator
 	queue_redraw()
+
 
 func _draw():
 	# Draw a circle representing the enemy
