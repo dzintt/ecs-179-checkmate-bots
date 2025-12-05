@@ -105,6 +105,9 @@ func _try_place_tower():
 	var snapped_world_pos = GridSystem.grid_to_world(grid_pos)
 	tower.global_position = snapped_world_pos
 
+	# Mark tile as occupied to prevent stacking
+	GridSystem.occupy_tile(grid_pos)
+
 	if tower_container:
 		tower_container.add_child(tower)
 		print("Placed ", selected_tower_type, " tower at ", grid_pos)

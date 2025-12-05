@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://cpk01672cc06c"]
+[gd_scene load_steps=2 format=3 uid="uid://cpk01672cc06c"]
 
-[node name="Bomber" type="Node2D"]
+[ext_resource type="Script" path="res://scripts/enemies/bomber.gd" id="1"]
+
+[node name="Bomber" type="CharacterBody2D"]
+script = ExtResource("1")

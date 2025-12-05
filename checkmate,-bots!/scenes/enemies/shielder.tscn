@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://12vfi34fknby"]
+[gd_scene load_steps=2 format=3 uid="uid://12vfi34fknby"]
 
-[node name="Shielder" type="Node2D"]
+[ext_resource type="Script" path="res://scripts/enemies/shielder.gd" id="1"]
+
+[node name="Shielder" type="CharacterBody2D"]
+script = ExtResource("1")

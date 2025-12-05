@@ -2,13 +2,13 @@ extends Node
 
 class_name GridSystem
 
-## Grid System - Utility functions for grid/world coordinate conversion
-## Static class - no need to instantiate
-
 const TILE_SIZE: int = 64
+const CHESS_BOARD_SIZE: int = 8
+const CROSS_WIDTH: int = 2
+
+static var occupied_tiles: Dictionary = {}
 
 
-## Convert world position to grid coordinates
 static func world_to_grid(world_pos: Vector2) -> Vector2i:
 	return Vector2i(
 		int(floor(world_pos.x / TILE_SIZE)),
@@ -16,7 +16,6 @@ static func world_to_grid(world_pos: Vector2) -> Vector2i:
 	)
 
 
-## Convert grid coordinates to world position (center of tile)
 static func grid_to_world(grid_pos: Vector2i) -> Vector2:
 	return Vector2(
 		grid_pos.x * TILE_SIZE + TILE_SIZE / 2.0,
@@ -24,19 +23,30 @@ static func grid_to_world(grid_pos: Vector2i) -> Vector2:
 	)
 
 
-## Check if a grid position is valid for tower placement
-static func is_valid_placement_tile(grid_pos: Vector2i, board: Node2D = null) -> bool:
-	# TODO: Implement proper validation
-	# - Check if tile is on chess board (not spawn area)
-	# - Check if tile is not already occupied
-	# - Query board's tile_metadata
-
-	# Placeholder: Always return true for now
-	return true
+static func is_cross_tile(grid_pos: Vector2i) -> bool:
+	var cross_start = CHESS_BOARD_SIZE
+	var cross_end = CHESS_BOARD_SIZE + CROSS_WIDTH - 1
+	return (
+		(grid_pos.x >= cross_start and grid_pos.x <= cross_end)
+		or (grid_pos.y >= cross_start and grid_pos.y <= cross_end)
+	)
 
 
-## Check if a tile is occupied by a tower
 static func is_tile_occupied(grid_pos: Vector2i) -> bool:
-	# TODO: Query tile occupancy from board
-	# Placeholder
-	return false
+	return occupied_tiles.has(grid_pos)
+
+
+static func occupy_tile(grid_pos: Vector2i):
+	occupied_tiles[grid_pos] = true
+
+
+static func release_tile(grid_pos: Vector2i):
+	occupied_tiles.erase(grid_pos)
+
+
+static func is_valid_placement_tile(grid_pos: Vector2i) -> bool:
+	if is_cross_tile(grid_pos):
+		return false
+	if is_tile_occupied(grid_pos):
+		return false
+	return true
