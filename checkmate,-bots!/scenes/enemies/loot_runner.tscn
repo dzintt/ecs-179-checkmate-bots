@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://cij2kftqj6y4p"]
+[gd_scene load_steps=2 format=3 uid="uid://cij2kftqj6y4p"]
 
-[node name="LootRunner" type="Node2D"]
+[ext_resource type="Script" path="res://scripts/enemies/loot_runner.gd" id="1"]
+
+[node name="LootRunner" type="CharacterBody2D"]
+script = ExtResource("1")
