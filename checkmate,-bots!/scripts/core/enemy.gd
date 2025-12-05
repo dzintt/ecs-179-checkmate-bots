@@ -140,6 +140,7 @@ func take_damage(damage: float, attacker_class: String = ""):
 
 	current_health -= damage
 	health_changed.emit(current_health, max_health)
+	queue_redraw()
 
 	if current_health <= 0:
 		_die()

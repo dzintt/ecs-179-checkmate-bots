@@ -10,7 +10,7 @@ extends Node2D
 @onready var path_manager = $PathManager
 
 # Preload enemy scene
-var enemy_scene = preload("res://scenes/enemies/test_enemy.tscn")
+var enemy_scene = preload("res://scenes/enemies/basic_pawn.tscn")
 const KING_SCENE := preload("res://scenes/towers/king.tscn")
 const KING_FOOTPRINT_TILES := 2
 var king_instance: Node2D = null
@@ -45,7 +45,7 @@ func _input(event: InputEvent):
 
 func _spawn_test_enemy():
 	if not enemy_scene:
-		print("ERROR: test_enemy.tscn not found!")
+		print("ERROR: basic_pawn.tscn not found!")
 		return
 
 	var enemy = enemy_scene.instantiate()

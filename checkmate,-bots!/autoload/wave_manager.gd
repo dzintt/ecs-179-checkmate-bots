@@ -8,7 +8,7 @@ var wave_definitions: Array = []
 var path_manager: PathManager = null
 var spawn_parent: Node = null
 
-const ENEMY_SCENE = preload("res://scenes/enemies/test_enemy.tscn")
+const ENEMY_SCENE = preload("res://scenes/enemies/basic_pawn.tscn")
 
 
 func _ready():
