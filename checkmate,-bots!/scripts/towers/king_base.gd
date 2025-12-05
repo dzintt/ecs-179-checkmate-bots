@@ -29,6 +29,9 @@ func _ready():
 	footprint_tiles = max(1, footprint_tiles)
 	grid_position = _compute_center_grid_position()
 	current_health = max_health
+	
+	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
+	
 	super._ready()
 	print("King initialized with ", current_health, " health")
 
@@ -50,13 +53,17 @@ func get_attack_pattern() -> Array[Vector2i]:
 	return pattern
 
 
-## King takes damage from enemies reaching base
+func _on_enemy_reached_base(_enemy: Node, damage: int):
+	take_damage(damage)
+
+
 func take_damage(damage: int):
 	current_health -= damage
 	current_health = max(0, current_health)
 
 	king_health_changed.emit(current_health, max_health)
 	EventBus.king_damaged.emit(current_health, max_health)
+	queue_redraw()
 
 	print("King damaged! Health: ", current_health, "/", max_health)
 
