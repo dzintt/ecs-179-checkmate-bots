@@ -1,0 +1,43 @@
+name: gdformat check
+
+on:
+  pull_request:
+
+jobs:
+  gdformat-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install gdformat (gdtoolkit)
+        run: |
+          python -m pip install --upgrade pip
+          pip install gdtoolkit==4.5.0
+
+      - name: Get changed .gd files
+        id: changed-gd
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **/*.gd
+
+      - name: Run gdformat on changed .gd files
+        if: steps.changed-gd.outputs.all_changed_files != ''
+        run: |
+          echo "Changed .gd files:"
+          echo "${{ steps.changed-gd.outputs.all_changed_files }}"
+          for file in ${{ steps.changed-gd.outputs.all_changed_files }}; do
+            echo "Checking $file"
+            gdformat --check "$file"
+          done
+
+      - name: No .gd files changed
+        if: steps.changed-gd.outputs.all_changed_files == ''
+        run: echo "No .gd files changed in this PR."
