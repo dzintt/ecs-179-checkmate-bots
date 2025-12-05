@@ -27,13 +27,15 @@ func _ready():
 func get_attack_pattern() -> Array[Vector2i]:
 	var pattern: Array[Vector2i] = []
 
-	# 1 tile forward (towards enemy spawn - assuming enemies come from top, so negative Y)
 	pattern.append(Vector2i(0, -1))
-
-	# 2 diagonal forward tiles
-	pattern.append(Vector2i(-1, -1))
-	pattern.append(Vector2i(1, -1))
-
+	pattern.append(Vector2i(0, -2))
+	pattern.append(Vector2i(0, 1))
+	pattern.append(Vector2i(0, 2))
+	pattern.append(Vector2i(-1, 0))
+	pattern.append(Vector2i(-2, 0))
+	pattern.append(Vector2i(1, 0))
+	pattern.append(Vector2i(2, 0))
+	
 	return pattern
 
 

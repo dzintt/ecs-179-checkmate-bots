@@ -1,11 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://test_enemy_001"]
+[gd_scene load_steps=2 format=3 uid="uid://dd7yce3otyuwe"]
 
-[ext_resource type="Script" path="res://scripts/core/enemy.gd" id="1"]
+[ext_resource type="Script" uid="uid://cao54r12iadb0" path="res://scripts/enemies/basic_pawn.gd" id="1_pnhpx"]
 
 [node name="TestEnemy" type="CharacterBody2D"]
-script = ExtResource("1")
-move_speed = 80.0
-max_health = 50.0
-currency_reward = 15
-enemy_class = "ground"
-enemy_color = Color(1, 0, 0, 1)
+script = ExtResource("1_pnhpx")

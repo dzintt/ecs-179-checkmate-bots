@@ -60,6 +60,8 @@ func _spawn_test_enemy():
 	]
 	enemy.set_path(path)
 
+	print("Enemy spawned at world pos: ", enemy.global_position)
+	print("Enemy grid pos: ", GridSystem.world_to_grid(enemy.global_position))
 	print("Spawned test enemy")
 
 
