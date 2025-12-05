@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd7yce3otyuwe"]
+
+[ext_resource type="Script" uid="uid://cao54r12iadb0" path="res://scripts/enemies/basic_pawn.gd" id="1_pnhpx"]
+
+[node name="TestEnemy" type="CharacterBody2D"]
+script = ExtResource("1_pnhpx")
