@@ -92,7 +92,7 @@ func _scan_for_enemies():
 		for pattern_offset in attack_tiles:
 			var attack_tile = grid_position + pattern_offset
 			if enemy_grid_pos == attack_tile:
-				print("ENEMY IN RANGE! Adding to targets")
+				print("Enemy in range")
 				# Check class restrictions
 				if _can_attack_enemy(enemy):
 					enemies_in_range.append(enemy)
@@ -226,7 +226,7 @@ func _update_attack_timer(delta: float):
 
 ## Attempt to attack the current target
 func _attempt_attack():
-	print("Attempting attack. Target: ", current_target, " Timer: ", attack_timer)
+	print("Attempting attack. Target: ", current_target)
 	if current_target == null or attack_timer > 0:
 		return
 
@@ -243,7 +243,7 @@ func _perform_attack():
 	if current_target == null:
 		return
 	
-	print("PERFORMING ATTACK on ", current_target.enemy_name, " with damage: ", attack_damage)
+	print("Attacking ", current_target.enemy_name, " with damage: ", attack_damage)
 	
 	# Deal damage to target
 	var final_damage = DamageEngine.calculate_damage(tower_class, current_target, attack_damage)
