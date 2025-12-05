@@ -8,7 +8,13 @@ var wave_definitions: Array = []
 var path_manager: PathManager = null
 var spawn_parent: Node = null
 
-const ENEMY_SCENE = preload("res://scenes/enemies/basic_pawn.tscn")
+const ENEMY_SCENES := {
+	"pawn": preload("res://scenes/enemies/basic_pawn.tscn"),
+	"runner": preload("res://scenes/enemies/loot_runner.tscn"),
+	"shield": preload("res://scenes/enemies/shielder.tscn"),
+	"bomber": preload("res://scenes/enemies/bomber.tscn"),
+	"caster": preload("res://scenes/enemies/caster.tscn")
+}
 
 
 func _ready():
@@ -18,6 +24,12 @@ func _ready():
 	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
 
 	_load_wave_definitions()
+
+
+func _process(_delta):
+	# Failsafe: if a wave is in progress and there are no enemies left under the spawn parent,
+	# ensure the wave completes.
+	_check_wave_completion()
 
 
 func initialize(path_mgr: PathManager, spawn_node: Node):
@@ -54,136 +66,150 @@ func start_wave():
 func _create_procedural_waves():
 	wave_definitions.clear()
 
+	# Wave 1: Basic pawns, single lane
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				1,
 				[
-					{"direction": "north", "count": 5, "delay": 1.0},
-				],
-			),
+					{"direction": "north", "count": 8, "delay": 0.8, "type": "pawn"},
+				]
+			)
 		)
 	)
 
+	# Wave 2: Pawns from opposite lane, slightly more
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				2,
 				[
-					{"direction": "south", "count": 7, "delay": 0.9},
-				],
-			),
+					{"direction": "south", "count": 10, "delay": 0.75, "type": "pawn"},
+				]
+			)
 		)
 	)
 
+	# Wave 3: One lanes, introduce fast runners
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				3,
 				[
-					{"direction": "east", "count": 8, "delay": 0.8},
-				],
-			),
+					{"direction": "east", "count": 10, "delay": 0.7, "type": "pawn"},
+					{"direction": "east", "count": 2, "delay": 1.0, "type": "runner"},
+				]
+			)
 		)
 	)
 
+	# Wave 4: One lanes, add shield bots as mini-tanks
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				4,
 				[
-					{"direction": "west", "count": 8, "delay": 0.8},
-				],
-			),
+					{"direction": "west", "count": 12, "delay": 0.65, "type": "pawn"},
+					{"direction": "west", "count": 2, "delay": 1.3, "type": "shield"},
+				]
+			)
 		)
 	)
 
+	# Wave 5: Opposite lanes, mix pawns and runners
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				5,
 				[
-					{"direction": "north", "count": 6, "delay": 0.8},
-					{"direction": "south", "count": 6, "delay": 0.8},
-				],
-			),
+					{"direction": "north", "count": 10, "delay": 0.6, "type": "pawn"},
+					{"direction": "south", "count": 4, "delay": 0.95, "type": "runner"},
+				]
+			)
 		)
 	)
 
+	# Wave 6: East/West, add first bomber
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				6,
 				[
-					{"direction": "east", "count": 7, "delay": 0.7},
-					{"direction": "west", "count": 7, "delay": 0.7},
-				],
-			),
+					{"direction": "east", "count": 12, "delay": 0.6, "type": "pawn"},
+					{"direction": "west", "count": 12, "delay": 0.6, "type": "pawn"},
+					{"direction": "west", "count": 1, "delay": 1.5, "type": "bomber"},
+				]
+			)
 		)
 	)
 
+	# Wave 7: Three directions, more runners and a shield
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				7,
 				[
-					{"direction": "north", "count": 6, "delay": 0.6},
-					{"direction": "east", "count": 6, "delay": 0.6},
-					{"direction": "south", "count": 6, "delay": 0.6},
-				],
-			),
+					{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
+					{"direction": "east", "count": 6, "delay": 0.8, "type": "runner"},
+					{"direction": "south", "count": 3, "delay": 1.2, "type": "shield"},
+				]
+			)
 		)
 	)
 
+	# Wave 8: All directions, mix pawns, runners, bombers, shields
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				8,
 				[
-					{"direction": "north", "count": 6, "delay": 0.5},
-					{"direction": "east", "count": 6, "delay": 0.5},
-					{"direction": "south", "count": 6, "delay": 0.5},
-					{"direction": "west", "count": 6, "delay": 0.5},
-				],
-			),
+					{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
+					{"direction": "east", "count": 6, "delay": 0.75, "type": "runner"},
+					{"direction": "south", "count": 4, "delay": 1.0, "type": "bomber"},
+					{"direction": "west", "count": 4, "delay": 0.9, "type": "shield"},
+				]
+			)
 		)
 	)
 
+	# Wave 9: All directions, introduce casters and more bombers
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				9,
 				[
-					{"direction": "north", "count": 8, "delay": 0.4},
-					{"direction": "east", "count": 8, "delay": 0.4},
-					{"direction": "south", "count": 8, "delay": 0.4},
-					{"direction": "west", "count": 8, "delay": 0.4},
-				],
-			),
+					{"direction": "north", "count": 10, "delay": 0.45, "type": "pawn"},
+					{"direction": "east", "count": 8, "delay": 0.65, "type": "runner"},
+					{"direction": "south", "count": 3, "delay": 1.2, "type": "bomber"},
+					{"direction": "west", "count": 3, "delay": 1.0, "type": "caster"},
+				]
+			)
 		)
 	)
 
+	# Wave 10: Final wave - heavy mix, faster pacing
 	(
 		wave_definitions
 		. append(
 			_create_wave(
 				10,
 				[
-					{"direction": "north", "count": 10, "delay": 0.3},
-					{"direction": "east", "count": 10, "delay": 0.3},
-					{"direction": "south", "count": 10, "delay": 0.3},
-					{"direction": "west", "count": 10, "delay": 0.3},
-				],
-			),
+					{"direction": "north", "count": 14, "delay": 0.4, "type": "pawn"},
+					{"direction": "east", "count": 8, "delay": 0.6, "type": "runner"},
+					{"direction": "south", "count": 4, "delay": 0.9, "type": "bomber"},
+					{"direction": "west", "count": 4, "delay": 0.9, "type": "caster"},
+					{"direction": "south", "count": 4, "delay": 1.0, "type": "shield"},
+				]
+			)
 		)
 	)
 
@@ -213,14 +239,17 @@ func _spawn_wave_enemies():
 		var direction = spawn_info["direction"]
 		var count = spawn_info["count"]
 		var delay = spawn_info["delay"]
+		var enemy_type = "pawn"
+		if spawn_info.has("type"):
+			enemy_type = spawn_info["type"]
 
 		enemies_alive += count
-		_spawn_enemies_from_direction(direction, count, delay)
+		_spawn_enemies_from_direction(direction, count, delay, enemy_type)
 
 	print("Wave ", current_wave, " spawning ", enemies_alive, " enemies")
 
 
-func _spawn_enemies_from_direction(direction: String, count: int, delay: float):
+func _spawn_enemies_from_direction(direction: String, count: int, delay: float, enemy_type: String):
 	if path_manager == null or spawn_parent == null:
 		return
 
@@ -228,7 +257,22 @@ func _spawn_enemies_from_direction(direction: String, count: int, delay: float):
 		if i > 0:
 			await get_tree().create_timer(delay).timeout
 
-		var enemy = ENEMY_SCENE.instantiate()
+		var scene: PackedScene = ENEMY_SCENES.get(enemy_type, ENEMY_SCENES.get("pawn"))
+		if scene == null:
+			print(
+				"Spawn failed: missing scene for type ",
+				enemy_type,
+				" - falling back and decrementing counter"
+			)
+			enemies_alive -= 1
+			continue
+
+		var enemy = scene.instantiate()
+		if enemy == null:
+			print("Spawn failed: could not instantiate enemy type ", enemy_type)
+			enemies_alive -= 1
+			continue
+
 		spawn_parent.add_child(enemy)
 
 		var path: Array[Vector2] = path_manager.get_direction_path(direction)
@@ -266,7 +310,14 @@ func end_wave():
 
 ## Check if wave is complete
 func _check_wave_completion():
-	if wave_in_progress and enemies_alive <= 0:
+	if not wave_in_progress:
+		return
+
+	# If the enemy container is empty, sync the counter
+	if spawn_parent != null and spawn_parent.get_child_count() == 0:
+		enemies_alive = 0
+
+	if enemies_alive <= 0:
 		end_wave()
 
 

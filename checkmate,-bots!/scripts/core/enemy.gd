@@ -33,13 +33,7 @@ class_name Enemy
 @export var enemy_class: String = "ground"
 
 ## Preset types for different enemy kinds (used by damage_engine.gd)
-enum EnemyPreset {
-	BASIC_PAWN,    # Worker Bot
-	LOOT_RUNNER,   # Courier Bot
-	SHIELD_GUARD,  # Shield Bot
-	CASTER,        # Artillery Bot
-	BOMBER         # Bomb Drone
-}
+enum EnemyPreset { BASIC_PAWN, LOOT_RUNNER, SHIELD_GUARD, CASTER, BOMBER }  # Worker Bot  # Courier Bot  # Shield Bot  # Artillery Bot  # Bomb Drone
 
 @export_group("Preset")
 @export var preset: EnemyPreset = EnemyPreset.BASIC_PAWN
@@ -58,9 +52,12 @@ signal enemy_died(enemy: Enemy)
 signal enemy_reached_end(enemy: Enemy)
 signal health_changed(current: float, maximum: float)
 
+
 func _ready():
 	current_health = max_health
 	_setup_visual()
+	_disable_collisions()
+
 
 func _physics_process(delta: float):
 	if not is_alive:
@@ -84,6 +81,7 @@ func _physics_process(delta: float):
 
 	_move_along_path(delta)
 
+
 ## Set the path that this enemy should follow
 func set_path(new_path: Array[Vector2]):
 	path_points = new_path
@@ -92,19 +90,29 @@ func set_path(new_path: Array[Vector2]):
 		global_position = path_points[0]
 	is_active = true
 
+
 ## Move towards the current waypoint
-func _move_along_path(delta: float):
+func _move_along_path(_delta: float):
 	var target_position = path_points[current_waypoint_index]
 	var direction = (target_position - global_position).normalized()
 	var distance_to_target = global_position.distance_to(target_position)
 
+	var is_final: bool = current_waypoint_index == path_points.size() - 1
+	var reach_threshold: float = waypoint_threshold
+	if is_final:
+		reach_threshold = max(waypoint_threshold, 24.0)
+
+	# Disable collisions when close to base to reduce congestion
+	if is_final and distance_to_target <= 32.0:
+		_disable_collisions()
+
 	# Check if we've reached the current waypoint
-	if distance_to_target <= waypoint_threshold:
+	if distance_to_target <= reach_threshold:
 		current_waypoint_index += 1
 		if current_waypoint_index >= path_points.size():
 			_reach_end_of_path()
 			return
-			
+
 		target_position = path_points[current_waypoint_index]
 		direction = (target_position - global_position).normalized()
 
@@ -112,11 +120,13 @@ func _move_along_path(delta: float):
 	velocity = direction * move_speed
 	move_and_slide()
 
+
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
 	# Default behavior: stay at king and keep attacking
 	_start_attacking_king()
+
 
 ## Start continuous attacks against the king/base
 func _start_attacking_king():
@@ -130,8 +140,18 @@ func _start_attacking_king():
 	enemy_reached_end.emit(self)
 	queue_free()
 
+
+func _disable_collisions():
+	# Turn off collisions to prevent blocking near the base
+	collision_layer = 0
+	collision_mask = 0
+	for child in get_children():
+		if child is CollisionShape2D:
+			child.disabled = true
+
+
 ## Apply damage to this enemy
-func take_damage(damage: float, attacker_class: String = ""):
+func take_damage(damage: float, _attacker_class: String = ""):
 	if not is_alive:
 		return
 
@@ -145,6 +165,7 @@ func take_damage(damage: float, attacker_class: String = ""):
 	if current_health <= 0:
 		_die()
 
+
 ## Called when enemy health reaches zero
 func _die():
 	is_alive = false
@@ -154,13 +175,16 @@ func _die():
 	# TODO: Play death animation/sound here
 	queue_free()
 
+
 ## Get the enemy's current position (used by tower targeting)
 func get_enemy_position() -> Vector2:
 	return global_position
 
+
 ## Get the enemy's class type (used for class-based restrictions)
 func get_enemy_class() -> String:
 	return enemy_class
+
 
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
@@ -174,6 +198,7 @@ func _setup_visual():
 	# Add visual indicator
 	queue_redraw()
 
+
 func _draw():
 	# Draw a circle representing the enemy
 	draw_circle(Vector2.ZERO, 16, color)
@@ -184,7 +209,7 @@ func _draw():
 		var health_percent = current_health / max_health
 		var bar_width = 30
 		var bar_height = 4
-		var bar_pos = Vector2(-bar_width / 2, -25)
+		var bar_pos = Vector2(-bar_width / 2.0, -25)
 
 		# Background
 		draw_rect(Rect2(bar_pos, Vector2(bar_width, bar_height)), Color.BLACK)
