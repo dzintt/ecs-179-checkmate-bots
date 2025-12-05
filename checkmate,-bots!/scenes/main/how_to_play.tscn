@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgnms5hpholeq"]
+
+[ext_resource type="Script" uid="uid://b5lsujok1vi2f" path="res://scenes/main/how_to_play.gd" id="1_8m50u"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8m50u")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1150.0
+offset_bottom = 649.0
+color = Color(0.1882353, 0.1882353, 0.1882353, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 188.0
+offset_top = 206.0
+offset_right = 948.0
+offset_bottom = 504.0
+
+[node name="DialogueLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
