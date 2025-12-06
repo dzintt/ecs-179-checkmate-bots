@@ -8,6 +8,11 @@ extends Node2D
 @onready var tower_container = $TowerContainer
 @onready var debug_label = $CanvasLayer/DebugLabel
 @onready var path_manager = $PathManager
+@onready var pause_menu = $CanvasLayer/PauseMenu
+@onready var pause_sfx_slider: HSlider = $CanvasLayer/PauseMenu/VBoxContainer/SFX/HSlider
+@onready var pause_bgm_slider: HSlider = $CanvasLayer/PauseMenu/VBoxContainer/BGM/HSlider
+@onready var pause_main_menu_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/MainMenu
+@onready var pause_exit_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/Exit
 
 # Preload enemy scene
 var enemy_scene = preload("res://scenes/enemies/basic_pawn.tscn")
@@ -17,6 +22,18 @@ var king_instance: Node2D = null
 
 
 func _ready():
+	# Ensure grid occupancy is clean when entering a world scene
+	GridSystem.reset()
+
+	if SoundManager:
+		SoundManager.play_game_music()
+		_sync_audio_sliders()
+
+	if pause_menu:
+		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
+
+	_connect_pause_menu_signals()
+
 	EventBus.gold_changed.connect(_on_gold_changed)
 	EventBus.wave_started.connect(_on_wave_started)
 	EventBus.wave_completed.connect(_on_wave_completed)
@@ -31,6 +48,10 @@ func _ready():
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			_toggle_pause_menu()
+			return
+
 		if event.keycode == KEY_P:
 			placement_system.start_placement("pawn", 1)
 
@@ -103,7 +124,7 @@ func _update_debug_label():
 			)
 
 		debug_label.text = (
-			"Gold: %d\n%s\nTowers:\nP = Pawn (Cost = 1)\nN = Knight (Cost = 5)\nB = Bishop (Cost = 5)\nR = Rook (Cost = 10)\nQ = Queen (Cost = 25)\n\nPress K to spawn test enemy\nRight-click to cancel placement"
+			"Gold: %d\n%s\nTowers:\nP = Pawn (Cost = 1)\nN = Knight (Cost = 5)\nB = Bishop (Cost = 5)\nR = Rook (Cost = 10)\nQ = Queen (Cost = 25)\n\nPress K to spawn test enemy\nRight-click to cancel placement\nPress ESC for options/pause"
 			% [CurrencyManager.get_current_gold(), wave_status]
 		)
 
@@ -137,3 +158,67 @@ func _get_board_center_world_position() -> Vector2:
 	var center_index = start_index + float(KING_FOOTPRINT_TILES) / 2.0
 	var center = Vector2(center_index, center_index) * board.tile_size
 	return center
+
+
+func _toggle_pause_menu():
+	if not pause_menu:
+		return
+	var showing = not pause_menu.visible
+	pause_menu.visible = showing
+	if showing:
+		_sync_audio_sliders()
+		get_tree().paused = true
+	else:
+		get_tree().paused = false
+
+
+func _connect_pause_menu_signals():
+	if not pause_menu:
+		return
+
+	var resume_button: Button = pause_menu.get_node_or_null("VBoxContainer/Resume")
+	if resume_button:
+		resume_button.pressed.connect(_on_pause_resume_pressed)
+	if pause_main_menu_button:
+		pause_main_menu_button.pressed.connect(_on_pause_main_menu_pressed)
+	if pause_exit_button:
+		pause_exit_button.pressed.connect(_on_pause_exit_pressed)
+
+	if pause_sfx_slider:
+		pause_sfx_slider.value_changed.connect(_on_pause_sfx_changed)
+	if pause_bgm_slider:
+		pause_bgm_slider.value_changed.connect(_on_pause_bgm_changed)
+
+
+func _sync_audio_sliders():
+	if not SoundManager:
+		return
+	if pause_sfx_slider:
+		pause_sfx_slider.value = SoundManager.get_sfx_volume_db()
+	if pause_bgm_slider:
+		pause_bgm_slider.value = SoundManager.get_music_volume_db()
+
+
+func _on_pause_resume_pressed():
+	_toggle_pause_menu()
+
+
+func _on_pause_main_menu_pressed():
+	get_tree().paused = false
+	if GameManager:
+		GameManager.reset_game()
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+
+func _on_pause_exit_pressed():
+	get_tree().quit()
+
+
+func _on_pause_sfx_changed(value: float):
+	if SoundManager:
+		SoundManager.set_sfx_volume_db(value)
+
+
+func _on_pause_bgm_changed(value: float):
+	if SoundManager:
+		SoundManager.set_music_volume_db(value)

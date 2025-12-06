@@ -29,9 +29,9 @@ func _ready():
 	footprint_tiles = max(1, footprint_tiles)
 	grid_position = _compute_center_grid_position()
 	current_health = max_health
-	
+
 	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
-	
+
 	super._ready()
 	print("King initialized with ", current_health, " health")
 
