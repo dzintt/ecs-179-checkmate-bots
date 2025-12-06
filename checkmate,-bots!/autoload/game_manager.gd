@@ -4,7 +4,8 @@ extends Node
 ## Singleton accessible via GameManager
 ## Manages game state machine, win/lose conditions, scene transitions
 var game_over_menu_scene = preload("res://scenes/game_over_menu.tscn")
-var game_over_menu_instance = null
+var victory_menu_scene = preload("res://scenes/victory_menu.tscn")
+var menu_instance = null
 
 enum GameState {
 	MENU,
@@ -34,7 +35,7 @@ func _ready():
 func reset_game():
 	# Reset game manager state
 	current_state = GameState.MENU
-	game_over_menu_instance = null
+	menu_instance = null
 
 	# Reset currency system
 	if CurrencyManager:
@@ -79,18 +80,22 @@ func resume_game():
 
 ## End the game (victory or defeat)
 func end_game(victory: bool):
-	if game_over_menu_instance:
+	if menu_instance:
 		return
 
 	current_state = GameState.VICTORY if victory else GameState.GAME_OVER
 	game_state_changed.emit(current_state)
 	game_over.emit(victory)
 
-	game_over_menu_instance = game_over_menu_scene.instantiate()
-	get_tree().root.add_child(game_over_menu_instance)
+	# Load the appropriate menu based on victory/defeat
+	if victory:
+		menu_instance = victory_menu_scene.instantiate()
+		print("Victory! All waves completed!")
+	else:
+		menu_instance = game_over_menu_scene.instantiate()
+		print("Defeat! The King has fallen!")
 
-	print("Game over - Victory: ", victory)
-	# TODO: Show game over/victory screen
+	get_tree().root.add_child(menu_instance)
 
 
 ## Check if all waves are completed
