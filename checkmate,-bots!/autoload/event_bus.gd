@@ -7,6 +7,7 @@ extends Node
 signal enemy_spawned(enemy: Node)
 signal enemy_died(enemy: Node, gold_reward: int)
 signal enemy_reached_base(enemy: Node, damage: int)
+signal enemy_hit(enemy: Node, damage: float)
 
 # Tower events
 signal tower_placed(tower: Node, position: Vector2, cost: int)

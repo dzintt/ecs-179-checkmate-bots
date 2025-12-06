@@ -158,6 +158,7 @@ func take_damage(damage: float, _attacker_class: String = ""):
 	# TODO: Implement class-based damage modifiers here
 	# Example: if attacker_class == "bishop" and enemy_class == "armored": damage *= 1.5
 
+	EventBus.enemy_hit.emit(self, damage)
 	current_health -= damage
 	health_changed.emit(current_health, max_health)
 	queue_redraw()

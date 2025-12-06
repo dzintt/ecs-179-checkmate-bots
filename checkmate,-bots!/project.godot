@@ -21,6 +21,7 @@ GameManager="*res://autoload/game_manager.gd"
 EventBus="*res://autoload/event_bus.gd"
 CurrencyManager="*res://autoload/currency_manager.gd"
 WaveManager="*res://autoload/wave_manager.gd"
+SoundManager="*res://autoload/sound_manager.gd"
 
 [layer_names]
 
