@@ -94,7 +94,7 @@ func end_game(victory: bool):
 	else:
 		menu_instance = game_over_menu_scene.instantiate()
 		print("Defeat! The King has fallen!")
-	
+
 	get_tree().root.add_child(menu_instance)
 
 
