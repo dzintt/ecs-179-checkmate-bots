@@ -78,9 +78,9 @@ func _scan_for_enemies():
 	if not enemy_container:
 		print("ERROR: EnemyContainer not found!")
 		return
-		
+
 	print("Scanning for enemies. Tower at grid pos: ", grid_position)
-	
+
 	for enemy in enemy_container.get_children():
 		if not enemy is Enemy or not enemy.is_alive:
 			continue
@@ -88,7 +88,7 @@ func _scan_for_enemies():
 		# Check if enemy is on one of our attack tiles
 		var enemy_grid_pos = GridSystem.world_to_grid(enemy.global_position)
 		print("Enemy at grid pos: ", enemy_grid_pos)
-		
+
 		for pattern_offset in attack_tiles:
 			var attack_tile = grid_position + pattern_offset
 			if enemy_grid_pos == attack_tile:
@@ -98,6 +98,7 @@ func _scan_for_enemies():
 					enemies_in_range.append(enemy)
 				break
 	print("Enemies in range: ", enemies_in_range.size())
+
 
 ## Check if this tower can attack a specific enemy based on class restrictions
 func _can_attack_enemy(enemy: Enemy) -> bool:
@@ -239,17 +240,17 @@ func _attempt_attack():
 
 
 ## Execute the attack on the current target
-func _perform_attack():	
+func _perform_attack():
 	if current_target == null:
 		return
-	
+
 	print("Attacking ", current_target.enemy_name, " with damage: ", attack_damage)
-	
+
 	# Deal damage to target
 	var final_damage = DamageEngine.calculate_damage(tower_class, current_target, attack_damage)
-	
+
 	print("Final damage after type advantage: ", final_damage)
-	
+
 	current_target.take_damage(final_damage, tower_class)
 	tower_attacked.emit(current_target)
 

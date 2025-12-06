@@ -44,6 +44,10 @@ static func release_tile(grid_pos: Vector2i):
 	occupied_tiles.erase(grid_pos)
 
 
+static func reset():
+	occupied_tiles.clear()
+
+
 static func is_valid_placement_tile(grid_pos: Vector2i) -> bool:
 	if is_cross_tile(grid_pos):
 		return false

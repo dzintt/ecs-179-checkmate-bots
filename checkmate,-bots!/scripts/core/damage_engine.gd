@@ -2,42 +2,48 @@ extends Node
 class_name DamageEngine
 
 const TYPE_FACTORS = {
-	"pawn": {
+	"pawn":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
-	"knight": {
+	"knight":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
-	"bishop": {
+	"bishop":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
-	"rook": {
+	"rook":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
-	"queen": {
+	"queen":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
-	"king": {
+	"king":
+	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
@@ -45,6 +51,7 @@ const TYPE_FACTORS = {
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
 }
+
 
 static func calculate_damage(tower_class: String, enemy: Enemy, base_damage: float) -> float:
 	var type_factor = TYPE_FACTORS[tower_class][enemy.preset]

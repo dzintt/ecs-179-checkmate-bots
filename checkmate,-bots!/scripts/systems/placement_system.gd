@@ -26,6 +26,8 @@ func start_placement(tower_type: String, cost: int):
 	# Check if player can afford
 	if not CurrencyManager.can_afford(cost):
 		print("Cannot afford tower: ", tower_type, " (cost: ", cost, ")")
+		if SoundManager:
+			SoundManager.play_illegal_move()
 		return
 
 	selected_tower_type = tower_type
@@ -77,22 +79,28 @@ func _update_preview_position(screen_pos: Vector2):
 
 	placement_preview.global_position = snapped_world_pos
 
-	# TODO: Change preview color based on validity (green = valid, red = invalid)
-
 
 ## Try to place tower at current position
 func _try_place_tower():
 	var world_pos = get_viewport().get_camera_2d().get_global_mouse_position()
 	var grid_pos = GridSystem.world_to_grid(world_pos)
 
-	# Validate placement
+	# Validate funds and placement
+	if not CurrencyManager.can_afford(selected_tower_cost):
+		if SoundManager:
+			SoundManager.play_illegal_move()
+		return
+
 	if not GridSystem.is_valid_placement_tile(grid_pos):
-		print("Invalid placement position")
+		if SoundManager:
+			SoundManager.play_illegal_move()
 		return
 
 	# Check currency
 	if not CurrencyManager.spend_gold(selected_tower_cost):
 		print("Cannot afford tower")
+		if SoundManager:
+			SoundManager.play_illegal_move()
 		return
 
 	# Instantiate tower

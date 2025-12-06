@@ -4,14 +4,7 @@ class_name AttackPattern
 ## Attack Pattern Resource - Defines chess piece attack shapes
 ## Used by towers to determine which grid tiles they can attack
 
-enum PatternType {
-	CIRCULAR,         # Circular radius (for King, or fallback)
-	GRID_PATTERN,     # Custom grid pattern (chess pieces)
-	LINE_HORIZONTAL,  # Horizontal lines (Rook)
-	LINE_VERTICAL,    # Vertical lines (Rook)
-	LINE_DIAGONAL,    # Diagonal lines (Bishop)
-	L_SHAPE          # L-shaped pattern (Knight)
-}
+enum PatternType { CIRCULAR, GRID_PATTERN, LINE_HORIZONTAL, LINE_VERTICAL, LINE_DIAGONAL, L_SHAPE }  # Circular radius (for King, or fallback)  # Custom grid pattern (chess pieces)  # Horizontal lines (Rook)  # Vertical lines (Rook)  # Diagonal lines (Bishop)  # L-shaped pattern (Knight)
 
 @export var pattern_type: PatternType = PatternType.CIRCULAR
 @export var pattern_tiles: Array[Vector2i] = []  # Relative grid positions from tower
