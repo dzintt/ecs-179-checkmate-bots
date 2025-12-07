@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://g4n75mpdbia0"
-path="res://.godot/imported/pawn.png-8e147d7912a0bf8131bb664133c1e069.ctex"
+uid="uid://t2f1vbkebi2h"
+path="res://.godot/imported/bishop.png-0451660911efec3a7da089b711bdac0e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pawn.png"
-dest_files=["res://.godot/imported/pawn.png-8e147d7912a0bf8131bb664133c1e069.ctex"]
+source_file="res://assets/towers/bishop/bishop.png"
+dest_files=["res://.godot/imported/bishop.png-0451660911efec3a7da089b711bdac0e.ctex"]
 
 [params]
 

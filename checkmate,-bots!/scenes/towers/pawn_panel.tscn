@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bw63kejk3ky7r"]
 
 [ext_resource type="Texture2D" uid="uid://djmpkq8xidj6q" path="res://assets/images/Border All 10.png" id="2_oc0p4"]
-[ext_resource type="Texture2D" uid="uid://g4n75mpdbia0" path="res://assets/images/pawn.png" id="2_yi3be"]
+[ext_resource type="Texture2D" uid="uid://g4n75mpdbia0" path="res://assets/towers/pawn/pawn.png" id="2_yi3be"]
 
 [node name="PawnPanel" type="Panel"]
 offset_right = 71.0
