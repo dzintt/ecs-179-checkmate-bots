@@ -7,7 +7,7 @@ var current_gold: int = 150  # Starting gold
 
 
 func _ready():
-print("CurrencyManager initialized with ", current_gold, " gold")
+	print("CurrencyManager initialized with ", current_gold, " gold")
 
 	# Connect to EventBus signals
 	EventBus.enemy_died.connect(_on_enemy_died)
