@@ -74,6 +74,8 @@ func _input(event: InputEvent):
 			_spawn_test_enemy()
 
 		elif event.keycode == KEY_SPACE:
+			if placement_system and placement_system.has_method("cancel_placement"):
+				placement_system.cancel_placement()
 			if not WaveManager.is_wave_active():
 				WaveManager.start_wave()
 				print("Starting wave...")
