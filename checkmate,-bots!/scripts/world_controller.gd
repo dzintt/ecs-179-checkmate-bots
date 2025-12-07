@@ -25,9 +25,10 @@ func _ready():
 	# Ensure grid occupancy is clean when entering a world scene
 	GridSystem.reset()
 
-	if SoundManager:
+	if SoundManager and not SoundManager.is_music_playing():
 		SoundManager.play_game_music()
-		_sync_audio_sliders()
+
+	_sync_audio_sliders()
 
 	if pause_menu:
 		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS

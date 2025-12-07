@@ -70,7 +70,7 @@ func _play_sound(stream: AudioStream):
 
 	var player := AudioStreamPlayer.new()
 	player.stream = stream
-	player.bus = "Master"
+	player.bus = music_bus
 	player.volume_db = _sfx_volume_db
 	add_child(player)
 	player.finished.connect(player.queue_free)
@@ -94,6 +94,8 @@ func _play_music(stream: AudioStream):
 	if stream == null:
 		return
 
+	_init_music_player()
+
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = true
 	elif stream is AudioStreamMP3:
@@ -103,11 +105,8 @@ func _play_music(stream: AudioStream):
 
 	_music_player.stream = stream
 	_music_player.volume_db = _music_volume_db
-	if not _music_player.playing:
-		_music_player.play()
-	else:
-		_music_player.stop()
-		_music_player.play()
+	_music_player.stop()
+	_music_player.play()
 
 
 func _init_music_player():
@@ -120,6 +119,10 @@ func _init_music_player():
 	_music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	_music_player.volume_db = _music_volume_db
 	add_child(_music_player)
+
+
+func is_music_playing() -> bool:
+	return _music_player != null and _music_player.playing
 
 
 func set_music_volume_db(db: float):
