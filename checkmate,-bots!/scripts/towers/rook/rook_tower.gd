@@ -37,14 +37,3 @@ func get_attack_pattern() -> Array[Vector2i]:
 		pattern.append(Vector2i(0, -i))  # Up
 
 	return pattern
-
-
-func _setup_visual():
-	super._setup_visual()
-	queue_redraw()
-
-
-func _draw():
-	# Placeholder: Draw a green circle for rook
-	draw_circle(Vector2.ZERO, 20, Color.GREEN)
-	draw_circle(Vector2.ZERO, 20, Color.BLACK, false, 2.0)
