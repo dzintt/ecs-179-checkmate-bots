@@ -30,12 +30,12 @@ func configure(
 
 
 func _physics_process(delta: float):
-	_lifetime += delta
-	if _lifetime >= max_lifetime:
+	if not _is_target_valid():
 		queue_free()
 		return
 
-	if not _is_target_valid():
+	_lifetime += delta
+	if _lifetime >= max_lifetime:
 		queue_free()
 		return
 
