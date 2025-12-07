@@ -88,8 +88,6 @@ func _spawn_test_enemy():
 
 	var enemy = enemy_scene.instantiate()
 	enemy_container.add_child(enemy)
-	if EventBus:
-		EventBus.enemy_spawned.emit(enemy)
 
 	# Set a simple path from top to bottom
 	var path: Array[Vector2] = [
@@ -195,18 +193,6 @@ func _connect_pause_menu_signals():
 		pause_main_menu_button.pressed.connect(_on_pause_main_menu_pressed)
 	if pause_exit_button:
 		pause_exit_button.pressed.connect(_on_pause_exit_pressed)
-
-	if SoundManager:
-		(
-			SoundManager
-			. connect_button_sounds(
-				[
-					resume_button,
-					pause_main_menu_button,
-					pause_exit_button,
-				]
-			)
-		)
 
 	if pause_sfx_slider:
 		pause_sfx_slider.value_changed.connect(_on_pause_sfx_changed)

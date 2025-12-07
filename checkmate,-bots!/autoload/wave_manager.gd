@@ -293,7 +293,6 @@ func _spawn_enemies_from_direction(direction: String, count: int, delay: float, 
 			enemy.enemy_died.connect(_on_enemy_instance_died)
 		if enemy.has_signal("enemy_reached_end"):
 			enemy.enemy_reached_end.connect(_on_enemy_instance_reached_end)
-		EventBus.enemy_spawned.emit(enemy)
 
 
 func _on_enemy_instance_died(enemy: Enemy):

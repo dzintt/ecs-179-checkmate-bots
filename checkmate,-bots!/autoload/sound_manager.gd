@@ -2,14 +2,14 @@ extends Node
 
 ## Simple centralized sound manager for one-shot effects and music
 @export var placement_sound: AudioStream = preload("res://assets/sound effects/tower_placement.mp3")
-@export var enemy_hit_sound: AudioStream = preload("res://assets/sound effects/enemies_hit.mp3")
+@export var enemy_hit_sound: AudioStream = preload("res://assets/sound effects/metal_clang.mp3")
 @export var button_hover_sound: AudioStream = preload("res://assets/sound effects/button_hover.mp3")
 @export var illegal_move_sound: AudioStream = preload("res://assets/sound effects/illegal.mp3")
-@export var gold_gain_sound: AudioStream = preload("res://assets/sound effects/money.mp3")
-@export var base_hit_sound: AudioStream = preload("res://assets/sound effects/entering_dmg.mp3")
-@export var enemy_spawn_sound: AudioStream = preload("res://assets/sound effects/teleport.mp3")
-@export var victory_sound: AudioStream = preload("res://assets/sound effects/victory.mp3")
-@export var defeat_sound: AudioStream = preload("res://assets/sound effects/defeat.mp3")
+@export
+var victory_sound: AudioStream = preload("res://assets/sound effects/medieval-fanfare-6826.mp3")
+@export var defeat_sound: AudioStream = preload(
+	"res://assets/sound effects/beated-by-a-computer-by-tromosm-281034.mp3"
+)
 
 # Background music
 @export var menu_music: AudioStream = preload("res://assets/bgm/dearly.mp3")
@@ -34,9 +34,6 @@ func _connect_signals():
 	if not Engine.is_editor_hint():
 		EventBus.tower_placed.connect(_on_tower_placed)
 		EventBus.enemy_hit.connect(_on_enemy_hit)
-		EventBus.enemy_spawned.connect(_on_enemy_spawned)
-		EventBus.king_damaged.connect(_on_king_damaged)
-		EventBus.king_destroyed.connect(_on_king_destroyed)
 
 
 func _on_tower_placed(_tower: Node, _position: Vector2, _cost: int):
@@ -64,46 +61,7 @@ func play_victory():
 
 
 func play_defeat():
-	stop_all_sfx()
-	stop_music()
 	_play_sound(defeat_sound)
-
-
-func play_gold_gain():
-	_play_sound(gold_gain_sound)
-
-
-func play_base_hit():
-	_play_sound(base_hit_sound)
-
-
-func play_enemy_spawn():
-	_play_sound(enemy_spawn_sound)
-
-
-func connect_button_sounds(buttons: Array) -> void:
-	for button in buttons:
-		if not button:
-			continue
-		if not button.mouse_entered.is_connected(play_button_hover):
-			button.mouse_entered.connect(play_button_hover)
-		if not button.pressed.is_connected(play_button_press):
-			button.pressed.connect(play_button_press)
-
-
-func _on_king_damaged(_current: int, _max: int):
-	play_base_hit()
-
-
-func _on_enemy_spawned(_enemy: Node):
-	if get_tree().paused:
-		return
-	play_enemy_spawn()
-
-
-func _on_king_destroyed():
-	stop_all_sfx()
-	stop_music()
 
 
 func _play_sound(stream: AudioStream):
@@ -130,15 +88,6 @@ func play_game_music():
 func stop_music():
 	if _music_player:
 		_music_player.stop()
-
-
-func stop_all_sfx():
-	for child in get_children():
-		if child == _music_player:
-			continue
-		if child is AudioStreamPlayer:
-			(child as AudioStreamPlayer).stop()
-			child.queue_free()
 
 
 func _play_music(stream: AudioStream):

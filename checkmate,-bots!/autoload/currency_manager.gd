@@ -20,8 +20,6 @@ func add_gold(amount: int):
 		return
 
 	current_gold += amount
-	if SoundManager:
-		SoundManager.play_gold_gain()
 	EventBus.gold_changed.emit(current_gold)
 	print("Gold added: +", amount, " | Total: ", current_gold)
 
