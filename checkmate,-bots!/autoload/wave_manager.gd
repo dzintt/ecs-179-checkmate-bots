@@ -252,10 +252,15 @@ func _spawn_wave_enemies():
 
 
 func _spawn_enemies_from_direction(direction: String, count: int, delay: float, enemy_type: String):
-	if _cancel_spawns or path_manager == null or spawn_parent == null:
-		return
-
 	for i in range(count):
+		if (
+			_cancel_spawns
+			or path_manager == null
+			or spawn_parent == null
+			or not is_instance_valid(spawn_parent)
+		):
+			return
+
 		if i > 0:
 			await get_tree().create_timer(delay).timeout
 
