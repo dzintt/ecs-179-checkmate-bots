@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ba27m7iv2104p"]
 
-[ext_resource type="Script" uid="uid://cme4ym64orvc7" path="res://scripts/towers/rook_tower.gd" id="1"]
+[ext_resource type="Script" uid="uid://cme4ym64orvc7" path="res://scripts/towers/rook/rook_tower.gd" id="1"]
 
 [node name="Rook" type="Node2D"]
 script = ExtResource("1")
