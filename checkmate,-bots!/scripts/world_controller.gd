@@ -13,6 +13,7 @@ extends Node2D
 @onready var pause_bgm_slider: HSlider = $CanvasLayer/PauseMenu/VBoxContainer/BGM/HSlider
 @onready var pause_main_menu_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/MainMenu
 @onready var pause_exit_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/Exit
+@onready var king_health_hud = $CanvasLayer/KingHealthHUD
 
 # Preload enemy scene
 var enemy_scene = preload("res://scenes/enemies/basic_pawn.tscn")
@@ -41,6 +42,7 @@ func _ready():
 
 	_update_debug_label()
 	_spawn_king_base()
+	_init_king_health_hud()
 
 	if path_manager:
 		WaveManager.initialize(path_manager, enemy_container)
@@ -99,7 +101,7 @@ func _spawn_test_enemy():
 	print("Spawned test enemy")
 
 
-func _on_gold_changed(new_amount: int):
+func _on_gold_changed(_new_amount: int):
 	_update_debug_label()
 
 
@@ -147,6 +149,11 @@ func _spawn_king_base():
 	tower_container.add_child(king)
 	king_instance = king
 	print("King placed at board center: ", king_position)
+
+
+func _init_king_health_hud():
+	if king_health_hud and king_instance and king_instance is KingBase:
+		king_health_hud.initialize(king_instance.current_health, king_instance.max_health)
 
 
 func _get_board_center_world_position() -> Vector2:
