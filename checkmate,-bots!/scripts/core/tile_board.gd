@@ -117,14 +117,13 @@ func _create_cross_area():
 			cross_node.add_child(tile)
 
 
-func _create_tile(pos: Vector2, is_light: bool, is_spawn: bool) -> Polygon2D:
-	var tile = Polygon2D.new()
+func _create_tile(pos: Vector2, is_light: bool, is_spawn: bool) -> ColorRect:
+	var tile = ColorRect.new()
 	tile.position = pos
-	tile.polygon = _rect_to_polygon(Vector2.ZERO, Vector2(tile_size, tile_size))
-	tile.uv = tile.polygon
+	tile.size = Vector2(tile_size, tile_size)
 	tile.color = _get_tile_color(is_light, is_spawn)
+	tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tile.z_index = 0
-	tile.antialiased = true
 	return tile
 
 
@@ -153,17 +152,6 @@ func _rect_to_polygon(origin: Vector2, size: Vector2) -> PackedVector2Array:
 			origin + Vector2(0, size.y),
 		]
 	)
-
-
-# Helper function to get tile position from grid coordinates
-func get_tile_position(board_name: String, x: int, y: int) -> Vector2:
-	var board = get_node_or_null(board_name)
-	if board:
-		return (
-			board.position
-			+ Vector2(x * tile_size + tile_size / 2.0, y * tile_size + tile_size / 2.0)
-		)
-	return Vector2.ZERO
 
 
 func _board_size_px() -> float:
