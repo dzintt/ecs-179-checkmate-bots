@@ -23,6 +23,8 @@ class_name Tower
 ## Projectile speed (if using projectiles)
 @export var projectile_speed: float = 300.0
 @export var attack_pattern: AttackPattern
+@export var uses_projectile: bool = false
+@export var projectile_scene: PackedScene = preload("res://scenes/projectiles/basic_projectile.tscn")
 
 @export_group("Targeting")
 ## Targeting priority mode
@@ -79,25 +81,19 @@ func _scan_for_enemies():
 		print("ERROR: EnemyContainer not found!")
 		return
 
-	print("Scanning for enemies. Tower at grid pos: ", grid_position)
-
 	for enemy in enemy_container.get_children():
 		if not enemy is Enemy or not enemy.is_alive:
 			continue
 
 		# Check if enemy is on one of our attack tiles
 		var enemy_grid_pos = GridSystem.world_to_grid(enemy.global_position)
-		print("Enemy at grid pos: ", enemy_grid_pos)
-
 		for pattern_offset in attack_tiles:
 			var attack_tile = grid_position + pattern_offset
 			if enemy_grid_pos == attack_tile:
-				print("Enemy in range")
 				# Check class restrictions
 				if _can_attack_enemy(enemy):
 					enemies_in_range.append(enemy)
 				break
-	print("Enemies in range: ", enemies_in_range.size())
 
 
 ## Check if this tower can attack a specific enemy based on class restrictions
@@ -227,7 +223,6 @@ func _update_attack_timer(delta: float):
 
 ## Attempt to attack the current target
 func _attempt_attack():
-	print("Attempting attack. Target: ", current_target)
 	if current_target == null or attack_timer > 0:
 		return
 
@@ -244,26 +239,66 @@ func _perform_attack():
 	if current_target == null:
 		return
 
-	print("Attacking ", current_target.enemy_name, " with damage: ", attack_damage)
+	if uses_projectile:
+		_fire_projectile()
+	else:
+		_apply_direct_damage()
 
-	# Deal damage to target
+
+func _apply_direct_damage():
 	var final_damage = DamageEngine.calculate_damage(tower_class, current_target, attack_damage)
-
-	print("Final damage after type advantage: ", final_damage)
-
 	current_target.take_damage(final_damage, tower_class)
 	tower_attacked.emit(current_target)
-
-	# TODO: Spawn projectile/visual effect here
-	# TODO: Play attack sound here
-
 	_show_attack_effect()
+
+
+func _fire_projectile():
+	if (
+		current_target == null
+		or not is_instance_valid(current_target)
+		or not current_target.is_alive
+	):
+		return
+
+	var scene: PackedScene = projectile_scene
+	if scene == null:
+		_apply_direct_damage()
+		return
+
+	var projectile = scene.instantiate()
+	if projectile == null:
+		_apply_direct_damage()
+		return
+
+	if projectile.has_method("configure"):
+		projectile.configure(
+			DamageEngine.calculate_damage(tower_class, current_target, attack_damage),
+			tower_class,
+			current_target,
+			projectile_speed
+		)
+	var parent = _get_projectile_parent()
+	if parent:
+		parent.add_child(projectile)
+	else:
+		add_child(projectile)
+
+	projectile.global_position = global_position
+	tower_attacked.emit(current_target)
 
 
 ## Visual indication of attack (placeholder)
 func _show_attack_effect():
 	# Draw a line to the target temporarily
 	queue_redraw()
+
+
+func _get_projectile_parent() -> Node:
+	# Prefer the tower container so projectiles stay in world space with towers
+	var parent = get_parent()
+	if parent != null and is_instance_valid(parent):
+		return parent
+	return get_tree().current_scene
 
 
 ## Upgrade this tower to the next level

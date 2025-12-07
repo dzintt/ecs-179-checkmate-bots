@@ -17,7 +17,8 @@ func _ready():
 
 	attack_damage = 3.0
 	attack_cooldown = 1.25
-	projectile_speed = 2.0
+	projectile_speed = 600.0
+	uses_projectile = true
 
 	super._ready()
 	print("Bishop tower ready", grid_position)

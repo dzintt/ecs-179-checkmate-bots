@@ -17,7 +17,8 @@ func _ready():
 
 	attack_damage = 9.0
 	attack_cooldown = 1.5
-	projectile_speed = 4.0
+	projectile_speed = 600.0
+	uses_projectile = true
 
 	super._ready()
 	print("Queen tower ready at grid position: ", grid_position)

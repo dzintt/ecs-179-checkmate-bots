@@ -17,7 +17,8 @@ func _ready():
 
 	attack_damage = 5.0
 	attack_cooldown = 1.5
-	projectile_speed = 2.0
+	projectile_speed = 600.0
+	uses_projectile = true
 
 	super._ready()
 	print("Rook tower ready at grid position: ", grid_position)
