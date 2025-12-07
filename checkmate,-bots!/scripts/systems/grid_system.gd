@@ -37,7 +37,7 @@ static func is_tile_occupied(grid_pos: Vector2i) -> bool:
 
 
 static func is_within_board(grid_pos: Vector2i) -> bool:
-	var total_size = CHESS_BOARD_SIZE * 2 + CROSS_WIDTH  # 8 + 2 + 8 = 18 by default
+	var total_size = total_board_tiles()
 	return (
 		grid_pos.x >= 0 and grid_pos.y >= 0 and grid_pos.x < total_size and grid_pos.y < total_size
 	)
@@ -63,3 +63,7 @@ static func is_valid_placement_tile(grid_pos: Vector2i) -> bool:
 	if is_tile_occupied(grid_pos):
 		return false
 	return true
+
+
+static func total_board_tiles() -> int:
+	return CHESS_BOARD_SIZE * 2 + CROSS_WIDTH
