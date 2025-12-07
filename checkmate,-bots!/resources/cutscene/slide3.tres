@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://ktfmrerwvwub"]
+
+[ext_resource type="Texture2D" uid="uid://ciei3l0ww7j8u" path="res://assets/images/Background.png" id="1_2g5o4"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="1_2ksao"]
+
+[resource]
+script = ExtResource("1_2ksao")
+text = "Please, stop them from destroying our base! We can't hold them back any longer..."
+image = ExtResource("1_2g5o4")
+metadata/_custom_type_script = "uid://cldlietyrt556"
