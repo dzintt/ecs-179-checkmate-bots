@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=7 format=3 uid="uid://36tyq720fald"]
 
-[ext_resource type="PackedScene" path="res://scenes/main/board.tscn" id="1_board"]
-[ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_controller"]
-[ext_resource type="Script" path="res://scripts/systems/placement_system.gd" id="2_placement"]
-[ext_resource type="Script" path="res://scripts/systems/input_handler.gd" id="3_input"]
-[ext_resource type="Script" path="res://scripts/core/path_manager.gd" id="5_path"]
+[ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
+[ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
+[ext_resource type="Script" uid="uid://bjma15spqxavr" path="res://scripts/systems/placement_system.gd" id="2_placement"]
+[ext_resource type="Script" uid="uid://dyvvkg2ytphdq" path="res://scripts/systems/input_handler.gd" id="3_input"]
+[ext_resource type="Script" uid="uid://2ke25wv5voyk" path="res://scripts/core/path_manager.gd" id="5_path"]
+[ext_resource type="PackedScene" path="res://scenes/gui.tscn" id="6_yshnf"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_controller")
@@ -13,7 +14,6 @@ script = ExtResource("1_controller")
 
 [node name="PathManager" type="Node2D" parent="."]
 script = ExtResource("5_path")
-show_path = false
 base_position = Vector2(576, 576)
 map_width = 1152.0
 map_height = 1152.0
@@ -43,3 +43,5 @@ text = "Gold: 150
 Press P to place Pawn tower
 Press K to spawn test enemy
 Right-click to cancel placement"
+
+[node name="gui" parent="." instance=ExtResource("6_yshnf")]
