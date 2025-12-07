@@ -17,8 +17,9 @@ func _ready():
 
 	attack_damage = 3.0
 	attack_cooldown = 1.25
-	projectile_speed = 600.0
+	projectile_speed = 400.0
 	uses_projectile = true
+	projectile_scene = preload("res://scenes/projectiles/bishop_projectile.tscn")
 
 	super._ready()
 	print("Bishop tower ready", grid_position)

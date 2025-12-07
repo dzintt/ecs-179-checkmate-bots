@@ -11,9 +11,12 @@ var tower_class: String = ""
 var target: Enemy
 
 var _lifetime: float = 0.0
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _ready():
+	if anim:
+		anim.play("fly")
 	queue_redraw()
 
 
@@ -44,7 +47,8 @@ func _physics_process(delta: float):
 		_apply_hit()
 		return
 
-	var direction: Vector2 = to_target / distance
+	var direction: Vector2 = to_target / max(distance, 0.001)
+	rotation = direction.angle()
 	global_position += direction * speed * delta
 
 
@@ -59,6 +63,7 @@ func _is_target_valid() -> bool:
 
 
 func _draw():
-	# Placeholder visual: small colored circle
-	draw_circle(Vector2.ZERO, 6, Color(1, 0.85, 0.2, 0.9))
-	draw_circle(Vector2.ZERO, 6, Color(0, 0, 0, 0.8), false, 1.5)
+	# Only draw placeholder if no animated sprite is present
+	if anim == null:
+		draw_circle(Vector2.ZERO, 6, Color(1, 0.85, 0.2, 0.9))
+		draw_circle(Vector2.ZERO, 6, Color(0, 0, 0, 0.8), false, 1.5)

@@ -17,8 +17,9 @@ func _ready():
 
 	attack_damage = 9.0
 	attack_cooldown = 1.5
-	projectile_speed = 600.0
+	projectile_speed = 400.0
 	uses_projectile = true
+	projectile_scene = preload("res://scenes/projectiles/queen_projectile.tscn")
 
 	super._ready()
 	print("Queen tower ready at grid position: ", grid_position)
