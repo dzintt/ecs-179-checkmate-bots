@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 func _on_play_pressed() -> void:
 	if SoundManager:
 		SoundManager.play_game_music()
-	get_tree().change_scene_to_file("res://scenes/main/world.tscn")
+	get_tree().change_scene_to_file("res://scenes/main/intro_cutscene.tscn")
 
 
 func _on_options_pressed() -> void:
