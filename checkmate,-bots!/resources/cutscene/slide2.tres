@@ -1,10 +1,11 @@
 [gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://u46qc6mk5u3t"]
 
 [ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="1_3rldx"]
-[ext_resource type="Texture2D" uid="uid://djmpkq8xidj6q" path="res://assets/images/Border All 10.png" id="1_a2h5o"]
+[ext_resource type="Texture2D" uid="uid://mxk6qpoous03" path="res://assets/images/home_island.png" id="1_a2h5o"]
 
 [resource]
 script = ExtResource("1_3rldx")
-text = "You're the only one who knows how to play this game called \"Chess\" sir. "
+text = "Each island is managed by their own government and set of rules. This is your home island, Jarej.
+"
 image = ExtResource("1_a2h5o")
 metadata/_custom_type_script = "uid://cldlietyrt556"

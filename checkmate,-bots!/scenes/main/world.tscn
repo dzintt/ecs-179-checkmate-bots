@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://2ke25wv5voyk" path="res://scripts/core/path_manager.gd" id="5_path"]
 [ext_resource type="PackedScene" uid="uid://bsfhtk3xaimgg" path="res://scenes/gui.tscn" id="6_yshnf"]
 [ext_resource type="Script" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
 corner_radius_top_left = 6

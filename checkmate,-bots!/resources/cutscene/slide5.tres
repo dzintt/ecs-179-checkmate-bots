@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://qccsmvtlcom4"]
+
+[ext_resource type="Texture2D" uid="uid://caxjdguvfcqf6" path="res://assets/images/peaceful_town.png" id="1_owb4f"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_mswd8"]
+
+[resource]
+script = ExtResource("2_mswd8")
+text = "Even the elites live within the city with everyone, always looking out to maintain status quo."
+image = ExtResource("1_owb4f")
+metadata/_custom_type_script = "uid://cldlietyrt556"

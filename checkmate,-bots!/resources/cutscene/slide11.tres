@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://vtl58kuif1mr"]
+
+[ext_resource type="Texture2D" uid="uid://py4dbibyb52a" path="res://assets/images/millitary_room.png" id="1_hs471"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_f8121"]
+
+[resource]
+script = ExtResource("2_f8121")
+text = "You: Wow! So this is the military base. It looks so advanced... can I really stop the enemies?"
+image = ExtResource("1_hs471")
+metadata/_custom_type_script = "uid://cldlietyrt556"

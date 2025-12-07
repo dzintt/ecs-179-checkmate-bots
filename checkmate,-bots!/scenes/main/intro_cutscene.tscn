@@ -1,10 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://6l04dyxe4w1x"]
+[gd_scene load_steps=15 format=3 uid="uid://6l04dyxe4w1x"]
 
 [ext_resource type="Script" uid="uid://dwdqinj6xf7uc" path="res://scripts/ui/cutscene.gd" id="1_yn528"]
 [ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_g6erw"]
 [ext_resource type="Resource" uid="uid://budujoqf4wal" path="res://resources/cutscene/slide1.tres" id="3_oieux"]
 [ext_resource type="Resource" uid="uid://u46qc6mk5u3t" path="res://resources/cutscene/slide2.tres" id="4_od77a"]
 [ext_resource type="Resource" uid="uid://ktfmrerwvwub" path="res://resources/cutscene/slide3.tres" id="5_fsvy2"]
+[ext_resource type="Resource" uid="uid://c3v40taikbb0g" path="res://resources/cutscene/slide4.tres" id="6_68j2k"]
+[ext_resource type="Resource" uid="uid://qccsmvtlcom4" path="res://resources/cutscene/slide5.tres" id="7_588uk"]
+[ext_resource type="Resource" uid="uid://crkld5cdr1ack" path="res://resources/cutscene/slide6.tres" id="8_jh7n5"]
+[ext_resource type="Resource" uid="uid://0u7h6xqdx5dw" path="res://resources/cutscene/slide7.tres" id="9_blyfm"]
+[ext_resource type="Resource" uid="uid://hkhnsqmspbw2" path="res://resources/cutscene/slide8.tres" id="10_nvqub"]
+[ext_resource type="Resource" uid="uid://c0d5el3ot2u5i" path="res://resources/cutscene/slide9.tres" id="11_qjs7y"]
+[ext_resource type="Resource" uid="uid://bys8lnj634srf" path="res://resources/cutscene/slide10.tres" id="12_wny0v"]
+[ext_resource type="Resource" uid="uid://vtl58kuif1mr" path="res://resources/cutscene/slide11.tres" id="13_l1xs4"]
+[ext_resource type="Texture2D" uid="uid://b4cmknhf1q5g" path="res://assets/images/commander_base.png" id="14_i1xxp"]
 
 [node name="IntroCutscene" type="Control"]
 layout_mode = 3
@@ -14,7 +23,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yn528")
-slides = Array[ExtResource("2_g6erw")]([ExtResource("3_oieux"), ExtResource("4_od77a"), ExtResource("5_fsvy2")])
+slides = Array[ExtResource("2_g6erw")]([ExtResource("3_oieux"), ExtResource("4_od77a"), ExtResource("5_fsvy2"), ExtResource("6_68j2k"), ExtResource("7_588uk"), ExtResource("8_jh7n5"), ExtResource("9_blyfm"), ExtResource("10_nvqub"), ExtResource("11_qjs7y"), ExtResource("12_wny0v"), ExtResource("13_l1xs4")])
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -47,14 +56,15 @@ grow_vertical = 2
 custom_minimum_size = Vector2(0, 450)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 4.0
+size_flags_stretch_ratio = 5.0
+texture = ExtResource("14_i1xxp")
 expand_mode = 1
 
 [node name="SlideText" type="RichTextLabel" parent="SlideContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 40
+theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 fit_content = true
 horizontal_alignment = 1
