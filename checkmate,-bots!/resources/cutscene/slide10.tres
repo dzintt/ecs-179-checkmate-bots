@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://bys8lnj634srf"]
+
+[ext_resource type="Texture2D" uid="uid://b4cmknhf1q5g" path="res://assets/images/commander_base.png" id="1_0u7m1"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_07qdt"]
+
+[resource]
+script = ExtResource("2_07qdt")
+text = "As you quickly head to the base you calm yourself down and get ready to control the giant protectors of this island."
+image = ExtResource("1_0u7m1")
+metadata/_custom_type_script = "uid://cldlietyrt556"

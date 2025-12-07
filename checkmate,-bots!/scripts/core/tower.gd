@@ -26,6 +26,12 @@ class_name Tower
 @export var uses_projectile: bool = false
 @export var projectile_scene: PackedScene = preload("res://scenes/projectiles/basic_projectile.tscn")
 
+@export_group("Attack Bounce FX")
+@export var bounce_height: float = 10.0
+@export var bounce_duration: float = 0.12
+@export var bounce_ease: Tween.TransitionType = Tween.TRANS_QUAD
+@export var bounce_disable_while_active: bool = true
+
 @export_group("Targeting")
 ## Targeting priority mode
 @export_enum("First", "Last", "Closest", "Strongest", "Weakest") var targeting_mode: String = "First"
@@ -41,6 +47,9 @@ var current_target: Enemy = null
 var attack_timer: float = 0.0
 var grid_position: Vector2i
 
+var _bounce_tween: Tween = null
+var _rest_position: Vector2
+
 signal tower_attacked(target: Enemy)
 signal target_acquired(target: Enemy)
 signal target_lost(target: Enemy)
@@ -50,6 +59,7 @@ signal tower_upgraded(new_level: int)
 func _ready():
 	# Calculate grid position from world position
 	grid_position = GridSystem.world_to_grid(global_position)
+	_rest_position = position
 	_setup_visual()
 
 
@@ -244,6 +254,8 @@ func _perform_attack():
 	else:
 		_apply_direct_damage()
 
+	_play_attack_bounce()
+
 
 func _apply_direct_damage():
 	var final_damage = DamageEngine.calculate_damage(tower_class, current_target, attack_damage)
@@ -299,6 +311,35 @@ func _get_projectile_parent() -> Node:
 	if parent != null and is_instance_valid(parent):
 		return parent
 	return get_tree().current_scene
+
+
+func _play_attack_bounce():
+	if bounce_height <= 0.0 or bounce_duration <= 0.0:
+		return
+
+	if bounce_disable_while_active and _bounce_tween and _bounce_tween.is_running():
+		return
+
+	if _bounce_tween and _bounce_tween.is_running():
+		_bounce_tween.kill()
+
+	position = _rest_position
+
+	_bounce_tween = create_tween()
+	(
+		_bounce_tween
+		. tween_property(
+			self, "position", _rest_position + Vector2(0, -bounce_height), bounce_duration
+		)
+		. set_trans(bounce_ease)
+		. set_ease(Tween.EASE_OUT)
+	)
+	(
+		_bounce_tween
+		. tween_property(self, "position", _rest_position, bounce_duration)
+		. set_trans(Tween.TRANS_BOUNCE)
+		. set_ease(Tween.EASE_OUT)
+	)
 
 
 ## Upgrade this tower to the next level

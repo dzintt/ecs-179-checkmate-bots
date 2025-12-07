@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://c3v40taikbb0g"]
+
+[ext_resource type="Texture2D" uid="uid://35ujr3v6q6wb" path="res://assets/images/peaceful_farm.png" id="1_6221b"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_8dgvc"]
+
+[resource]
+script = ExtResource("2_8dgvc")
+text = "The world you live in is a city that embraces the nature and rarely has any violence. "
+image = ExtResource("1_6221b")
+metadata/_custom_type_script = "uid://cldlietyrt556"
