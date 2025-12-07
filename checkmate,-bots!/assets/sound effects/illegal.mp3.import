@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c28mn6t2nbb0p"
+path="res://.godot/imported/illegal.mp3-751cb5739bbe769bc752ff11e3b35df6.mp3str"
+
+[deps]
+
+source_file="res://assets/sound effects/illegal.mp3"
+dest_files=["res://.godot/imported/illegal.mp3-751cb5739bbe769bc752ff11e3b35df6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
