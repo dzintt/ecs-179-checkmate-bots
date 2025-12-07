@@ -35,7 +35,7 @@ func get_attack_pattern() -> Array[Vector2i]:
 	pattern.append(Vector2i(-2, 0))
 	pattern.append(Vector2i(1, 0))
 	pattern.append(Vector2i(2, 0))
-	
+
 	return pattern
 
 

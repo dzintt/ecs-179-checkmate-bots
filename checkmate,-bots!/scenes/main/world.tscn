@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=6 format=3 uid="uid://36tyq720fald"]
 
-[ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
-[ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
-[ext_resource type="Script" uid="uid://bjma15spqxavr" path="res://scripts/systems/placement_system.gd" id="2_placement"]
-[ext_resource type="Script" uid="uid://dyvvkg2ytphdq" path="res://scripts/systems/input_handler.gd" id="3_input"]
-[ext_resource type="Script" uid="uid://2ke25wv5voyk" path="res://scripts/core/path_manager.gd" id="5_path"]
-[ext_resource type="PackedScene" path="res://scenes/gui.tscn" id="6_yshnf"]
+[ext_resource type="PackedScene" path="res://scenes/main/board.tscn" id="1_board"]
+[ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/systems/placement_system.gd" id="2_placement"]
+[ext_resource type="Script" path="res://scripts/systems/input_handler.gd" id="3_input"]
+[ext_resource type="Script" path="res://scripts/core/path_manager.gd" id="5_path"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_controller")
@@ -14,6 +13,7 @@ script = ExtResource("1_controller")
 
 [node name="PathManager" type="Node2D" parent="."]
 script = ExtResource("5_path")
+show_path = false
 base_position = Vector2(576, 576)
 map_width = 1152.0
 map_height = 1152.0
@@ -42,6 +42,83 @@ offset_bottom = 150.0
 text = "Gold: 150
 Press P to place Pawn tower
 Press K to spawn test enemy
-Right-click to cancel placement"
+Right-click to cancel placement
+Press ESC for options/pause"
 
-[node name="gui" parent="." instance=ExtResource("6_yshnf")]
+[node name="PauseMenu" type="Panel" parent="CanvasLayer"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -180.0
+offset_right = 220.0
+offset_bottom = 180.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="Title" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="SFX" type="HBoxContainer" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer/SFX"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/PauseMenu/VBoxContainer/SFX"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 6.0
+step = 0.5
+value = 0.0
+
+[node name="BGM" type="HBoxContainer" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer/BGM"]
+layout_mode = 2
+text = "BGM Volume"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/PauseMenu/VBoxContainer/BGM"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 6.0
+step = 0.5
+value = 0.0
+
+[node name="Resume" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+size_flags_horizontal = 4
+
+[node name="MainMenu" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+size_flags_horizontal = 4
+
+[node name="Exit" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+size_flags_horizontal = 4

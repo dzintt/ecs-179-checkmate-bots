@@ -97,6 +97,14 @@ func end_game(victory: bool):
 
 	get_tree().root.add_child(menu_instance)
 
+	# Stop background music and play victory/defeat stinger
+	if SoundManager:
+		SoundManager.stop_music()
+		if victory:
+			SoundManager.play_victory()
+		else:
+			SoundManager.play_defeat()
+
 
 ## Check if all waves are completed
 func check_win_condition():

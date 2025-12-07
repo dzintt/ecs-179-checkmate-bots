@@ -28,7 +28,7 @@ func _on_return_to_main_menu_pressed() -> void:
 	# Unpause the game first
 	get_tree().paused = false
 	GameManager.reset_game()
-	# Change to main menu scene
+	# Change to main menu scene (update path to your main menu)
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 

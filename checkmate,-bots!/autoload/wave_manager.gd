@@ -7,6 +7,7 @@ var enemies_alive: int = 0
 var wave_definitions: Array = []
 var path_manager: PathManager = null
 var spawn_parent: Node = null
+var _cancel_spawns: bool = false
 
 const ENEMY_SCENES := {
 	"pawn": preload("res://scenes/enemies/basic_pawn.tscn"),
@@ -55,6 +56,7 @@ func start_wave():
 		GameManager.end_game(true)
 		return
 
+	_cancel_spawns = false
 	current_wave += 1
 	wave_in_progress = true
 	EventBus.wave_started.emit(current_wave)
@@ -250,12 +252,12 @@ func _spawn_wave_enemies():
 
 
 func _spawn_enemies_from_direction(direction: String, count: int, delay: float, enemy_type: String):
-	if path_manager == null or spawn_parent == null:
-		return
-
 	for i in range(count):
 		if i > 0:
 			await get_tree().create_timer(delay).timeout
+
+		if _cancel_spawns or spawn_parent == null or not is_instance_valid(spawn_parent):
+			return
 
 		var scene: PackedScene = ENEMY_SCENES.get(enemy_type, ENEMY_SCENES.get("pawn"))
 		if scene == null:
@@ -272,6 +274,14 @@ func _spawn_enemies_from_direction(direction: String, count: int, delay: float, 
 			print("Spawn failed: could not instantiate enemy type ", enemy_type)
 			enemies_alive -= 1
 			continue
+
+		if (
+			_cancel_spawns
+			or path_manager == null
+			or spawn_parent == null
+			or not is_instance_valid(spawn_parent)
+		):
+			return
 
 		spawn_parent.add_child(enemy)
 
@@ -351,6 +361,7 @@ func reset_waves():
 	current_wave = 0
 	wave_in_progress = false
 	enemies_alive = 0
+	_cancel_spawns = true
 	# Clear any spawned enemies
 	get_tree().call_group("enemies", "queue_free")
 	print("Waves reset")
