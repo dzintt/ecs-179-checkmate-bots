@@ -8,6 +8,9 @@ func _ready():
 	if EventBus:
 		EventBus.gold_changed.connect(_update_affordability)
 	_update_affordability(0)
+	var btn := get_node_or_null("Button")
+	if btn:
+		btn.focus_mode = Control.FOCUS_NONE
 
 
 func _on_button_pressed():

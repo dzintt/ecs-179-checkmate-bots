@@ -22,6 +22,7 @@ EventBus="*res://autoload/event_bus.gd"
 CurrencyManager="*res://autoload/currency_manager.gd"
 WaveManager="*res://autoload/wave_manager.gd"
 SoundManager="*res://autoload/sound_manager.gd"
+UICursorManager="*res://autoload/ui_cursor_manager.gd"
 
 [layer_names]
 

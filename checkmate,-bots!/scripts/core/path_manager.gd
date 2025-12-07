@@ -1,6 +1,7 @@
 extends Node2D
 
 class_name PathManager
+const GridSystem = preload("res://scripts/systems/grid_system.gd")
 
 ## Manages enemy paths on the map
 ## Supports multiple directional paths (north, east, south, west) converging to center base
@@ -17,6 +18,8 @@ class_name PathManager
 @export var west_color: Color = Color.ORANGE
 ## Width of the path line
 @export var path_width: float = 3.0
+## Automatically derive map size and base position from GridSystem (board center)
+@export var auto_config_from_grid: bool = true
 ## Map boundaries for spawn points
 @export var map_width: float = 800
 @export var map_height: float = 600
@@ -33,6 +36,8 @@ signal path_updated(direction: String, new_path: Array[Vector2])
 
 
 func _ready():
+	if auto_config_from_grid:
+		_sync_with_grid()
 	_initialize_paths()
 
 
@@ -81,3 +86,11 @@ func get_start_position(direction: String) -> Vector2:
 	if not paths.has(direction) or paths[direction].is_empty():
 		return Vector2.ZERO
 	return global_position + paths[direction][0]
+
+
+func _sync_with_grid():
+	var total_tiles := GridSystem.total_board_tiles()
+	var total_size := float(total_tiles * GridSystem.TILE_SIZE)
+	map_width = total_size
+	map_height = total_size
+	base_position = Vector2(total_size / 2.0, total_size / 2.0)

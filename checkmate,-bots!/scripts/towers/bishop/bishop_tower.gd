@@ -37,14 +37,3 @@ func get_attack_pattern() -> Array[Vector2i]:
 		pattern.append(Vector2i(-i, -i))  # Top-left
 
 	return pattern
-
-
-func _setup_visual():
-	super._setup_visual()
-	queue_redraw()
-
-
-func _draw():
-	# Placeholder: Draw a purple circle for bishop
-	draw_circle(Vector2.ZERO, 20, Color.PURPLE)
-	draw_circle(Vector2.ZERO, 20, Color.BLACK, false, 2.0)

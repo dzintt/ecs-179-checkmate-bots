@@ -37,15 +37,3 @@ func get_attack_pattern() -> Array[Vector2i]:
 	pattern.append(Vector2i(2, 0))
 
 	return pattern
-
-
-## Override visual setup for pawn-specific appearance
-func _setup_visual():
-	super._setup_visual()
-	queue_redraw()
-
-
-func _draw():
-	# Placeholder: Draw a white circle for pawn
-	draw_circle(Vector2.ZERO, 20, Color.WHITE)
-	draw_circle(Vector2.ZERO, 20, Color.BLACK, false, 2.0)
