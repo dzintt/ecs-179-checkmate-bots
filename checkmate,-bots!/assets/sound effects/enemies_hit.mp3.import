@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bkf6g8mqpdnbh"
+path="res://.godot/imported/enemies_hit.mp3-605b69f757da44fd4123a657f60248c7.mp3str"
+
+[deps]
+
+source_file="res://assets/sound effects/enemies_hit.mp3"
+dest_files=["res://.godot/imported/enemies_hit.mp3-605b69f757da44fd4123a657f60248c7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

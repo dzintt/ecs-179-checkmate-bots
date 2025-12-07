@@ -35,11 +35,27 @@ func _on_exit_pressed() -> void:
 
 
 func _connect_button_sounds() -> void:
+	if SoundManager:
+		(
+			SoundManager
+			. connect_button_sounds(
+				[
+					$"VBoxContainer/Play",
+					$"VBoxContainer/Options",
+					$"VBoxContainer/How to play",
+					$"VBoxContainer/Exit",
+					$"OptionsPanel/VBoxContainer/Close",
+				]
+			)
+		)
+		return
+
 	var buttons := [
 		$"VBoxContainer/Play",
 		$"VBoxContainer/Options",
 		$"VBoxContainer/How to play",
 		$"VBoxContainer/Exit",
+		$"OptionsPanel/VBoxContainer/Close",
 	]
 
 	for button in buttons:
