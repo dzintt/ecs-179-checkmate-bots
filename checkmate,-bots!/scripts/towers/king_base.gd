@@ -86,7 +86,7 @@ func _setup_visual():
 
 func _draw():
 	# Placeholder: Draw a large red circle scaled to footprint
-	var radius = GridSystem.TILE_SIZE * footprint_tiles / 2.0
+	var radius = float(GridSystem.TILE_SIZE * footprint_tiles) / 2.0
 	draw_circle(Vector2.ZERO, radius, Color.DARK_RED)
 	draw_circle(Vector2.ZERO, radius, Color.BLACK, false, 3.0)
 
@@ -95,16 +95,9 @@ func _draw():
 	var inner_radius = radius * 0.75
 	draw_circle(Vector2.ZERO, inner_radius, Color(1, health_percent, health_percent, 0.7))
 
-	# Draw health bar above king
-	var bar_width = GridSystem.TILE_SIZE * footprint_tiles
-	var bar_height = 8
-	var bar_pos = Vector2(-bar_width / 2, -radius - 20)
-
-	draw_rect(Rect2(bar_pos, Vector2(bar_width, bar_height)), Color.BLACK)
-	draw_rect(Rect2(bar_pos, Vector2(bar_width * health_percent, bar_height)), Color.RED)
-
 
 func _compute_center_grid_position() -> Vector2i:
 	# Round to nearest tile so the attack pattern is centered over the 2x2 footprint
-	var grid_pos_float = global_position / GridSystem.TILE_SIZE
+	var tile_size = float(GridSystem.TILE_SIZE)
+	var grid_pos_float = Vector2(global_position.x / tile_size, global_position.y / tile_size)
 	return Vector2i(round(grid_pos_float.x), round(grid_pos_float.y))
