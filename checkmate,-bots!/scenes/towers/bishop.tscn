@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dmdgj8vdnd3fe"]
 
-[ext_resource type="Script" path="res://scripts/towers/bishop_tower.gd" id="1"]
+[ext_resource type="Script" uid="uid://u0jn13qtynxi" path="res://scripts/towers/bishop/bishop_tower.gd" id="1"]
 
 [node name="Bishop" type="Node2D"]
 script = ExtResource("1")
