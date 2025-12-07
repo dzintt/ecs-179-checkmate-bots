@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=11 format=3 uid="uid://36tyq720fald"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
 [ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dyvvkg2ytphdq" path="res://scripts/systems/input_handler.gd" id="3_input"]
 [ext_resource type="Script" uid="uid://2ke25wv5voyk" path="res://scripts/core/path_manager.gd" id="5_path"]
 [ext_resource type="PackedScene" uid="uid://bsfhtk3xaimgg" path="res://scenes/gui.tscn" id="6_yshnf"]
-[ext_resource type="Script" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
+[ext_resource type="Script" uid="uid://pwfrllvgewol" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
 [ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
@@ -32,7 +32,6 @@ background_margin = 64.0
 
 [node name="PathManager" type="Node2D" parent="."]
 script = ExtResource("5_path")
-auto_config_from_grid = true
 
 [node name="SetDressing" type="Node2D" parent="."]
 
@@ -40,8 +39,6 @@ auto_config_from_grid = true
 position = Vector2(576, 576)
 color = Color(1, 0.93, 0.82, 1)
 energy = 0.9
-range = 900.0
-shadow_enabled = false
 
 [node name="TowerContainer" type="Node2D" parent="."]
 
@@ -59,8 +56,6 @@ script = ExtResource("3_input")
 
 [node name="CameraController" type="Node" parent="."]
 script = ExtResource("8_cameracontrol")
-camera_path = NodePath("../Board/BoardCamera")
-placement_system_path = NodePath("../PlacementSystem")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
