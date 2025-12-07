@@ -44,14 +44,3 @@ func get_attack_pattern() -> Array[Vector2i]:
 		pattern.append(Vector2i(-i, -i))  # Top-left
 
 	return pattern
-
-
-func _setup_visual():
-	super._setup_visual()
-	queue_redraw()
-
-
-func _draw():
-	# Placeholder: Draw a gold/yellow circle for queen
-	draw_circle(Vector2.ZERO, 20, Color.GOLD)
-	draw_circle(Vector2.ZERO, 20, Color.BLACK, false, 2.0)

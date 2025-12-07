@@ -79,23 +79,6 @@ func _die():
 	print("King destroyed! Game Over!")
 
 
-func _setup_visual():
-	super._setup_visual()
-	queue_redraw()
-
-
-func _draw():
-	# Placeholder: Draw a large red circle scaled to footprint
-	var radius = float(GridSystem.TILE_SIZE * footprint_tiles) / 2.0
-	draw_circle(Vector2.ZERO, radius, Color.DARK_RED)
-	draw_circle(Vector2.ZERO, radius, Color.BLACK, false, 3.0)
-
-	# Draw health percentage as inner circle
-	var health_percent = float(current_health) / float(max_health)
-	var inner_radius = radius * 0.75
-	draw_circle(Vector2.ZERO, inner_radius, Color(1, health_percent, health_percent, 0.7))
-
-
 func _compute_center_grid_position() -> Vector2i:
 	# Round to nearest tile so the attack pattern is centered over the 2x2 footprint
 	var tile_size = float(GridSystem.TILE_SIZE)
