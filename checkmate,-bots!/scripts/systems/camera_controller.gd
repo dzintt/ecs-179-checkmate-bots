@@ -31,6 +31,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_mouse_button(event)
 	elif event is InputEventMouseMotion:
 		_handle_mouse_motion(event)
+	elif event is InputEventMagnifyGesture:
+		_handle_magnify(event)
 
 
 func _handle_mouse_button(event: InputEventMouseButton) -> void:
@@ -76,3 +78,9 @@ func _is_placement_active() -> bool:
 	if _placement_system == null:
 		return false
 	return bool(_placement_system.get("is_placing"))
+
+
+func _handle_magnify(event: InputEventMagnifyGesture) -> void:
+	if event.factor == 0:
+		return
+	_apply_zoom(event.factor)
