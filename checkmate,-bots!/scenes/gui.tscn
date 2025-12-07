@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsfhtk3xaimgg"]
+[gd_scene load_steps=8 format=3 uid="uid://bsfhtk3xaimgg"]
 
 [ext_resource type="PackedScene" uid="uid://bw63kejk3ky7r" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
+[ext_resource type="Script" uid="uid://dm5qkgastrhxh" path="res://scripts/towers/pawn/pawn_panel.gd" id="2_xki8e"]
 [ext_resource type="PackedScene" uid="uid://bvnopsy136y54" path="res://scenes/towers/knight_panel.tscn" id="3_7yii4"]
 [ext_resource type="PackedScene" uid="uid://brluchiyt1j3t" path="res://scenes/towers/bishop_panel.tscn" id="4_4yt8u"]
 [ext_resource type="PackedScene" uid="uid://d27yswfkht8lv" path="res://scenes/towers/queen_panel.tscn" id="5_p54wi"]
@@ -49,19 +50,52 @@ theme_override_constants/v_separation = 115
 
 [node name="PawnPanel" parent="Panel/FlowContainer" instance=ExtResource("1_efmwq")]
 layout_mode = 2
+script = ExtResource("2_xki8e")
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/PawnPanel"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 71.5
+flat = true
 
 [node name="knight_panel" parent="Panel/FlowContainer" instance=ExtResource("3_7yii4")]
 layout_mode = 2
-script = null
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/knight_panel"]
+layout_mode = 0
+offset_right = 71.0
+offset_bottom = 71.5
+flat = true
 
 [node name="rook_panel" parent="Panel/FlowContainer" instance=ExtResource("6_xki8e")]
 layout_mode = 2
-script = null
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/rook_panel"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 71.5
+flat = true
 
 [node name="bishop_panel" parent="Panel/FlowContainer" instance=ExtResource("4_4yt8u")]
 layout_mode = 2
-script = null
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/bishop_panel"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.5
+flat = true
 
 [node name="queen_panel" parent="Panel/FlowContainer" instance=ExtResource("5_p54wi")]
 layout_mode = 2
-script = null
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/queen_panel"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.5
+flat = true
+
+[connection signal="pressed" from="Panel/FlowContainer/PawnPanel/Button" to="Panel/FlowContainer/PawnPanel" method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/FlowContainer/knight_panel/Button" to="Panel/FlowContainer/knight_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/FlowContainer/rook_panel/Button" to="Panel/FlowContainer/rook_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/FlowContainer/bishop_panel/Button" to="Panel/FlowContainer/bishop_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/FlowContainer/queen_panel/Button" to="Panel/FlowContainer/queen_panel" method="_on_button_pressed"]

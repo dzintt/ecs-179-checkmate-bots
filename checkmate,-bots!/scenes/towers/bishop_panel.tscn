@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://brluchiyt1j3t"]
 
-[ext_resource type="Script" path="res://pawn_panel.gd" id="1_w5lk8"]
+[ext_resource type="Script" uid="uid://cyakd2m1ex1s8" path="res://scripts/towers/bishop/bishop_panel.gd" id="1_w5lk8"]
 [ext_resource type="Texture2D" uid="uid://djmpkq8xidj6q" path="res://assets/images/Border All 10.png" id="2_xfbm2"]
 [ext_resource type="Texture2D" uid="uid://t2f1vbkebi2h" path="res://assets/towers/bishop/bishop.png" id="3_w5lk8"]
 
