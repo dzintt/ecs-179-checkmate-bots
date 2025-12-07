@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://c0d5el3ot2u5i"]
+
+[ext_resource type="Texture2D" uid="uid://b4cmknhf1q5g" path="res://assets/images/commander_base.png" id="1_3fc6v"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_6o151"]
+
+[resource]
+script = ExtResource("2_6o151")
+text = "You have been passed down the knowledge of CHESS for many generations, awaiting for this day."
+image = ExtResource("1_3fc6v")
+metadata/_custom_type_script = "uid://cldlietyrt556"

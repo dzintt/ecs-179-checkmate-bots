@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://hkhnsqmspbw2"]
+
+[ext_resource type="Texture2D" uid="uid://b4cmknhf1q5g" path="res://assets/images/commander_base.png" id="1_h7snf"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_ertth"]
+
+[resource]
+script = ExtResource("2_ertth")
+text = "As the alarms sound of danger for the first time in centuries, it is now YOUR time to rise up."
+image = ExtResource("1_h7snf")
+metadata/_custom_type_script = "uid://cldlietyrt556"
