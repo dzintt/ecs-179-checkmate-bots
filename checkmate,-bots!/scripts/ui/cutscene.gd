@@ -22,6 +22,7 @@ func _ready():
 		slide_container.modulate.a = 0.0
 
 	if skip_button:
+		skip_button.mouse_filter = Control.MOUSE_FILTER_STOP
 		skip_button.pressed.connect(_on_skip_pressed)
 
 	_show_slide(0)
@@ -35,6 +36,8 @@ func _input(event: InputEvent):
 		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
 			_next_slide()
 	elif event is InputEventMouseButton and event.pressed:
+		if skip_button and skip_button.get_global_rect().has_point(event.position):
+			return
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			_next_slide()
 
@@ -114,6 +117,7 @@ func _next_slide():
 func _on_skip_pressed():
 	if SoundManager:
 		SoundManager.play_button_press()
+	accept_event()
 	_end_cutscene()
 
 
