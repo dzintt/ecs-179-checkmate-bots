@@ -1,32 +1,49 @@
 [gd_scene load_steps=7 format=3 uid="uid://bsfhtk3xaimgg"]
 
-[ext_resource type="Texture2D" uid="uid://djmpkq8xidj6q" path="res://assets/images/Border All 10.png" id="1_08a8y"]
-[ext_resource type="PackedScene" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
-[ext_resource type="PackedScene" path="res://scenes/towers/knight_panel.tscn" id="3_7yii4"]
-[ext_resource type="PackedScene" path="res://scenes/towers/bishop_panel.tscn" id="4_4yt8u"]
-[ext_resource type="PackedScene" path="res://scenes/towers/queen_panel.tscn" id="5_p54wi"]
-[ext_resource type="PackedScene" path="res://scenes/towers/rook_panel.tscn" id="6_xki8e"]
+[ext_resource type="PackedScene" uid="uid://bw63kejk3ky7r" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
+[ext_resource type="PackedScene" uid="uid://bvnopsy136y54" path="res://scenes/towers/knight_panel.tscn" id="3_7yii4"]
+[ext_resource type="PackedScene" uid="uid://brluchiyt1j3t" path="res://scenes/towers/bishop_panel.tscn" id="4_4yt8u"]
+[ext_resource type="PackedScene" uid="uid://d27yswfkht8lv" path="res://scenes/towers/queen_panel.tscn" id="5_p54wi"]
+[ext_resource type="PackedScene" uid="uid://1uarq4vsyyp5" path="res://scenes/towers/rook_panel.tscn" id="6_xki8e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqlde"]
+bg_color = Color(0.78039217, 0.78039217, 0.78039217, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="gui" type="CanvasLayer"]
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = 1145.0
-offset_right = 1370.0
-offset_bottom = 648.0
-
-[node name="BorderAll10" type="Sprite2D" parent="Panel"]
-position = Vector2(114.00003, 326.49997)
-scale = Vector2(3.661289, 10.435483)
-texture = ExtResource("1_08a8y")
-region_enabled = true
-region_rect = Rect2(256.66055, 128.70418, 62.797516, 62.702225)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -324.0
+offset_bottom = 324.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_jqlde")
 
 [node name="FlowContainer" type="FlowContainer" parent="Panel"]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 53.0
-offset_right = 106.0
-offset_bottom = 622.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -284.5
+offset_right = 100.0
+offset_bottom = 284.5
+grow_vertical = 2
 theme_override_constants/h_separation = 115
 theme_override_constants/v_separation = 115
 
