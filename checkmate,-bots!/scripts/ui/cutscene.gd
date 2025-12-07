@@ -24,10 +24,6 @@ func _ready():
 		skip_button.pressed.connect(_on_skip_pressed)
 	
 	_show_slide(0)
-	
-	# Play intro music if available
-	if SoundManager:
-		SoundManager.play_menu_music()
 
 func _input(event: InputEvent):
 	if not can_advance:
@@ -72,10 +68,6 @@ func _show_slide(index: int):
 	_fade_in()
 
 func _fade_in():
-	if not animation_player:
-		can_advance = true
-		return
-	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
@@ -118,9 +110,4 @@ func _on_skip_pressed():
 	_end_cutscene()
 
 func _end_cutscene():
-	await _fade_out()
-	
-	if SoundManager:
-		SoundManager.play_game_music()
-	
 	get_tree().change_scene_to_file(next_scene_path)
