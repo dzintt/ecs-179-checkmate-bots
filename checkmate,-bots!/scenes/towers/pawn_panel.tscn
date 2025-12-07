@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw63kejk3ky7r"]
+
+[ext_resource type="Texture2D" uid="uid://djmpkq8xidj6q" path="res://assets/images/Border All 10.png" id="2_oc0p4"]
+[ext_resource type="Texture2D" uid="uid://g4n75mpdbia0" path="res://assets/towers/pawn/pawn.png" id="2_yi3be"]
+
+[node name="PawnPanel" type="Panel"]
+offset_right = 71.0
+offset_bottom = 71.0
+
+[node name="BorderAll10" type="Sprite2D" parent="."]
+position = Vector2(35.5, 35.5)
+scale = Vector2(1.0923077, 1.1269841)
+texture = ExtResource("2_oc0p4")
+region_enabled = true
+region_rect = Rect2(575.26166, 0.50154257, 65.05707, 63.89334)
+
+[node name="Pawn" type="Sprite2D" parent="."]
+position = Vector2(36, 31)
+scale = Vector2(1.6904761, 1.6482141)
+texture = ExtResource("2_yi3be")
