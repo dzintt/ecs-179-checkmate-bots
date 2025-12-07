@@ -52,7 +52,7 @@ func start_placement(tower_type: String, cost: int):
 
 
 ## Cancel placement mode
-func _cancel_placement():
+func cancel_placement():
 	is_placing = false
 	selected_tower_type = ""
 	selected_tower_cost = 0
@@ -79,7 +79,7 @@ func _input(event: InputEvent):
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			_try_place_tower()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			_cancel_placement()
+			cancel_placement()
 
 
 ## Update placement preview position
@@ -141,7 +141,7 @@ func _try_place_tower():
 		print("ERROR: TowerContainer not found!")
 		tower.queue_free()
 
-	_cancel_placement()
+	cancel_placement()
 
 
 ## Get the tower scene based on type
