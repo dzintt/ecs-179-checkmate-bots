@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_3rldx")
-text = "Each island is managed by their own government and set of rules. This is your home island, Jarej.
+text = "Each island is managed by their own government and set of rules. This is your home island, Jarej. It is split into 4 main regions
 "
 image = ExtResource("1_a2h5o")
 metadata/_custom_type_script = "uid://cldlietyrt556"
