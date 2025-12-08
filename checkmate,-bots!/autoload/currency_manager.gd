@@ -3,7 +3,7 @@ extends Node
 ## Singleton accessible via CurrencyManager
 ## Tracks player gold, handles transactions
 
-var current_gold: int = 150  # Starting gold
+var current_gold: int = 20  # Starting gold
 
 
 func _ready():
@@ -50,7 +50,7 @@ func get_current_gold() -> int:
 
 ## Reset gold to starting amount
 func reset_gold():
-	current_gold = 150
+	current_gold = 20
 	EventBus.gold_changed.emit(current_gold)
 	print("Gold reset to ", current_gold)
 
@@ -62,6 +62,6 @@ func _on_enemy_died(enemy: Node, gold_reward: int):
 
 func _on_wave_completed(wave_number: int):
 	# TODO: Award wave completion bonus (define in wave definition)
-	var bonus = 50  # Placeholder
+	var bonus = 5 + wave_number  # Placeholder
 	add_gold(bonus)
 	print("Wave ", wave_number, " completed! Bonus: ", bonus)

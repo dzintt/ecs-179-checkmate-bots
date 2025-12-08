@@ -12,11 +12,11 @@ func _ready():
 	tower_class = "rook"
 	description = "Fires projectiles in all L/R/U/D directions. Strong lane control."
 
-	base_cost = 10
+	base_cost = 5
 	upgrade_cost = 10
 
 	attack_damage = 5.0
-	attack_cooldown = 1.5
+	attack_cooldown = 1.0
 	projectile_speed = 400.0
 	uses_projectile = true
 	projectile_scene = preload("res://scenes/projectiles/rook_projectile.tscn")
@@ -30,7 +30,7 @@ func get_attack_pattern() -> Array[Vector2i]:
 	var pattern: Array[Vector2i] = []
 
 	# Horizontal and vertical lines in all 4 directions (up to 8 tiles away)
-	for i in range(1, 9):
+	for i in range(1, 16):
 		pattern.append(Vector2i(i, 0))  # Right
 		pattern.append(Vector2i(-i, 0))  # Left
 		pattern.append(Vector2i(0, i))  # Down

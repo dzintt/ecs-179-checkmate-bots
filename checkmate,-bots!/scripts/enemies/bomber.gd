@@ -14,9 +14,9 @@ func _ready():
 	move_speed = 70.0  # Starts slow
 	waypoint_threshold = 5.0
 
-	max_health = 120.0
+	max_health = 50.0
 	damage_to_base = 5
-	currency_reward = 25
+	currency_reward = 2
 	attack_interval = 0.0
 
 	enemy_class = "bomber"

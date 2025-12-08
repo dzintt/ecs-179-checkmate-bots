@@ -15,7 +15,7 @@ func _ready():
 	base_cost = 1
 	upgrade_cost = 1
 
-	attack_damage = 1.0
+	attack_damage = 2.0
 	attack_cooldown = 1.0
 	projectile_speed = 0.0
 

@@ -3,6 +3,7 @@ class_name Enemy
 
 ## Enemy that follows a designated path
 ## Adjust speed, health, and other properties in the inspector
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export_group("Enemy Info")
 ## Enemy display name
@@ -57,6 +58,8 @@ func _ready():
 	current_health = max_health
 	_setup_visual()
 	_disable_collisions()
+	if sprite:
+		sprite.play("walk")
 
 
 func _physics_process(delta: float):
@@ -97,6 +100,12 @@ func _move_along_path(_delta: float):
 	var direction = (target_position - global_position).normalized()
 	var distance_to_target = global_position.distance_to(target_position)
 
+	if sprite:
+		if direction.x > 0.1:
+			sprite.flip_h = false
+		elif direction.x < -0.1:
+			sprite.flip_h = true
+
 	var is_final: bool = current_waypoint_index == path_points.size() - 1
 	var reach_threshold: float = waypoint_threshold
 	if is_final:
@@ -124,6 +133,7 @@ func _move_along_path(_delta: float):
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
+	currency_reward = 0
 	# Default behavior: stay at king and keep attacking
 	_start_attacking_king()
 
@@ -189,21 +199,11 @@ func get_enemy_class() -> String:
 
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
-	# Create a simple colored circle as placeholder
-	var collision_shape = CollisionShape2D.new()
-	var circle_shape = CircleShape2D.new()
-	circle_shape.radius = 16
-	collision_shape.shape = circle_shape
-	add_child(collision_shape)
-
-	# Add visual indicator
-	queue_redraw()
+	pass
 
 
 func _draw():
-	# Draw a circle representing the enemy
-	draw_circle(Vector2.ZERO, 16, color)
-	draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
+	pass
 
 	# Draw health bar
 	if is_alive:

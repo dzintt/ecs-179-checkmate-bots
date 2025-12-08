@@ -10,9 +10,9 @@ func _ready():
 	waypoint_threshold = 5.0
 
 	# Set stats
-	max_health = 260.0
+	max_health = 100.0
 	damage_to_base = 2
-	currency_reward = 20
+	currency_reward = 5
 	attack_interval = 1.0
 
 	# Set enemy type
