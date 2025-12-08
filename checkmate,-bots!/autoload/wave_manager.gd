@@ -68,152 +68,68 @@ func start_wave():
 func _create_procedural_waves():
 	wave_definitions.clear()
 
-	# Wave 1: Basic pawns, single lane
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				1,
-				[
-					{"direction": "north", "count": 8, "delay": 0.8, "type": "pawn"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(1, [
+		{"direction": "north", "count": 5, "delay": 1.2, "type": "pawn"},
+	]))
 
-	# Wave 2: Pawns from opposite lane, slightly more
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				2,
-				[
-					{"direction": "south", "count": 10, "delay": 0.75, "type": "pawn"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(2, [
+		{"direction": "north", "count": 4, "delay": 1.0, "type": "pawn"},
+		{"direction": "south2", "count": 4, "delay": 1.0, "type": "pawn"},
+	]))
 
-	# Wave 3: One lanes, introduce fast runners
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				3,
-				[
-					{"direction": "east", "count": 10, "delay": 0.7, "type": "pawn"},
-					{"direction": "east", "count": 2, "delay": 1.0, "type": "runner"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(3, [
+		{"direction": "east", "count": 6, "delay": 0.9, "type": "pawn"},
+		{"direction": "east2", "count": 2, "delay": 2.0, "type": "runner"},
+	]))
 
-	# Wave 4: One lanes, add shield bots as mini-tanks
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				4,
-				[
-					{"direction": "west", "count": 12, "delay": 0.65, "type": "pawn"},
-					{"direction": "west", "count": 2, "delay": 1.3, "type": "shield"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(4, [
+		{"direction": "west2", "count": 8, "delay": 0.8, "type": "pawn"},
+		{"direction": "west", "count": 2, "delay": 1.5, "type": "shield"},
+	]))
 
-	# Wave 5: Opposite lanes, mix pawns and runners
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				5,
-				[
-					{"direction": "north", "count": 10, "delay": 0.6, "type": "pawn"},
-					{"direction": "south", "count": 4, "delay": 0.95, "type": "runner"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(5, [
+		{"direction": "north", "count": 6, "delay": 0.75, "type": "pawn"},
+		{"direction": "east2", "count": 3, "delay": 1.2, "type": "runner"},
+		{"direction": "south", "count": 2, "delay": 1.5, "type": "shield"},
+	]))
 
-	# Wave 6: East/West, add first bomber
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				6,
-				[
-					{"direction": "east", "count": 12, "delay": 0.6, "type": "pawn"},
-					{"direction": "west", "count": 12, "delay": 0.6, "type": "pawn"},
-					{"direction": "west", "count": 1, "delay": 1.5, "type": "bomber"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(6, [
+		{"direction": "north", "count": 8, "delay": 0.7, "type": "pawn"},
+		{"direction": "south2", "count": 4, "delay": 1.0, "type": "runner"},
+		{"direction": "west", "count": 1, "delay": 2.5, "type": "bomber"},
+	]))
 
-	# Wave 7: Three directions, more runners and a shield
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				7,
-				[
-					{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
-					{"direction": "east", "count": 6, "delay": 0.8, "type": "runner"},
-					{"direction": "south", "count": 3, "delay": 1.2, "type": "shield"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(7, [
+		{"direction": "north", "count": 6, "delay": 0.65, "type": "pawn"},
+		{"direction": "east2", "count": 6, "delay": 0.65, "type": "pawn"},
+		{"direction": "south", "count": 4, "delay": 1.0, "type": "runner"},
+		{"direction": "west2", "count": 2, "delay": 1.5, "type": "shield"},
+	]))
 
-	# Wave 8: All directions, mix pawns, runners, bombers, shields
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				8,
-				[
-					{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
-					{"direction": "east", "count": 6, "delay": 0.75, "type": "runner"},
-					{"direction": "south", "count": 4, "delay": 1.0, "type": "bomber"},
-					{"direction": "west", "count": 4, "delay": 0.9, "type": "shield"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(8, [
+		{"direction": "north2", "count": 8, "delay": 0.6, "type": "pawn"},
+		{"direction": "east", "count": 5, "delay": 0.9, "type": "runner"},
+		{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
+		{"direction": "west", "count": 2, "delay": 1.8, "type": "caster"},
+	]))
 
-	# Wave 9: All directions, introduce casters and more bombers
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				9,
-				[
-					{"direction": "north", "count": 10, "delay": 0.45, "type": "pawn"},
-					{"direction": "east", "count": 8, "delay": 0.65, "type": "runner"},
-					{"direction": "south", "count": 3, "delay": 1.2, "type": "bomber"},
-					{"direction": "west", "count": 3, "delay": 1.0, "type": "caster"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(9, [
+		{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
+		{"direction": "north2", "count": 5, "delay": 0.9, "type": "runner"},
+		{"direction": "east", "count": 3, "delay": 1.2, "type": "shield"},
+		{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
+		{"direction": "west", "count": 2, "delay": 1.5, "type": "caster"},
+	]))
 
-	# Wave 10: Final wave - heavy mix, faster pacing
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				10,
-				[
-					{"direction": "north", "count": 14, "delay": 0.4, "type": "pawn"},
-					{"direction": "east", "count": 8, "delay": 0.6, "type": "runner"},
-					{"direction": "south", "count": 4, "delay": 0.9, "type": "bomber"},
-					{"direction": "west", "count": 4, "delay": 0.9, "type": "caster"},
-					{"direction": "south", "count": 4, "delay": 1.0, "type": "shield"},
-				]
-			)
-		)
-	)
+	wave_definitions.append(_create_wave(10, [
+		{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
+		{"direction": "north2", "count": 6, "delay": 0.7, "type": "runner"},
+		{"direction": "east", "count": 4, "delay": 1.0, "type": "shield"},
+		{"direction": "east2", "count": 3, "delay": 1.2, "type": "bomber"},
+		{"direction": "south", "count": 3, "delay": 1.2, "type": "caster"},
+		{"direction": "west", "count": 4, "delay": 1.0, "type": "shield"},
+		{"direction": "west2", "count": 6, "delay": 0.8, "type": "runner"},
+	]))
 
 
 func _create_wave(wave_num: int, spawn_data: Array) -> Dictionary:

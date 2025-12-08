@@ -16,7 +16,7 @@ var lines: Array[String] = [
 		+ "The King is your base. If it dies, you lose."
 	),
 	"Enemies:\n- Basic Pawn: slow and weak.\n- Loot Runner: very fast, low HP, gives extra gold.\n- Shield Guard: slow, high HP, soaks damage.\n- Caster: medium HP, higher damage to the king.\n- Bomber: speeds up near the king and explodes for big damage.",
-	"That’s it! Defend the King and survive all waves!"
+	"There are type advantages in the game but that's for you to figure out... \nThat’s it! Defend the King and survive all waves!"
 ]
 
 var current_index: int = 0

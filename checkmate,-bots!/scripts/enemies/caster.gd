@@ -11,7 +11,7 @@ func _ready():
 	waypoint_threshold = 5.0
 
 	max_health = 50.0
-	damage_to_base = 4
+	damage_to_base = 5
 	currency_reward = 2
 	attack_interval = 1.0
 

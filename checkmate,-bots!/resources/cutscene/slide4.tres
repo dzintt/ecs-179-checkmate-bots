@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://c3v40taikbb0g"]
+[gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://qccsmvtlcom4"]
 
-[ext_resource type="Texture2D" uid="uid://35ujr3v6q6wb" path="res://assets/images/peaceful_farm.png" id="1_6221b"]
-[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_8dgvc"]
+[ext_resource type="Texture2D" uid="uid://caxjdguvfcqf6" path="res://assets/images/peaceful_town.png" id="1_owb4f"]
+[ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_mswd8"]
 
 [resource]
-script = ExtResource("2_8dgvc")
-text = "The world you live in is a city that embraces the nature and rarely has any violence. "
-image = ExtResource("1_6221b")
+script = ExtResource("2_mswd8")
+text = "In the South-Eastern region, there lies the busy streets of innovation. People living here are always trying to innovate new things to make life better."
+image = ExtResource("1_owb4f")
 metadata/_custom_type_script = "uid://cldlietyrt556"

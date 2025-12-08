@@ -11,7 +11,7 @@ func _ready():
 
 	# Set stats
 	max_health = 100.0
-	damage_to_base = 2
+	damage_to_base = 10
 	currency_reward = 5
 	attack_interval = 1.0
 
