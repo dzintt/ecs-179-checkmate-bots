@@ -12,10 +12,10 @@ func _ready():
 	tower_class = "knight"
 	description = "Attacks with earthquake animation, summons only in ONE direction. Unique L-shaped coverage."
 
-	base_cost = 5
+	base_cost = 3
 	upgrade_cost = 5
 
-	attack_damage = 5.0
+	attack_damage = 3.0
 	attack_cooldown = 1.25
 	projectile_speed = 0.0
 
