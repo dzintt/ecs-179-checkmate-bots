@@ -139,7 +139,7 @@ offset_right = 189.0
 offset_bottom = 230.0
 theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
 text = "K - Knight
-5 Gold"
+3 Gold"
 uppercase = true
 
 [node name="Bishop" type="Label" parent="Panel"]
@@ -150,7 +150,7 @@ offset_right = 202.0
 offset_bottom = 345.0
 theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
 text = "B - Bishop
-5 Gold"
+3 Gold"
 uppercase = true
 
 [node name="Rook" type="Label" parent="Panel"]
@@ -161,7 +161,7 @@ offset_right = 189.0
 offset_bottom = 463.0
 theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
 text = "R - Rook
-10 Gold"
+5 Gold"
 uppercase = true
 
 [node name="Rook2" type="Label" parent="Panel"]
@@ -172,7 +172,7 @@ offset_right = 198.0
 offset_bottom = 577.0
 theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
 text = "Q - Queen
-25 Gold"
+9 Gold"
 uppercase = true
 
 [connection signal="pressed" from="Panel/FlowContainer/PawnPanel/Button" to="Panel/FlowContainer/PawnPanel" method="_on_button_pressed"]

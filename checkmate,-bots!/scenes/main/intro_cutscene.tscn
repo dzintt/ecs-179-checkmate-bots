@@ -5,8 +5,8 @@
 [ext_resource type="Resource" uid="uid://budujoqf4wal" path="res://resources/cutscene/slide1.tres" id="3_oieux"]
 [ext_resource type="Resource" uid="uid://u46qc6mk5u3t" path="res://resources/cutscene/slide2.tres" id="4_od77a"]
 [ext_resource type="Resource" uid="uid://ktfmrerwvwub" path="res://resources/cutscene/slide3.tres" id="5_fsvy2"]
-[ext_resource type="Resource" uid="uid://c3v40taikbb0g" path="res://resources/cutscene/slide4.tres" id="6_68j2k"]
-[ext_resource type="Resource" uid="uid://qccsmvtlcom4" path="res://resources/cutscene/slide5.tres" id="7_588uk"]
+[ext_resource type="Resource" uid="uid://sqrixyq6ltml" path="res://resources/cutscene/slide5.tres" id="7_68j2k"]
+[ext_resource type="Resource" uid="uid://qccsmvtlcom4" path="res://resources/cutscene/slide4.tres" id="7_588uk"]
 [ext_resource type="Resource" uid="uid://crkld5cdr1ack" path="res://resources/cutscene/slide6.tres" id="8_jh7n5"]
 [ext_resource type="Resource" uid="uid://0u7h6xqdx5dw" path="res://resources/cutscene/slide7.tres" id="9_blyfm"]
 [ext_resource type="Resource" uid="uid://hkhnsqmspbw2" path="res://resources/cutscene/slide8.tres" id="10_nvqub"]
@@ -23,7 +23,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yn528")
-slides = Array[ExtResource("2_g6erw")]([ExtResource("3_oieux"), ExtResource("4_od77a"), ExtResource("5_fsvy2"), ExtResource("6_68j2k"), ExtResource("7_588uk"), ExtResource("8_jh7n5"), ExtResource("9_blyfm"), ExtResource("10_nvqub"), ExtResource("11_qjs7y"), ExtResource("12_wny0v"), ExtResource("13_l1xs4")])
+slides = Array[ExtResource("2_g6erw")]([ExtResource("3_oieux"), ExtResource("4_od77a"), ExtResource("5_fsvy2"), ExtResource("7_588uk"), ExtResource("7_68j2k"), ExtResource("8_jh7n5"), ExtResource("9_blyfm"), ExtResource("10_nvqub"), ExtResource("11_qjs7y"), ExtResource("12_wny0v"), ExtResource("13_l1xs4")])
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1

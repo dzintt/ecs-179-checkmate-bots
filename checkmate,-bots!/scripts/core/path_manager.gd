@@ -1,6 +1,5 @@
 extends Node2D
 class_name PathManager
-
 const GridSystem = preload("res://scripts/systems/grid_system.gd")
 
 ## Manages enemy paths on the map
