@@ -3,7 +3,7 @@ class_name Cutscene
 
 @export var slides: Array[CutsceneSlide] = []
 @export var next_scene_path: String = "res://scenes/main/world.tscn"
-@export var fade_duration: float = 0.5
+@export var fade_duration: float = 0.25
 
 @onready var slide_container: Control = $SlideContainer
 @onready var slide_text: RichTextLabel = $SlideContainer/VBoxContainer/SlideText

@@ -58,20 +58,20 @@ func _input(event: InputEvent):
 		if event.keycode == KEY_P:
 			placement_system.start_placement("pawn", 1)
 
-		elif event.keycode == KEY_N:
-			placement_system.start_placement("knight", 5)
+		elif event.keycode == KEY_K:
+			placement_system.start_placement("knight", 3)
 
 		elif event.keycode == KEY_B:
-			placement_system.start_placement("bishop", 5)
+			placement_system.start_placement("bishop", 3)
 
 		elif event.keycode == KEY_R:
-			placement_system.start_placement("rook", 10)
+			placement_system.start_placement("rook", 5)
 
 		elif event.keycode == KEY_Q:
-			placement_system.start_placement("queen", 25)
+			placement_system.start_placement("queen", 9)
 
-		elif event.keycode == KEY_K:
-			_spawn_test_enemy()
+		#elif event.keycode == KEY_K:
+			#_spawn_test_enemy()
 
 		elif event.keycode == KEY_SPACE:
 			if placement_system and placement_system.has_method("cancel_placement"):
@@ -124,6 +124,8 @@ func _update_debug_label():
 		var wave_status = ""
 		if WaveManager.is_wave_active():
 			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
+		elif WaveManager.get_current_wave() >= WaveManager.max_waves:
+			return
 		else:
 			wave_status = (
 				"Press SPACE to start wave %d/%d"
@@ -131,7 +133,7 @@ func _update_debug_label():
 			)
 
 		debug_label.text = (
-			"Gold: %d\n%s\nTowers:\nP = Pawn (Cost = 1)\nN = Knight (Cost = 5)\nB = Bishop (Cost = 5)\nR = Rook (Cost = 10)\nQ = Queen (Cost = 25)\n\nPress K to spawn test enemy\nRight-click to cancel placement\nPress ESC for options/pause"
+			"Gold: %d\n%s\nRight-click to cancel placement\nPress ESC for options/pause"
 			% [CurrencyManager.get_current_gold(), wave_status]
 		)
 

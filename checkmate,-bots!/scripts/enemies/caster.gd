@@ -10,9 +10,9 @@ func _ready():
 	move_speed = 80.0
 	waypoint_threshold = 5.0
 
-	max_health = 130.0
-	damage_to_base = 4
-	currency_reward = 22
+	max_health = 50.0
+	damage_to_base = 5
+	currency_reward = 2
 	attack_interval = 1.0
 
 	# Set enemy type

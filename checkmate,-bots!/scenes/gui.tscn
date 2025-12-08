@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bsfhtk3xaimgg"]
+[gd_scene load_steps=10 format=3 uid="uid://bsfhtk3xaimgg"]
 
 [ext_resource type="PackedScene" uid="uid://bw63kejk3ky7r" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
 [ext_resource type="Script" uid="uid://dm5qkgastrhxh" path="res://scripts/towers/pawn/pawn_panel.gd" id="2_xki8e"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://brluchiyt1j3t" path="res://scenes/towers/bishop_panel.tscn" id="4_4yt8u"]
 [ext_resource type="PackedScene" uid="uid://d27yswfkht8lv" path="res://scenes/towers/queen_panel.tscn" id="5_p54wi"]
 [ext_resource type="PackedScene" uid="uid://1uarq4vsyyp5" path="res://scenes/towers/rook_panel.tscn" id="6_xki8e"]
+[ext_resource type="Script" path="res://scripts/ui/wave_control.gd" id="7_wave"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqlde"]
 bg_color = Color(0.78039217, 0.78039217, 0.78039217, 1)
@@ -19,7 +20,10 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="SystemFont" id="SystemFont_08a8y"]
+
 [node name="gui" type="CanvasLayer"]
+script = ExtResource("7_wave")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 6
@@ -34,6 +38,28 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_jqlde")
+
+[node name="Title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.5
+offset_top = -306.0
+offset_right = 90.5
+offset_bottom = -276.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_08a8y")
+theme_override_font_sizes/font_size = 21
+text = "Tower Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+metadata/_edit_use_anchors_ = true
 
 [node name="FlowContainer" type="FlowContainer" parent="Panel"]
 layout_mode = 1
@@ -69,15 +95,6 @@ offset_right = 71.0
 offset_bottom = 71.5
 flat = true
 
-[node name="rook_panel" parent="Panel/FlowContainer" instance=ExtResource("6_xki8e")]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="Panel/FlowContainer/rook_panel"]
-layout_mode = 0
-offset_right = 72.0
-offset_bottom = 71.5
-flat = true
-
 [node name="bishop_panel" parent="Panel/FlowContainer" instance=ExtResource("4_4yt8u")]
 layout_mode = 2
 
@@ -85,6 +102,15 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 72.0
 offset_bottom = 72.5
+flat = true
+
+[node name="rook_panel" parent="Panel/FlowContainer" instance=ExtResource("6_xki8e")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Panel/FlowContainer/rook_panel"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 71.5
 flat = true
 
 [node name="queen_panel" parent="Panel/FlowContainer" instance=ExtResource("5_p54wi")]
@@ -96,8 +122,89 @@ offset_right = 72.0
 offset_bottom = 72.5
 flat = true
 
+[node name="Pawn" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 67.0
+offset_right = 189.0
+offset_bottom = 116.0
+theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
+text = "P - Pawn
+1 Gold"
+uppercase = true
+
+[node name="Knight" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 181.0
+offset_right = 189.0
+offset_bottom = 230.0
+theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
+text = "K - Knight
+3 Gold"
+uppercase = true
+
+[node name="Bishop" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 296.0
+offset_right = 202.0
+offset_bottom = 345.0
+theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
+text = "B - Bishop
+3 Gold"
+uppercase = true
+
+[node name="Rook" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 414.0
+offset_right = 189.0
+offset_bottom = 463.0
+theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
+text = "R - Rook
+5 Gold"
+uppercase = true
+
+[node name="Rook2" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 528.0
+offset_right = 198.0
+offset_bottom = 577.0
+theme_override_colors/font_color = Color(0, 0.22352941, 1, 1)
+text = "Q - Queen
+9 Gold"
+uppercase = true
+
+[node name="WaveControl" type="Control" parent="."]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -140.0
+offset_right = 100.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="StartWaveButton" type="Button" parent="WaveControl"]
+layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Wave"
+
 [connection signal="pressed" from="Panel/FlowContainer/PawnPanel/Button" to="Panel/FlowContainer/PawnPanel" method="_on_button_pressed"]
 [connection signal="pressed" from="Panel/FlowContainer/knight_panel/Button" to="Panel/FlowContainer/knight_panel" method="_on_button_pressed"]
-[connection signal="pressed" from="Panel/FlowContainer/rook_panel/Button" to="Panel/FlowContainer/rook_panel" method="_on_button_pressed"]
 [connection signal="pressed" from="Panel/FlowContainer/bishop_panel/Button" to="Panel/FlowContainer/bishop_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/FlowContainer/rook_panel/Button" to="Panel/FlowContainer/rook_panel" method="_on_button_pressed"]
 [connection signal="pressed" from="Panel/FlowContainer/queen_panel/Button" to="Panel/FlowContainer/queen_panel" method="_on_button_pressed"]

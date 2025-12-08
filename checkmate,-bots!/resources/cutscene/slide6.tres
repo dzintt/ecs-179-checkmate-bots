@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="CutsceneSlide" load_steps=3 format=3 uid="uid://crkld5cdr1ack"]
 
-[ext_resource type="Texture2D" uid="uid://caxjdguvfcqf6" path="res://assets/images/peaceful_town.png" id="1_v1k0s"]
+[ext_resource type="Texture2D" uid="uid://8mumkjuu7j8f" path="res://assets/images/government.png" id="1_v1k0s"]
 [ext_resource type="Script" uid="uid://cldlietyrt556" path="res://scripts/ui/cutscene_slide.gd" id="2_wdtyq"]
 
 [resource]
 script = ExtResource("2_wdtyq")
-text = "For centuries, the people of Jarej lived in peace and harmony. That was until one fateful day..."
+text = "In the South-Western region, lies the government and lawmaking area. People who live here are wealthy, often heirs of long lasting clans."
 image = ExtResource("1_v1k0s")
 metadata/_custom_type_script = "uid://cldlietyrt556"
