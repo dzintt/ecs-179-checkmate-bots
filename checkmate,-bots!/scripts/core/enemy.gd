@@ -200,12 +200,13 @@ func _setup_visual():
 	# queue_redraw()
 	pass
 
+
 func _draw():
 	# Draw a circle representing the enemy
 	#draw_circle(Vector2.ZERO, 16, color)
 	#draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
 	pass
-	
+
 	# Draw health bar
 	if is_alive:
 		var health_percent = current_health / max_health
