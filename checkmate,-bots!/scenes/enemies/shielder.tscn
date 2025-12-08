@@ -1,11 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://12vfi34fknby"]
+[gd_scene load_steps=5 format=3 uid="uid://12vfi34fknby"]
 
 [ext_resource type="Script" uid="uid://cau7bchf5m4lc" path="res://scripts/enemies/shielder.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://dlx8uelo5o8ct" path="res://assets/enemies/shielder/shielder.png" id="2_iv7re"]
+[ext_resource type="Texture2D" uid="uid://clcbi7w0l2edk" path="res://assets/enemies/shielder/sheilder2.png" id="3_fhc0o"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iv7re"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iv7re")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fhc0o")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
 
 [node name="Shielder" type="CharacterBody2D"]
 script = ExtResource("1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
-texture = ExtResource("2_iv7re")
+sprite_frames = SubResource("SpriteFrames_iv7re")
+animation = &"walk"
+autoplay = "walk"
+frame_progress = 0.6980133
+flip_h = true
