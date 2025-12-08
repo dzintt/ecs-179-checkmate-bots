@@ -12,7 +12,7 @@ func _ready():
 	tower_class = "queen"
 	description = "Fires projectiles in all L/R/U/D and diagonal directions. Supreme coverage and power."
 
-	base_cost = 25
+	base_cost = 9
 	upgrade_cost = 25
 
 	attack_damage = 9.0
@@ -30,7 +30,7 @@ func get_attack_pattern() -> Array[Vector2i]:
 	var pattern: Array[Vector2i] = []
 
 	# All 8 directions (horizontal, vertical, and diagonal lines)
-	for i in range(1, 9):
+	for i in range(1, 16):
 		# Horizontal and vertical (Rook)
 		pattern.append(Vector2i(i, 0))  # Right
 		pattern.append(Vector2i(-i, 0))  # Left

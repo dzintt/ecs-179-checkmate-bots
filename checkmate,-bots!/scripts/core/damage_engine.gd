@@ -6,38 +6,38 @@ const TYPE_FACTORS = {
 	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
-		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
+		Enemy.EnemyPreset.SHIELD_GUARD: 0.5,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
 	"knight":
 	{
-		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
+		Enemy.EnemyPreset.BASIC_PAWN: 2.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
-		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
-		Enemy.EnemyPreset.CASTER: 1.0,
+		Enemy.EnemyPreset.SHIELD_GUARD: 2.0,
+		Enemy.EnemyPreset.CASTER: 0.5,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
 	"bishop":
 	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
-		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
-		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
-		Enemy.EnemyPreset.CASTER: 1.0,
+		Enemy.EnemyPreset.LOOT_RUNNER: 2.0,
+		Enemy.EnemyPreset.SHIELD_GUARD: 0.5,
+		Enemy.EnemyPreset.CASTER: 0.5,
 		Enemy.EnemyPreset.BOMBER: 1.0,
 	},
 	"rook":
 	{
 		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
 		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
-		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
+		Enemy.EnemyPreset.SHIELD_GUARD: 3.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
-		Enemy.EnemyPreset.BOMBER: 1.0,
+		Enemy.EnemyPreset.BOMBER: 2.0,
 	},
 	"queen":
 	{
-		Enemy.EnemyPreset.BASIC_PAWN: 1.0,
-		Enemy.EnemyPreset.LOOT_RUNNER: 1.0,
+		Enemy.EnemyPreset.BASIC_PAWN: 2.0,
+		Enemy.EnemyPreset.LOOT_RUNNER: 2.0,
 		Enemy.EnemyPreset.SHIELD_GUARD: 1.0,
 		Enemy.EnemyPreset.CASTER: 1.0,
 		Enemy.EnemyPreset.BOMBER: 1.0,

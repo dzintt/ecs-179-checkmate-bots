@@ -124,6 +124,7 @@ func _move_along_path(_delta: float):
 ## Called when enemy reaches the end of the path
 func _reach_end_of_path():
 	is_active = false
+	currency_reward = 0
 	# Default behavior: stay at king and keep attacking
 	_start_attacking_king()
 

@@ -12,7 +12,7 @@ func _ready():
 	description = "Attacks all tiles in diagonal lines. Fires Projectiles at medium speed."
 	tower_class = "bishop"
 
-	base_cost = 5
+	base_cost = 3
 	upgrade_cost = 5
 
 	attack_damage = 3.0
@@ -30,7 +30,7 @@ func get_attack_pattern() -> Array[Vector2i]:
 	var pattern: Array[Vector2i] = []
 
 	# Diagonal lines in all 4 directions (up to 8 tiles away for an 8x8 board)
-	for i in range(1, 9):
+	for i in range(1, 16):
 		pattern.append(Vector2i(i, i))  # Bottom-right
 		pattern.append(Vector2i(i, -i))  # Top-right
 		pattern.append(Vector2i(-i, i))  # Bottom-left

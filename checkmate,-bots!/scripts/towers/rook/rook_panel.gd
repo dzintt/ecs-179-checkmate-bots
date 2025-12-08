@@ -1,7 +1,7 @@
 extends Panel
 
 var tower_type: String = "rook"
-var tower_cost: int = 10
+var tower_cost: int = 5
 
 
 func _ready():
