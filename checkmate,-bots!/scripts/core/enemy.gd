@@ -190,21 +190,22 @@ func get_enemy_class() -> String:
 ## Setup placeholder visual (replace with sprite later)
 func _setup_visual():
 	# Create a simple colored circle as placeholder
-	var collision_shape = CollisionShape2D.new()
-	var circle_shape = CircleShape2D.new()
-	circle_shape.radius = 16
-	collision_shape.shape = circle_shape
-	add_child(collision_shape)
+	# var collision_shape = CollisionShape2D.new()
+	# var circle_shape = CircleShape2D.new()
+	# circle_shape.radius = 16
+	# collision_shape.shape = circle_shape
+	# add_child(collision_shape)
 
 	# Add visual indicator
-	queue_redraw()
-
+	# queue_redraw()
+	pass
 
 func _draw():
 	# Draw a circle representing the enemy
-	draw_circle(Vector2.ZERO, 16, color)
-	draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
-
+	#draw_circle(Vector2.ZERO, 16, color)
+	#draw_circle(Vector2.ZERO, 16, Color.BLACK, false, 2.0)
+	pass
+	
 	# Draw health bar
 	if is_alive:
 		var health_percent = current_health / max_health
