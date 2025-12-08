@@ -122,7 +122,7 @@ func _handle_screen_drag(event: InputEventScreenDrag) -> void:
 		return
 
 	var avg_screen := _average_touch_position()
-	var current_world_before := _camera.get_viewport().get_camera_2d().unproject_position(
+	var current_world_before: Vector2 = _camera.get_viewport().get_camera_2d().unproject_position(
 		avg_screen
 	)
 	var world_delta: Vector2 = (_last_touch_world - current_world_before) * pan_speed
