@@ -58,7 +58,7 @@ func _input(event: InputEvent):
 		if event.keycode == KEY_P:
 			placement_system.start_placement("pawn", 1)
 
-		elif event.keycode == KEY_N:
+		elif event.keycode == KEY_K:
 			placement_system.start_placement("knight", 3)
 
 		elif event.keycode == KEY_B:
@@ -133,7 +133,7 @@ func _update_debug_label():
 			)
 
 		debug_label.text = (
-			"Gold: %d\n%s\nTowers:\nP = Pawn (Cost = 1)\nN = Knight (Cost = 3)\nB = Bishop (Cost = 3)\nR = Rook (Cost = 5)\nQ = Queen (Cost = 9)\n\nPress K to spawn test enemy\nRight-click to cancel placement\nPress ESC for options/pause"
+			"Gold: %d\n%s\nRight-click to cancel placement\nPress ESC for options/pause"
 			% [CurrencyManager.get_current_gold(), wave_status]
 		)
 
