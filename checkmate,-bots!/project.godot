@@ -24,15 +24,15 @@ WaveManager="*res://autoload/wave_manager.gd"
 SoundManager="*res://autoload/sound_manager.gd"
 UICursorManager="*res://autoload/ui_cursor_manager.gd"
 
+[gui]
+
+theme/custom="res://assets/fonts/global_theme.tres"
+
 [layer_names]
 
 2d_physics/layer_1="Towers"
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="King"
-
-[gui]
-
-theme/custom="res://assets/fonts/global_theme.tres"
 
 [rendering]
 
