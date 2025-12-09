@@ -70,7 +70,6 @@ func _create_procedural_waves():
 	if enemy_factory == null:
 		enemy_factory = EnemyFactoryClass.new()
 		enemy_factory.register_default_specs()
-
 	var base_score: float = 2.0
 	var increment: float = 2.0
 
