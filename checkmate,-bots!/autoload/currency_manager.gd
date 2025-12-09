@@ -3,7 +3,7 @@ extends Node
 ## Singleton accessible via CurrencyManager
 ## Tracks player gold, handles transactions
 
-var current_gold: int = 10  # Starting gold
+var current_gold: int = 20  # Starting gold
 
 
 func _ready():

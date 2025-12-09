@@ -71,7 +71,7 @@ func _input(event: InputEvent):
 			placement_system.start_placement("queen", 9)
 
 		#elif event.keycode == KEY_K:
-			#_spawn_test_enemy()
+		#_spawn_test_enemy()
 
 		elif event.keycode == KEY_SPACE:
 			if placement_system and placement_system.has_method("cancel_placement"):
@@ -127,9 +127,15 @@ func _update_debug_label():
 		elif WaveManager.get_current_wave() >= WaveManager.max_waves:
 			return
 		else:
+			var next_wave := WaveManager.get_current_wave() + 1
+			var summary := (
+				WaveManager.get_wave_summary(next_wave)
+				if WaveManager.has_method("get_wave_summary")
+				else ""
+			)
 			wave_status = (
-				"Press SPACE to start wave %d/%d"
-				% [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
+				"Press SPACE to start wave %d/%d\nNext: %s"
+				% [next_wave, WaveManager.max_waves, summary]
 			)
 
 		debug_label.text = (
