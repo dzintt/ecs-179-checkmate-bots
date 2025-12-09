@@ -30,6 +30,10 @@ UICursorManager="*res://autoload/ui_cursor_manager.gd"
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="King"
 
+[gui]
+
+theme/custom="res://assets/fonts/global_theme.tres"
+
 [rendering]
 
 renderer/rendering_method="mobile"

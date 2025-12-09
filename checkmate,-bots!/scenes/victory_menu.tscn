@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://ypfncgetve6a"]
 
 [ext_resource type="Script" uid="uid://cxcd1a0woft0s" path="res://scripts/ui/victory_menu.gd" id="1_4ntwv"]
-[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_y38n5"]
+[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/VT323-Regular.ttf" id="2_y38n5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n4lob"]
 bg_color = Color(1, 1, 1, 1)
