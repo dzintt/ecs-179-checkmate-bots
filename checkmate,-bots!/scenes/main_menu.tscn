@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dlq4xlt27i0uf" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://ciei3l0ww7j8u" path="res://assets/images/Background.png" id="1_ekxnf"]
-[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
+[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/VT323-Regular.ttf" id="2_bqqt6"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wu84c"]
 texture = ExtResource("1_ekxnf")
