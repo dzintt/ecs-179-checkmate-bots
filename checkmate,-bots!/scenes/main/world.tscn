@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=12 format=3 uid="uid://36tyq720fald"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
 [ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bsfhtk3xaimgg" path="res://scenes/gui.tscn" id="6_yshnf"]
 [ext_resource type="Script" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
 [ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
+[ext_resource type="Texture2D" path="res://assets/images/hologram_table.png" id="9_holo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
@@ -35,6 +36,14 @@ script = ExtResource("5_path")
 auto_config_from_grid = true
 
 [node name="SetDressing" type="Node2D" parent="."]
+
+[node name="HologramTable" type="Sprite2D" parent="SetDressing"]
+texture = ExtResource("9_holo")
+position = Vector2(563.5, 576)
+scale = Vector2(23, 24)
+centered = true
+z_index = -5
+texture_filter = 1
 
 [node name="BoardLight" type="PointLight2D" parent="SetDressing"]
 position = Vector2(576, 576)

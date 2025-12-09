@@ -8,6 +8,7 @@ var wave_definitions: Array = []
 var path_manager: PathManager = null
 var spawn_parent: Node = null
 var _cancel_spawns: bool = false
+var active_portals: Dictionary = {}
 
 const ENEMY_SCENES := {
 	"pawn": preload("res://scenes/enemies/basic_pawn.tscn"),
@@ -16,6 +17,7 @@ const ENEMY_SCENES := {
 	"bomber": preload("res://scenes/enemies/bomber.tscn"),
 	"caster": preload("res://scenes/enemies/caster.tscn")
 }
+const PortalEffectScene := preload("res://scenes/effects/portal_effect.tscn")
 
 
 func _ready():
@@ -68,68 +70,148 @@ func start_wave():
 func _create_procedural_waves():
 	wave_definitions.clear()
 
-	wave_definitions.append(_create_wave(1, [
-		{"direction": "north", "count": 5, "delay": 1.2, "type": "pawn"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				1,
+				[
+					{"direction": "north", "count": 5, "delay": 1.2, "type": "pawn"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(2, [
-		{"direction": "north", "count": 4, "delay": 1.0, "type": "pawn"},
-		{"direction": "south2", "count": 4, "delay": 1.0, "type": "pawn"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				2,
+				[
+					{"direction": "north", "count": 4, "delay": 1.0, "type": "pawn"},
+					{"direction": "south2", "count": 4, "delay": 1.0, "type": "pawn"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(3, [
-		{"direction": "east", "count": 6, "delay": 0.9, "type": "pawn"},
-		{"direction": "east2", "count": 2, "delay": 2.0, "type": "runner"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				3,
+				[
+					{"direction": "east", "count": 6, "delay": 0.9, "type": "pawn"},
+					{"direction": "east2", "count": 2, "delay": 2.0, "type": "runner"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(4, [
-		{"direction": "west2", "count": 8, "delay": 0.8, "type": "pawn"},
-		{"direction": "west", "count": 2, "delay": 1.5, "type": "shield"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				4,
+				[
+					{"direction": "west2", "count": 8, "delay": 0.8, "type": "pawn"},
+					{"direction": "west", "count": 2, "delay": 1.5, "type": "shield"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(5, [
-		{"direction": "north", "count": 6, "delay": 0.75, "type": "pawn"},
-		{"direction": "east2", "count": 3, "delay": 1.2, "type": "runner"},
-		{"direction": "south", "count": 2, "delay": 1.5, "type": "shield"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				5,
+				[
+					{"direction": "north", "count": 6, "delay": 0.75, "type": "pawn"},
+					{"direction": "east2", "count": 3, "delay": 1.2, "type": "runner"},
+					{"direction": "south", "count": 2, "delay": 1.5, "type": "shield"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(6, [
-		{"direction": "north", "count": 8, "delay": 0.7, "type": "pawn"},
-		{"direction": "south2", "count": 4, "delay": 1.0, "type": "runner"},
-		{"direction": "west", "count": 1, "delay": 2.5, "type": "bomber"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				6,
+				[
+					{"direction": "north", "count": 8, "delay": 0.7, "type": "pawn"},
+					{"direction": "south2", "count": 4, "delay": 1.0, "type": "runner"},
+					{"direction": "west", "count": 1, "delay": 2.5, "type": "bomber"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(7, [
-		{"direction": "north", "count": 6, "delay": 0.65, "type": "pawn"},
-		{"direction": "east2", "count": 6, "delay": 0.65, "type": "pawn"},
-		{"direction": "south", "count": 4, "delay": 1.0, "type": "runner"},
-		{"direction": "west2", "count": 2, "delay": 1.5, "type": "shield"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				7,
+				[
+					{"direction": "north", "count": 6, "delay": 0.65, "type": "pawn"},
+					{"direction": "east2", "count": 6, "delay": 0.65, "type": "pawn"},
+					{"direction": "south", "count": 4, "delay": 1.0, "type": "runner"},
+					{"direction": "west2", "count": 2, "delay": 1.5, "type": "shield"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(8, [
-		{"direction": "north2", "count": 8, "delay": 0.6, "type": "pawn"},
-		{"direction": "east", "count": 5, "delay": 0.9, "type": "runner"},
-		{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
-		{"direction": "west", "count": 2, "delay": 1.8, "type": "caster"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				8,
+				[
+					{"direction": "north2", "count": 8, "delay": 0.6, "type": "pawn"},
+					{"direction": "east", "count": 5, "delay": 0.9, "type": "runner"},
+					{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
+					{"direction": "west", "count": 2, "delay": 1.8, "type": "caster"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(9, [
-		{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
-		{"direction": "north2", "count": 5, "delay": 0.9, "type": "runner"},
-		{"direction": "east", "count": 3, "delay": 1.2, "type": "shield"},
-		{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
-		{"direction": "west", "count": 2, "delay": 1.5, "type": "caster"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				9,
+				[
+					{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
+					{"direction": "north2", "count": 5, "delay": 0.9, "type": "runner"},
+					{"direction": "east", "count": 3, "delay": 1.2, "type": "shield"},
+					{"direction": "south2", "count": 2, "delay": 1.5, "type": "bomber"},
+					{"direction": "west", "count": 2, "delay": 1.5, "type": "caster"},
+				]
+			)
+		)
+	)
 
-	wave_definitions.append(_create_wave(10, [
-		{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
-		{"direction": "north2", "count": 6, "delay": 0.7, "type": "runner"},
-		{"direction": "east", "count": 4, "delay": 1.0, "type": "shield"},
-		{"direction": "east2", "count": 3, "delay": 1.2, "type": "bomber"},
-		{"direction": "south", "count": 3, "delay": 1.2, "type": "caster"},
-		{"direction": "west", "count": 4, "delay": 1.0, "type": "shield"},
-		{"direction": "west2", "count": 6, "delay": 0.8, "type": "runner"},
-	]))
+	(
+		wave_definitions
+		. append(
+			_create_wave(
+				10,
+				[
+					{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
+					{"direction": "north2", "count": 6, "delay": 0.7, "type": "runner"},
+					{"direction": "east", "count": 4, "delay": 1.0, "type": "shield"},
+					{"direction": "east2", "count": 3, "delay": 1.2, "type": "bomber"},
+					{"direction": "south", "count": 3, "delay": 1.2, "type": "caster"},
+					{"direction": "west", "count": 4, "delay": 1.0, "type": "shield"},
+					{"direction": "west2", "count": 6, "delay": 0.8, "type": "runner"},
+				]
+			)
+		)
+	)
 
 
 func _create_wave(wave_num: int, spawn_data: Array) -> Dictionary:
@@ -150,6 +232,9 @@ func _spawn_wave_enemies():
 
 	var wave_def = wave_definitions[current_wave - 1]
 	var spawn_data_array = wave_def["spawn_data"]
+
+	_close_all_portals()
+	_show_portals_for_wave(spawn_data_array)
 
 	enemies_alive = 0
 
@@ -226,6 +311,7 @@ func end_wave():
 		return
 
 	wave_in_progress = false
+	_close_all_portals()
 	EventBus.wave_completed.emit(current_wave)
 	print("Wave ", current_wave, " completed!")
 
@@ -279,6 +365,35 @@ func reset_waves():
 	wave_in_progress = false
 	enemies_alive = 0
 	_cancel_spawns = true
+	_close_all_portals()
 	# Clear any spawned enemies
 	get_tree().call_group("enemies", "queue_free")
 	print("Waves reset")
+
+
+func _show_portals_for_wave(spawn_data_array: Array):
+	if path_manager == null or spawn_parent == null:
+		return
+
+	var directions := {}
+	for spawn_info in spawn_data_array:
+		if spawn_info.has("direction"):
+			directions[spawn_info["direction"]] = true
+
+	for direction in directions.keys():
+		if active_portals.has(direction) and is_instance_valid(active_portals[direction]):
+			continue
+
+		var start_pos: Vector2 = path_manager.get_start_position(direction)
+		var portal: Node2D = PortalEffectScene.instantiate()
+		spawn_parent.add_child(portal)
+		portal.global_position = start_pos
+		active_portals[direction] = portal
+
+
+func _close_all_portals():
+	for direction in active_portals.keys():
+		var portal: PortalEffect = active_portals[direction]
+		if portal and is_instance_valid(portal):
+			portal.close_and_free()
+	active_portals.clear()

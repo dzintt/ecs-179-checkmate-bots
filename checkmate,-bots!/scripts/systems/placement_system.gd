@@ -10,7 +10,7 @@ var is_placing: bool = false
 @onready var tower_container: Node2D
 var range_overlay: Node2D
 var _overlay_pool: Array[ColorRect] = []
-const RANGE_COLOR := Color(0, 0.55, 1, 0.25)
+const RANGE_COLOR := Color(0.1, 0.9, 0.2, 0.28)
 var ghost_tower: Node2D = null
 
 signal placement_completed(tower: Node, position: Vector2)
