@@ -12,7 +12,7 @@ var active_portals: Dictionary = {}
 
 const PortalEffectScene := preload("res://scenes/effects/portal_effect.tscn")
 const EnemyFactoryClass := preload("res://scripts/systems/enemy_factory.gd")
-var enemy_factory = null
+var enemy_factory: EnemyFactory = null
 
 
 func _ready():
@@ -22,7 +22,7 @@ func _ready():
 	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
 
 	if enemy_factory == null:
-		enemy_factory = EnemyFactoryClass.new()
+		enemy_factory = EnemyFactoryClass.new() as EnemyFactory
 	enemy_factory.register_default_specs()
 	_load_wave_definitions()
 
@@ -68,7 +68,7 @@ func start_wave():
 func _create_procedural_waves():
 	wave_definitions.clear()
 	if enemy_factory == null:
-		enemy_factory = EnemyFactoryClass.new()
+		enemy_factory = EnemyFactoryClass.new() as EnemyFactory
 		enemy_factory.register_default_specs()
 	var base_score: float = 2.0
 	var increment: float = 2.0
