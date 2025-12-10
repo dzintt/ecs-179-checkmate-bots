@@ -54,5 +54,12 @@ const TYPE_FACTORS = {
 
 
 static func calculate_damage(tower_class: String, enemy: Enemy, base_damage: float) -> float:
-	var type_factor = TYPE_FACTORS[tower_class][enemy.preset]
+	if enemy == null or not is_instance_valid(enemy):
+		return base_damage
+
+	var normalized_class := tower_class if tower_class != null else ""
+	normalized_class = normalized_class.to_lower()
+
+	var class_factors: Dictionary = TYPE_FACTORS.get(normalized_class, {})
+	var type_factor: float = class_factors.get(enemy.preset, 1.0)
 	return base_damage * type_factor

@@ -14,9 +14,27 @@ extends Node2D
 @onready var pause_main_menu_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/MainMenu
 @onready var pause_exit_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/Exit
 @onready var king_health_hud = $CanvasLayer/KingHealthHUD
+var move_mode: bool = false
+var move_selected: Tower = null
+var move_valid_tiles: Array[Vector2i] = []
+var move_overlay: Node2D
+var move_selected_outline: Line2D
+var _move_pool: Array[ColorRect] = []
+var _was_placing: bool = false
+var moves_available: int = 1  # single move allowance per wave
+const MOVE_COLOR := Color(0.1, 0.9, 0.2, 0.28)
+const SELECT_OUTLINE_COLOR := Color(0.1, 0.9, 0.2, 0.95)
+const PROMOTION_KEY := KEY_H
+const PROMOTION_OPTIONS := {
+	KEY_1: "queen",
+	KEY_2: "rook",
+	KEY_3: "bishop",
+	KEY_4: "knight",
+}
+var promotion_select_mode: bool = false
+var promotion_pending: PawnTower = null
+var _promotion_ready_pawns: Array[PawnTower] = []
 
-# Preload enemy scene
-var enemy_scene = preload("res://scenes/enemies/basic_pawn.tscn")
 const KING_SCENE := preload("res://scenes/towers/king.tscn")
 const KING_FOOTPRINT_TILES := 2
 var king_instance: Node2D = null
@@ -36,9 +54,16 @@ func _ready():
 
 	_connect_pause_menu_signals()
 
+	set_process(true)
+
 	EventBus.gold_changed.connect(_on_gold_changed)
 	EventBus.wave_started.connect(_on_wave_started)
 	EventBus.wave_completed.connect(_on_wave_completed)
+
+	move_overlay = Node2D.new()
+	move_overlay.name = "MoveOverlay"
+	add_child(move_overlay)
+	_init_selected_outline()
 
 	_update_debug_label()
 	_spawn_king_base()
@@ -49,29 +74,46 @@ func _ready():
 		print("WaveManager initialized with PathManager")
 
 
-func _input(event: InputEvent):
+func _input(event: InputEvent) -> void:
+	# Avoid selecting/moving while actively placing a tower.
+	if move_mode and not _is_in_placement_mode():
+		if _handle_move_mode_input(event):
+			return
+
 	if event is InputEventKey and event.pressed:
+		if _handle_promotion_key(event):
+			return
+
 		if event.keycode == KEY_ESCAPE:
 			_toggle_pause_menu()
 			return
 
+		# Manual move-mode toggle (only when not in placement and no active wave)
+		if (
+			event.keycode == KEY_M
+			and not _is_in_placement_mode()
+			and not WaveManager.is_wave_active()
+		):
+			if move_mode:
+				_exit_move_mode()
+			else:
+				_enter_move_mode()
+			return
+
 		if event.keycode == KEY_P:
-			placement_system.start_placement("pawn", 1)
+			_start_placement("pawn", 1)
 
 		elif event.keycode == KEY_K:
-			placement_system.start_placement("knight", 3)
+			_start_placement("knight", 3)
 
 		elif event.keycode == KEY_B:
-			placement_system.start_placement("bishop", 3)
+			_start_placement("bishop", 3)
 
 		elif event.keycode == KEY_R:
-			placement_system.start_placement("rook", 5)
+			_start_placement("rook", 5)
 
 		elif event.keycode == KEY_Q:
-			placement_system.start_placement("queen", 9)
-
-		#elif event.keycode == KEY_K:
-			#_spawn_test_enemy()
+			_start_placement("queen", 9)
 
 		elif event.keycode == KEY_SPACE:
 			if placement_system and placement_system.has_method("cancel_placement"):
@@ -81,28 +123,15 @@ func _input(event: InputEvent):
 				print("Starting wave...")
 
 
-func _spawn_test_enemy():
-	if not enemy_scene:
-		print("ERROR: basic_pawn.tscn not found!")
-		return
+func _process(_delta: float) -> void:
+	var placing_now = _is_in_placement_mode()
 
-	var enemy = enemy_scene.instantiate()
-	enemy_container.add_child(enemy)
-	if EventBus:
-		EventBus.enemy_spawned.emit(enemy)
+	if placing_now and not _was_placing and move_mode:
+		_exit_move_mode()
 
-	# Set a simple path from top to bottom
-	var path: Array[Vector2] = [
-		Vector2(512, 100),
-		Vector2(512, 300),
-		Vector2(512, 500),
-		Vector2(512, 700),
-	]
-	enemy.set_path(path)
+	# No automatic move-mode restore; player can toggle with M after placing.
 
-	print("Enemy spawned at world pos: ", enemy.global_position)
-	print("Enemy grid pos: ", GridSystem.world_to_grid(enemy.global_position))
-	print("Spawned test enemy")
+	_was_placing = placing_now
 
 
 func _on_gold_changed(_new_amount: int):
@@ -111,30 +140,47 @@ func _on_gold_changed(_new_amount: int):
 
 func _on_wave_started(wave_num: int):
 	print("Wave ", wave_num, " started!")
+	moves_available = 0
+	_exit_move_mode()
 	_update_debug_label()
 
 
 func _on_wave_completed(wave_num: int):
 	print("Wave ", wave_num, " completed!")
+	moves_available = 1
+	_enter_move_mode()
 	_update_debug_label()
 
 
 func _update_debug_label():
 	if debug_label:
 		var wave_status = ""
+		var promotion_status = _promotion_status_text()
 		if WaveManager.is_wave_active():
 			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
 		elif WaveManager.get_current_wave() >= WaveManager.max_waves:
 			return
 		else:
-			wave_status = (
-				"Press SPACE to start wave %d/%d"
-				% [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
+			var next_wave := WaveManager.get_current_wave() + 1
+			var summary := (
+				WaveManager.get_wave_summary(next_wave)
+				if WaveManager.has_method("get_wave_summary")
+				else ""
 			)
+			if move_mode:
+				wave_status = (
+					"Move a tower (click tower, then tile)\nMoves left this wave: %d\nPress M to exit move mode\nPress SPACE to start wave %d/%d\nNext: %s"
+					% [moves_available, next_wave, WaveManager.max_waves, summary]
+				)
+			else:
+				wave_status = (
+					"Moves left this wave: %d\nPress M to enter move mode\nPress SPACE to start wave %d/%d\nNext: %s"
+					% [moves_available, next_wave, WaveManager.max_waves, summary]
+				)
 
 		debug_label.text = (
-			"Gold: %d\n%s\nRight-click to cancel placement\nPress ESC for options/pause"
-			% [CurrencyManager.get_current_gold(), wave_status]
+			"Gold: %d\n%s%s\nRight-click to cancel placement\nPress ESC for options/pause"
+			% [CurrencyManager.get_current_gold(), wave_status, promotion_status]
 		)
 
 
@@ -172,6 +218,361 @@ func _get_board_center_world_position() -> Vector2:
 	var center_index = start_index + float(KING_FOOTPRINT_TILES) / 2.0
 	var center = Vector2(center_index, center_index) * board.tile_size
 	return center
+
+
+func _enter_move_mode():
+	if move_mode:
+		return
+	if moves_available <= 0:
+		return
+	if tower_container == null or tower_container.get_child_count() == 0:
+		return
+	move_mode = true
+	move_selected = null
+	move_valid_tiles.clear()
+	_clear_move_overlay()
+	_update_debug_label()
+	print("Move mode: select a tower, then a highlighted tile.")
+
+
+func _exit_move_mode():
+	if not move_mode:
+		return
+	move_mode = false
+	move_selected = null
+	move_valid_tiles.clear()
+	_clear_move_overlay()
+	_update_debug_label()
+
+
+func _handle_move_click():
+	var cam := get_viewport().get_camera_2d()
+	if cam == null:
+		return
+	var world_pos = cam.get_global_mouse_position()
+	var grid_pos = GridSystem.world_to_grid(world_pos)
+
+	if move_selected == null:
+		var tower := _tower_at_grid(grid_pos)
+		if tower and _is_moveable_tower(tower):
+			move_selected = tower
+			move_valid_tiles = _compute_move_tiles(tower)
+			_show_move_tiles(move_valid_tiles)
+			_show_selected_outline(tower.grid_position)
+		return
+
+	# Already selected a tower; attempt move
+	if move_valid_tiles.has(grid_pos):
+		_move_selected_to(grid_pos)
+		_exit_move_mode()
+		return
+
+	# Reselect another tower if clicked
+	var new_tower := _tower_at_grid(grid_pos)
+	if new_tower and _is_moveable_tower(new_tower):
+		move_selected = new_tower
+		move_valid_tiles = _compute_move_tiles(new_tower)
+		_show_move_tiles(move_valid_tiles)
+		_show_selected_outline(new_tower.grid_position)
+
+
+func _tower_at_grid(grid_pos: Vector2i) -> Tower:
+	if tower_container == null:
+		return null
+	for child in tower_container.get_children():
+		if child is Tower:
+			var t: Tower = child
+			if t.grid_position == grid_pos:
+				return t
+	return null
+
+
+func _compute_move_tiles(tower: Tower) -> Array[Vector2i]:
+	var tiles: Array[Vector2i] = []
+	if not tower:
+		return tiles
+	var pattern := tower.get_attack_pattern()
+	for offset in pattern:
+		var target := tower.grid_position + offset
+		if not GridSystem.is_within_board(target):
+			continue
+		if GridSystem.is_cross_tile(target):
+			continue
+		if GridSystem.is_tile_occupied(target) and target != tower.grid_position:
+			continue
+		tiles.append(target)
+	return tiles
+
+
+func _move_selected_to(grid_pos: Vector2i):
+	if move_selected == null:
+		return
+	var old_pos := move_selected.grid_position
+	GridSystem.release_tile(old_pos)
+	GridSystem.occupy_tile(grid_pos)
+	move_selected.grid_position = grid_pos
+	move_selected.global_position = GridSystem.grid_to_world(grid_pos)
+	# Keep tower's rest position in sync so bounce/attacks don't snap back.
+	move_selected._rest_position = move_selected.position
+	if move_selected is PawnTower:
+		_track_pawn_promotion(move_selected, old_pos, grid_pos)
+	print("Moved ", move_selected.tower_name, " from ", old_pos, " to ", grid_pos)
+	moves_available = max(moves_available - 1, 0)
+	_update_debug_label()
+
+
+func _track_pawn_promotion(pawn: PawnTower, old_pos: Vector2i, new_pos: Vector2i):
+	var distance = abs(new_pos.x - old_pos.x) + abs(new_pos.y - old_pos.y)
+	if distance <= 0:
+		return
+	if pawn.add_movement_progress(distance):
+		_mark_pawn_ready_for_promotion(pawn)
+
+
+func _mark_pawn_ready_for_promotion(pawn: PawnTower):
+	if pawn == null or not is_instance_valid(pawn):
+		return
+	if not _promotion_ready_pawns.has(pawn):
+		_promotion_ready_pawns.append(pawn)
+	if promotion_pending == null or not is_instance_valid(promotion_pending):
+		promotion_pending = pawn
+	_update_debug_label()
+	print("Pawn at ", pawn.grid_position, " is ready for promotion.")
+
+
+func _promote_pawn_to_type(pawn: PawnTower, target_type: String):
+	if pawn == null or not is_instance_valid(pawn):
+		return
+
+	var scene_path := "res://scenes/towers/%s.tscn" % target_type
+	if not ResourceLoader.exists(scene_path):
+		print("Promotion failed: missing scene for ", target_type)
+		return
+
+	var grid_pos := pawn.grid_position
+
+	pawn.clear_promotion_state()
+	_promotion_ready_pawns.erase(pawn)
+	pawn.queue_free()
+
+	var tower_scene: PackedScene = load(scene_path)
+	if tower_scene == null:
+		print("Promotion failed: could not load ", scene_path)
+		return
+
+	var new_tower = tower_scene.instantiate()
+	if new_tower == null:
+		print("Promotion failed: instantiate returned null for ", target_type)
+		return
+
+	new_tower.global_position = GridSystem.grid_to_world(grid_pos)
+
+	if tower_container:
+		tower_container.add_child(new_tower)
+	GridSystem.occupy_tile(grid_pos)
+	print("Pawn promoted to ", target_type, " at ", grid_pos)
+
+
+func _show_move_tiles(tiles: Array[Vector2i]):
+	_ensure_move_overlay_pool(tiles.size())
+	var tile_size = Vector2(GridSystem.TILE_SIZE, GridSystem.TILE_SIZE)
+	var used := 0
+	for pos in tiles:
+		if used >= _move_pool.size():
+			break
+		var rect := _move_pool[used]
+		used += 1
+		rect.visible = true
+		rect.size = tile_size
+		rect.position = GridSystem.grid_to_world(pos) - tile_size / 2.0
+		rect.color = MOVE_COLOR
+	for i in range(used, _move_pool.size()):
+		_move_pool[i].visible = false
+
+
+func _clear_move_overlay():
+	for rect in _move_pool:
+		rect.visible = false
+	if move_selected_outline:
+		move_selected_outline.visible = false
+
+
+func _ensure_move_overlay_pool(count: int):
+	while _move_pool.size() < count:
+		var rect = ColorRect.new()
+		rect.visible = false
+		rect.size = Vector2(GridSystem.TILE_SIZE, GridSystem.TILE_SIZE)
+		rect.color = MOVE_COLOR
+		if move_overlay:
+			move_overlay.add_child(rect)
+		_move_pool.append(rect)
+
+
+func _handle_move_mode_input(event: InputEvent) -> bool:
+	# Mouse input
+	if event is InputEventMouseButton and event.pressed:
+		var mouse_event := event as InputEventMouseButton
+		match mouse_event.button_index:
+			MOUSE_BUTTON_RIGHT:
+				if move_selected != null:
+					move_selected = null
+					move_valid_tiles.clear()
+					_clear_move_overlay()
+					_update_debug_label()
+				else:
+					_exit_move_mode()
+				return true
+			MOUSE_BUTTON_LEFT:
+				_handle_move_click()
+				return true
+
+	# Keyboard input
+	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
+		_exit_move_mode()
+		if not WaveManager.is_wave_active():
+			WaveManager.start_wave()
+		return true
+
+	return false
+
+
+func _handle_promotion_key(event: InputEventKey) -> bool:
+	if event.keycode == PROMOTION_KEY:
+		_begin_promotion_selection()
+		return true
+
+	if promotion_select_mode and promotion_pending != null and is_instance_valid(promotion_pending):
+		if PROMOTION_OPTIONS.has(event.keycode):
+			var target_type: String = PROMOTION_OPTIONS[event.keycode]
+			_promote_pending_pawn(target_type)
+			return true
+		if event.keycode == KEY_ESCAPE:
+			_cancel_promotion_selection(false)
+
+	return false
+
+
+func _begin_promotion_selection():
+	var pawn := _ready_pawn_under_mouse()
+	if pawn == null:
+		print("No pawn ready at cursor. Hover a ready pawn and press H to promote.")
+		return
+
+	promotion_pending = pawn
+	promotion_select_mode = true
+	_update_debug_label()
+	print(
+		"Promote pawn at ",
+		pawn.grid_position,
+		". Press 1=Queen, 2=Rook, 3=Bishop, 4=Knight to pick."
+	)
+
+
+func _promote_pending_pawn(target_type: String):
+	if promotion_pending == null or not is_instance_valid(promotion_pending):
+		_cancel_promotion_selection()
+		return
+
+	_promote_pawn_to_type(promotion_pending, target_type)
+	_cancel_promotion_selection()
+
+
+func _cancel_promotion_selection(update_label: bool = true):
+	promotion_select_mode = false
+	promotion_pending = null
+	if update_label:
+		_update_debug_label()
+
+
+func _ready_pawn_under_mouse() -> PawnTower:
+	var cam := get_viewport().get_camera_2d()
+	if cam == null:
+		return null
+	var grid_pos = GridSystem.world_to_grid(cam.get_global_mouse_position())
+	var tower := _tower_at_grid(grid_pos)
+	if tower is PawnTower and tower.is_promotion_ready():
+		return tower
+	return null
+
+
+func _first_valid_ready_pawn() -> PawnTower:
+	var filtered: Array[PawnTower] = []
+	var first_valid: PawnTower = null
+	for pawn in _promotion_ready_pawns:
+		if pawn != null and is_instance_valid(pawn) and pawn.is_promotion_ready():
+			if first_valid == null:
+				first_valid = pawn
+			filtered.append(pawn)
+	_promotion_ready_pawns = filtered
+	return first_valid
+
+
+func _promotion_status_text() -> String:
+	var pawn := _ready_pawn_under_mouse()
+	if pawn == null:
+		pawn = _first_valid_ready_pawn()
+
+	if promotion_select_mode and promotion_pending != null and is_instance_valid(promotion_pending):
+		return (
+			"\nPromotion: pawn at %s -> 1=Queen 2=Rook 3=Bishop 4=Knight"
+			% str(promotion_pending.grid_position)
+		)
+
+	if pawn != null:
+		return "\nReady pawn at %s. Hover it, press H, then pick 1/2/3/4." % str(pawn.grid_position)
+
+	return ""
+
+
+func _is_in_placement_mode() -> bool:
+	return placement_system != null and placement_system.is_placing
+
+
+func _is_moveable_tower(tower: Tower) -> bool:
+	if tower == null:
+		return false
+	# The king/base should never be movable.
+	if tower is KingBase or tower.tower_class == "king":
+		return false
+	return true
+
+
+func _init_selected_outline():
+	move_selected_outline = Line2D.new()
+	move_selected_outline.width = 2.0
+	move_selected_outline.default_color = SELECT_OUTLINE_COLOR
+	move_selected_outline.closed = true
+	# Predefine a square outline around the origin; position later per tile.
+	var half = float(GridSystem.TILE_SIZE) / 2.0
+	move_selected_outline.points = [
+		Vector2(-half, -half),
+		Vector2(half, -half),
+		Vector2(half, half),
+		Vector2(-half, half),
+	]
+	move_selected_outline.visible = false
+	if move_overlay:
+		move_overlay.add_child(move_selected_outline)
+
+
+func _show_selected_outline(grid_pos: Vector2i):
+	if move_selected_outline == null:
+		return
+	move_selected_outline.visible = true
+	move_selected_outline.position = GridSystem.grid_to_world(grid_pos)
+
+
+func _start_placement(tower_type: String, cost: int):
+	# Leaving move mode avoids the “move a tower” prompt while placing.
+	if move_mode:
+		_exit_move_mode()
+	if placement_system:
+		placement_system.start_placement(tower_type, cost)
+
+
+func _on_placement_finished(_tower = null, _position = Vector2.ZERO):
+	# Signals fire near placement end; if placement already stopped, restore now.
+	pass
 
 
 func _toggle_pause_menu():
