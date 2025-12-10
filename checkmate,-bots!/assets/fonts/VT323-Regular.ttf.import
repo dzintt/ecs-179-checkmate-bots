@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bsim0ep4k4gis"
-path="res://.godot/imported/Super Cursed.ttf-3af98ddc40d31ac1bd59a273aa2c684d.fontdata"
+uid="uid://cj1jndiewalai"
+path="res://.godot/imported/VT323-Regular.ttf-fc3781f5235ceff7fbc465ccf3078d1e.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Super Cursed.ttf"
-dest_files=["res://.godot/imported/Super Cursed.ttf-3af98ddc40d31ac1bd59a273aa2c684d.fontdata"]
+source_file="res://assets/fonts/VT323-Regular.ttf"
+dest_files=["res://.godot/imported/VT323-Regular.ttf-fc3781f5235ceff7fbc465ccf3078d1e.fontdata"]
 
 [params]
 

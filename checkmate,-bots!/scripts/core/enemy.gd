@@ -59,6 +59,8 @@ func _ready():
 	_setup_visual()
 	_disable_collisions()
 	if sprite:
+		sprite.z_index = 10
+	if sprite:
 		sprite.play("walk")
 
 

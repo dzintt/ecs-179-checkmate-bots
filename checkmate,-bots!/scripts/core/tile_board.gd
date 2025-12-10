@@ -8,12 +8,12 @@ const GridSystem = preload("res://scripts/systems/grid_system.gd")
 @export var frame_thickness: float = 48.0
 @export var background_margin: float = 48.0
 
-@export var chess_tile_color_light: Color = Color(0.92, 0.86, 0.74)
-@export var chess_tile_color_dark: Color = Color(0.46, 0.34, 0.22)
-@export var cross_color_light: Color = Color(0.24, 0.34, 0.23)
-@export var cross_color_dark: Color = Color(0.17, 0.26, 0.18)
-@export var frame_color: Color = Color(0.18, 0.13, 0.09)
-@export var background_color: Color = Color(0.08, 0.08, 0.1)
+@export var chess_tile_color_light: Color = Color(0.35, 0.66, 0.80)
+@export var chess_tile_color_dark: Color = Color(0.12, 0.22, 0.30)
+@export var cross_color_light: Color = Color(0.30, 0.32, 0.48)
+@export var cross_color_dark: Color = Color(0.16, 0.18, 0.30)
+@export var frame_color: Color = Color(0.05, 0.12, 0.16, 0.35)
+@export var background_color: Color = Color(0, 0, 0, 0)
 
 var _tiles_root: Node2D
 
