@@ -4,20 +4,25 @@ extends Control
 @onready var next_button: Button = $VBoxContainer/NextButton
 
 var lines: Array[String] = [
-	"Welcome, Commander!\n\nI'll walk you through how to defend the King.",
-	"Gold:\n- You start with some gold.\n- Spend gold to buy towers.\n\nPress SPACE to start each wave.",
-	(
-		"Towers:\n"
-		+ "P = Pawn  (Cost 1) – Cheap, hits up to 2 tiles away in a plus shape (up/down/left/right).\n"
-		+ "N = Knight (Cost 5) – L-shaped hits like a chess knight, strong burst damage.\n"
-		+ "B = Bishop (Cost 5) – Shoots projectiles along diagonals across the board.\n"
-		+ "R = Rook   (Cost 10) – Shoots projectiles in straight lanes (up/down/left/right).\n"
-		+ "Q = Queen  (Cost 25) – Fires fast projectiles in all directions, best coverage and damage.\n"
-		+ "The King is your base. If it dies, you lose."
-	),
-	"Enemies:\n- Basic Pawn: slow and weak.\n- Loot Runner: very fast, low HP, gives extra gold.\n- Shield Guard: slow, high HP, soaks damage.\n- Caster: medium HP, higher damage to the king.\n- Bomber: speeds up near the king and explodes for big damage.",
-	"There are type advantages in the game but that's for you to figure out... \nThat’s it! Defend the King and survive all waves!"
+	"Welcome, Commander!\n\nGoal: keep the King alive.\nIf the King dies, you lose.",
+	"Game flow:\n- Place towers on empty tiles.\n- Enemies walk toward the King.\n- Press SPACE to start each wave.",
+	"Gold:\n- You start with some gold.\n- Killing enemies gives more.\n- Spend gold between waves to buy towers.",
+	"Towers:\n"
+	+ "P (1): cheap, short range.\n"
+	+ "N (5): L-shape, strong hit.\n"
+	+ "B (5): long diagonal shots.\n"
+	+ "R (10): long straight shots.\n"
+	+ "Q (25): big range, high damage.",
+	"Enemies:\n"
+	+ "Pawn: slow, weak.\n"
+	+ "Loot Runner: very fast, extra gold.\n"
+	+ "Shield: very tanky.\n"
+	+ "Caster: hurts the King more.\n"
+	+ "Bomber: speeds up and explodes.",
+	"Tip:\nSome towers work better on certain enemies.\nExperiment with setups.\n\nGood luck defending the King!"
 ]
+
+
 
 var current_index: int = 0
 
