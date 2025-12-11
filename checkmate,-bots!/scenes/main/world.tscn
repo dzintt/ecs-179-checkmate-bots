@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
 [ext_resource type="Texture2D" path="res://assets/images/hologram_table.png" id="9_holo"]
 [ext_resource type="Texture2D" path="res://assets/images/dark_grid_background.png" id="10_bg"]
-[ext_resource type="Texture2D" path="res://assets/ui/TabbedTooltipTopLeft.png" id="11_speech"]
+[ext_resource type="Texture2D" path="res://assets/ui/SpeechTooltipRight.png" id="11_speech"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
