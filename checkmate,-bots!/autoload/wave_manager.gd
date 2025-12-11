@@ -298,7 +298,7 @@ func get_wave_summary(wave_number: int) -> String:
 		parts.append("%s x%d (%s)" % [etype, buckets[key], dir])
 
 	parts.sort()
-	return ", ".join(parts)
+	return "\n".join(parts)
 
 
 ## Check if a wave is in progress

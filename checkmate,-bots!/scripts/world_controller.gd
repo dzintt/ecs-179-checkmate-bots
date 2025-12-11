@@ -2,6 +2,8 @@ extends Node2D
 ## World Controller - Test/debug controls for gameplay
 ## Temporary script for testing the game loop
 
+const TOOLTIP_BG := preload("res://assets/ui/SpeechTooltipRight.png")
+
 @onready var placement_system = $PlacementSystem
 @onready var board = $Board
 @onready var enemy_container = $EnemyContainer
@@ -24,16 +26,9 @@ var _was_placing: bool = false
 var moves_available: int = 1  # single move allowance per wave
 const MOVE_COLOR := Color(0.1, 0.9, 0.2, 0.28)
 const SELECT_OUTLINE_COLOR := Color(0.1, 0.9, 0.2, 0.95)
-const PROMOTION_KEY := KEY_H
-const PROMOTION_OPTIONS := {
-	KEY_1: "queen",
-	KEY_2: "rook",
-	KEY_3: "bishop",
-	KEY_4: "knight",
-}
-var promotion_select_mode: bool = false
-var promotion_pending: PawnTower = null
-var _promotion_ready_pawns: Array[PawnTower] = []
+
+const PromotionSystemScene := preload("res://scripts/systems/promotion_system.gd")
+var promotion_system: PromotionSystem
 
 const KING_SCENE := preload("res://scenes/towers/king.tscn")
 const KING_FOOTPRINT_TILES := 2
@@ -48,6 +43,7 @@ func _ready():
 		SoundManager.play_game_music()
 
 	_sync_audio_sliders()
+	_setup_tooltip_style()
 
 	if pause_menu:
 		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -65,6 +61,10 @@ func _ready():
 	add_child(move_overlay)
 	_init_selected_outline()
 
+	promotion_system = PromotionSystemScene.new()
+	add_child(promotion_system)
+	promotion_system.set_tower_container(tower_container)
+
 	_update_debug_label()
 	_spawn_king_base()
 	_init_king_health_hud()
@@ -74,6 +74,26 @@ func _ready():
 		print("WaveManager initialized with PathManager")
 
 
+func _setup_tooltip_style():
+	if TOOLTIP_BG == null:
+		return
+
+	var sb := StyleBoxTexture.new()
+	sb.texture = TOOLTIP_BG
+	sb.set_content_margin_all(8.0)
+	# Patch margins tuned for the speech bubble shape.
+	sb.set("texture_margin_left", 16.0)
+	sb.set("texture_margin_right", 20.0)
+	sb.set("texture_margin_top", 12.0)
+	sb.set("texture_margin_bottom", 16.0)
+	sb.draw_center = true
+
+	var theme: Theme = ThemeDB.get_default_theme()
+	if theme:
+		theme.set_stylebox("panel", "TooltipPanel", sb)
+		theme.set_stylebox("panel", "TooltipPanelDisabled", sb)
+
+
 func _input(event: InputEvent) -> void:
 	# Avoid selecting/moving while actively placing a tower.
 	if move_mode and not _is_in_placement_mode():
@@ -81,7 +101,8 @@ func _input(event: InputEvent) -> void:
 			return
 
 	if event is InputEventKey and event.pressed:
-		if _handle_promotion_key(event):
+		if promotion_system and promotion_system.handle_input(event):
+			_update_debug_label()
 			return
 
 		if event.keycode == KEY_ESCAPE:
@@ -148,14 +169,14 @@ func _on_wave_started(wave_num: int):
 func _on_wave_completed(wave_num: int):
 	print("Wave ", wave_num, " completed!")
 	moves_available = 1
-	_enter_move_mode()
+	_exit_move_mode()
 	_update_debug_label()
 
 
 func _update_debug_label():
 	if debug_label:
 		var wave_status = ""
-		var promotion_status = _promotion_status_text()
+		var promotion_status = promotion_system.get_status_text() if promotion_system else ""
 		if WaveManager.is_wave_active():
 			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
 		elif WaveManager.get_current_wave() >= WaveManager.max_waves:
@@ -314,63 +335,11 @@ func _move_selected_to(grid_pos: Vector2i):
 	move_selected.global_position = GridSystem.grid_to_world(grid_pos)
 	# Keep tower's rest position in sync so bounce/attacks don't snap back.
 	move_selected._rest_position = move_selected.position
-	if move_selected is PawnTower:
-		_track_pawn_promotion(move_selected, old_pos, grid_pos)
+	if move_selected is PawnTower and promotion_system:
+		promotion_system.track_pawn_move(move_selected, old_pos, grid_pos)
 	print("Moved ", move_selected.tower_name, " from ", old_pos, " to ", grid_pos)
 	moves_available = max(moves_available - 1, 0)
 	_update_debug_label()
-
-
-func _track_pawn_promotion(pawn: PawnTower, old_pos: Vector2i, new_pos: Vector2i):
-	var distance = abs(new_pos.x - old_pos.x) + abs(new_pos.y - old_pos.y)
-	if distance <= 0:
-		return
-	if pawn.add_movement_progress(distance):
-		_mark_pawn_ready_for_promotion(pawn)
-
-
-func _mark_pawn_ready_for_promotion(pawn: PawnTower):
-	if pawn == null or not is_instance_valid(pawn):
-		return
-	if not _promotion_ready_pawns.has(pawn):
-		_promotion_ready_pawns.append(pawn)
-	if promotion_pending == null or not is_instance_valid(promotion_pending):
-		promotion_pending = pawn
-	_update_debug_label()
-	print("Pawn at ", pawn.grid_position, " is ready for promotion.")
-
-
-func _promote_pawn_to_type(pawn: PawnTower, target_type: String):
-	if pawn == null or not is_instance_valid(pawn):
-		return
-
-	var scene_path := "res://scenes/towers/%s.tscn" % target_type
-	if not ResourceLoader.exists(scene_path):
-		print("Promotion failed: missing scene for ", target_type)
-		return
-
-	var grid_pos := pawn.grid_position
-
-	pawn.clear_promotion_state()
-	_promotion_ready_pawns.erase(pawn)
-	pawn.queue_free()
-
-	var tower_scene: PackedScene = load(scene_path)
-	if tower_scene == null:
-		print("Promotion failed: could not load ", scene_path)
-		return
-
-	var new_tower = tower_scene.instantiate()
-	if new_tower == null:
-		print("Promotion failed: instantiate returned null for ", target_type)
-		return
-
-	new_tower.global_position = GridSystem.grid_to_world(grid_pos)
-
-	if tower_container:
-		tower_container.add_child(new_tower)
-	GridSystem.occupy_tile(grid_pos)
-	print("Pawn promoted to ", target_type, " at ", grid_pos)
 
 
 func _show_move_tiles(tiles: Array[Vector2i]):
@@ -434,94 +403,6 @@ func _handle_move_mode_input(event: InputEvent) -> bool:
 		return true
 
 	return false
-
-
-func _handle_promotion_key(event: InputEventKey) -> bool:
-	if event.keycode == PROMOTION_KEY:
-		_begin_promotion_selection()
-		return true
-
-	if promotion_select_mode and promotion_pending != null and is_instance_valid(promotion_pending):
-		if PROMOTION_OPTIONS.has(event.keycode):
-			var target_type: String = PROMOTION_OPTIONS[event.keycode]
-			_promote_pending_pawn(target_type)
-			return true
-		if event.keycode == KEY_ESCAPE:
-			_cancel_promotion_selection(false)
-
-	return false
-
-
-func _begin_promotion_selection():
-	var pawn := _ready_pawn_under_mouse()
-	if pawn == null:
-		print("No pawn ready at cursor. Hover a ready pawn and press H to promote.")
-		return
-
-	promotion_pending = pawn
-	promotion_select_mode = true
-	_update_debug_label()
-	print(
-		"Promote pawn at ",
-		pawn.grid_position,
-		". Press 1=Queen, 2=Rook, 3=Bishop, 4=Knight to pick."
-	)
-
-
-func _promote_pending_pawn(target_type: String):
-	if promotion_pending == null or not is_instance_valid(promotion_pending):
-		_cancel_promotion_selection()
-		return
-
-	_promote_pawn_to_type(promotion_pending, target_type)
-	_cancel_promotion_selection()
-
-
-func _cancel_promotion_selection(update_label: bool = true):
-	promotion_select_mode = false
-	promotion_pending = null
-	if update_label:
-		_update_debug_label()
-
-
-func _ready_pawn_under_mouse() -> PawnTower:
-	var cam := get_viewport().get_camera_2d()
-	if cam == null:
-		return null
-	var grid_pos = GridSystem.world_to_grid(cam.get_global_mouse_position())
-	var tower := _tower_at_grid(grid_pos)
-	if tower is PawnTower and tower.is_promotion_ready():
-		return tower
-	return null
-
-
-func _first_valid_ready_pawn() -> PawnTower:
-	var filtered: Array[PawnTower] = []
-	var first_valid: PawnTower = null
-	for pawn in _promotion_ready_pawns:
-		if pawn != null and is_instance_valid(pawn) and pawn.is_promotion_ready():
-			if first_valid == null:
-				first_valid = pawn
-			filtered.append(pawn)
-	_promotion_ready_pawns = filtered
-	return first_valid
-
-
-func _promotion_status_text() -> String:
-	var pawn := _ready_pawn_under_mouse()
-	if pawn == null:
-		pawn = _first_valid_ready_pawn()
-
-	if promotion_select_mode and promotion_pending != null and is_instance_valid(promotion_pending):
-		return (
-			"\nPromotion: pawn at %s -> 1=Queen 2=Rook 3=Bishop 4=Knight"
-			% str(promotion_pending.grid_position)
-		)
-
-	if pawn != null:
-		return "\nReady pawn at %s. Hover it, press H, then pick 1/2/3/4." % str(pawn.grid_position)
-
-	return ""
 
 
 func _is_in_placement_mode() -> bool:

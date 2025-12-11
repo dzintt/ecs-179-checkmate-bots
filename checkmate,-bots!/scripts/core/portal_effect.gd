@@ -11,7 +11,8 @@ func _ready():
 	if sprite:
 		sprite.scale = Vector2(portal_scale, portal_scale)
 		sprite.play("open")
-		sprite.animation_finished.connect(_on_animation_finished)
+		if not sprite.animation_finished.is_connected(_on_animation_finished):
+			sprite.animation_finished.connect(_on_animation_finished)
 
 
 func close_and_free():
@@ -22,7 +23,6 @@ func close_and_free():
 
 	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation("close"):
 		sprite.play("close")
-		sprite.animation_finished.connect(_on_animation_finished, CONNECT_ONE_SHOT)
 	else:
 		queue_free()
 

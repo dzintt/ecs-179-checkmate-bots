@@ -10,7 +10,7 @@ class_name QueenTower
 func _ready():
 	tower_name = "Queen"
 	tower_class = "queen"
-	description = "Fires projectiles in all L/R/U/D and diagonal directions. Supreme coverage and power."
+	description = "Fires projectiles in all straight and diagonal directions. Supreme coverage and power."
 
 	base_cost = 9
 	upgrade_cost = 25
