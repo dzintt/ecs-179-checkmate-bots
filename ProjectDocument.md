@@ -37,6 +37,7 @@ Sprites/Images
 Audio
 [Dearly BGM](https://opengameart.org/content/%D0%B4%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%D0%B9-dearly)
 [Curious BGM](https://opengameart.org/content/curious)
+[Other sfx](https://pixabay.com/)
 
 # Team Member Contributions
 
