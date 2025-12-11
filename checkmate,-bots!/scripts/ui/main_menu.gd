@@ -40,10 +40,10 @@ func _connect_button_sounds() -> void:
 			SoundManager
 			. connect_button_sounds(
 				[
-					$"VBoxContainer/Play",
-					$"VBoxContainer/Options",
-					$"VBoxContainer/How to play",
-					$"VBoxContainer/Exit",
+					$"Panel/VBoxContainer/Play",
+					$"Panel/VBoxContainer/Options",
+					$"Panel/VBoxContainer/How to play",
+					$"Panel/VBoxContainer/Exit",
 					$"OptionsPanel/VBoxContainer/Close",
 				]
 			)
@@ -51,10 +51,10 @@ func _connect_button_sounds() -> void:
 		return
 
 	var buttons := [
-		$"VBoxContainer/Play",
-		$"VBoxContainer/Options",
-		$"VBoxContainer/How to play",
-		$"VBoxContainer/Exit",
+		$"Panel/VBoxContainer/Play",
+		$"Panel/VBoxContainer/Options",
+		$"Panel/VBoxContainer/How to play",
+		$"Panel/VBoxContainer/Exit",
 		$"OptionsPanel/VBoxContainer/Close",
 	]
 
