@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=13 format=3 uid="uid://36tyq720fald"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
 [ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
 [ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
 [ext_resource type="Texture2D" path="res://assets/images/hologram_table.png" id="9_holo"]
+[ext_resource type="Texture2D" path="res://assets/images/futuristic background.png" id="10_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
@@ -36,6 +37,13 @@ script = ExtResource("5_path")
 auto_config_from_grid = true
 
 [node name="SetDressing" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="SetDressing"]
+texture = ExtResource("10_bg")
+position = Vector2(576, 576)
+scale = Vector2(5, 5)
+z_index = -20
+texture_filter = 1
 
 [node name="HologramTable" type="Sprite2D" parent="SetDressing"]
 texture = ExtResource("9_holo")
