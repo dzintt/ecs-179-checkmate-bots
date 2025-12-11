@@ -3,7 +3,7 @@ extends Panel
 var tower_type: String = "knight"
 var tower_cost: int = 3
 const TOWER_SCENE_PATH := "res://scenes/towers/"
-const TOWER_DESC := "Attacks with earthquake animation, summons only in ONE direction. Unique L-shaped coverage."
+const TOWER_DESC := "Melee attack with unique L-shaped coverage."
 const DamageEngine := preload("res://scripts/core/damage_engine.gd")
 const Enemy := preload("res://scripts/core/enemy.gd")
 const ENEMY_PRESET_LABELS := {
