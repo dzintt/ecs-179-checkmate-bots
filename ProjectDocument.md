@@ -146,8 +146,8 @@ I built the workflows and modular codebase structure that let the team ship fast
     -   **UX Improvements:**
         -   **Tower placement** – Added ghost towers previews and attack range overlays so players can see which tiles their towers will cover before placing them. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/30)
           <img src="https://github.com/user-attachments/assets/c14c9d76-54ee-490e-bdef-b55ad245f787" width="50%" />
-
         -   **Board navigation** – Built a zoom and pan with smart disablement during placement to prevent misclicks which allowed players to zoom in and move the camera to focus on specific areas. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/37)
+          <img src="https://github.com/user-attachments/assets/bb1410d5-c301-4a0a-b8da-77602a79a791" width="50%" />
         -   **Cursor pointer on hover** - Small addition to make the cursor into a pointer when hovering over buttons to make it obvious for players that it is clickable. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/31)
     -   **UI Additions:**
         -   **King health HUD** – Designed and implemented the King HP bar end-to-end, making health state instantly legible. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/27)
