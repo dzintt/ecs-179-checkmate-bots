@@ -28,6 +28,10 @@ UICursorManager="*res://autoload/ui_cursor_manager.gd"
 
 window/stretch/mode="canvas_items"
 
+[gui]
+
+theme/custom="res://assets/fonts/global_theme.tres"
+
 [layer_names]
 
 2d_physics/layer_1="Towers"

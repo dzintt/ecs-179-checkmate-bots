@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bsfhtk3xaimgg"]
+[gd_scene load_steps=9 format=3 uid="uid://bsfhtk3xaimgg"]
 
 [ext_resource type="PackedScene" uid="uid://bw63kejk3ky7r" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
 [ext_resource type="Script" uid="uid://dm5qkgastrhxh" path="res://scripts/towers/pawn/pawn_panel.gd" id="2_xki8e"]
@@ -19,8 +19,6 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-
-[sub_resource type="SystemFont" id="SystemFont_08a8y"]
 
 [node name="gui" type="CanvasLayer"]
 script = ExtResource("7_wave")
@@ -53,7 +51,6 @@ offset_bottom = -276.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_08a8y")
 theme_override_font_sizes/font_size = 21
 text = "Tower Shop"
 horizontal_alignment = 1
