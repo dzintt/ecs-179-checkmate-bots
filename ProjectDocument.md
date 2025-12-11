@@ -134,12 +134,13 @@ I built the workflows and modular codebase structure that let the team ship fast
     ```
 
     -   **Implemented a team-wide GDScript standards pipeline:** Required gdformat via pre-commit so every .gd file is auto-formatted locally, and added a GitHub Actions workflow that installs gdtoolkit to check every PR. This kept code style consistent, reduced review churn, and prevented issues from slipping through; reviewers could focus on logic instead of spacing, and CI would flag issues before they reached main. [pre-commit script](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.pre-commit-config.yaml) and [gdformat CI workflow](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.github/workflows/gdformat.yml)
-       <img width="836" height="334" alt="image" src="https://github.com/user-attachments/assets/b5a8ea16-c4ee-462b-b067-5a69072c6937" />
+      <img width="1146" height="391" alt="image" src="https://github.com/user-attachments/assets/f693ca12-b586-47a4-b22d-e735215e64e8" />
 
 
 -   **Sub-role:** Build and Release Manager
 
     -   I protected our master branch by requiring PRs with at least one reviewer, personally reviewed every merge to block regressions, and routinely triaged or rejected risky changes to keep the branch stable. Some noteable issues prevented/code improvements from my reviews include: [Spawning logic isses](https://github.com/dzintt/ecs-179-checkmate-bots/pull/3#discussion_r2564223853), [Possible cause for crash](https://github.com/dzintt/ecs-179-checkmate-bots/pull/22#discussion_r2595673532), [Music played twice](https://github.com/dzintt/ecs-179-checkmate-bots/pull/22#discussion_r2595676378), [Refactor suggesions](https://github.com/dzintt/ecs-179-checkmate-bots/pull/23), [Bad descriptions](https://github.com/dzintt/ecs-179-checkmate-bots/pull/54), [Refactor suggestions](https://github.com/dzintt/ecs-179-checkmate-bots/pull/50), [Code cleanup](https://github.com/dzintt/ecs-179-checkmate-bots/pull/40)
+          <img width="836" height="334" alt="image" src="https://github.com/user-attachments/assets/b5a8ea16-c4ee-462b-b067-5a69072c6937" />
     -   Helped with release and deployment to the web on [itch.io](https://jasonzebra.itch.io/checkmate-bots).
 
 -   **Other contributions**
@@ -159,6 +160,8 @@ I built the workflows and modular codebase structure that let the team ship fast
     -   **Features**
         -   **Wave controls** – Created the wave-start logic and fixed accidental SPACE double-actions so starting a wave cannot re-enter placement, keeping game state coherent during wave transitions. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/34)
         -   **Projectile and attack feedback** – Implemented homing projectile lifecycle (speed, hit radius, lifetime, target validity) and integrated bounce FX on attacks for snappier feedback across chess pieces. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/25) and another related [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/35)
+        
+            <img src="https://github.com/user-attachments/assets/f7168482-9a43-42f6-9230-25265a243bec" width="50%" />
 
 ## Justin Lin
 
