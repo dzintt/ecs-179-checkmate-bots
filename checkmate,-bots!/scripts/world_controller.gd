@@ -146,7 +146,7 @@ func _on_wave_started(wave_num: int):
 func _on_wave_completed(wave_num: int):
 	print("Wave ", wave_num, " completed!")
 	moves_available = 1
-	_enter_move_mode()
+	_exit_move_mode()
 	_update_debug_label()
 
 
