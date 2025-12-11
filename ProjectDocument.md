@@ -1,5 +1,7 @@
 # Checkmate, BOTS!
 
+<img width="1153" height="648" alt="image" src="https://github.com/user-attachments/assets/27cdc6a8-8667-4529-a5d2-37b523d8bc64" />
+
 ## Project Resources
 
 [Play our game here!](https://jasonzebra.itch.io/checkmate-bots)  
