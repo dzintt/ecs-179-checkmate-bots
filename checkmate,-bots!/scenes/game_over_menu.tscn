@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://htpy0s60dbf"]
 
 [ext_resource type="Script" uid="uid://7nui8o2nunjg" path="res://scripts/ui/game_over_menu.gd" id="1_6ebp1"]
-[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_cwb3k"]
+[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/VT323-Regular.ttf" id="2_cwb3k"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2nl4x"]
 texture = ExtResource("2_csn76")

@@ -10,7 +10,7 @@ class_name RookTower
 func _ready():
 	tower_name = "Rook"
 	tower_class = "rook"
-	description = "Fires projectiles in all L/R/U/D directions. Strong lane control."
+	description = "Fires projectiles in all straight directions. Strong lane control."
 
 	base_cost = 5
 	upgrade_cost = 10

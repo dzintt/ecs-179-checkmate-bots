@@ -10,7 +10,7 @@ var is_placing: bool = false
 @onready var tower_container: Node2D
 var range_overlay: Node2D
 var _overlay_pool: Array[ColorRect] = []
-const RANGE_COLOR := Color(0, 0.55, 1, 0.25)
+const RANGE_COLOR := Color(0.1, 0.9, 0.2, 0.28)
 var ghost_tower: Node2D = null
 
 signal placement_completed(tower: Node, position: Vector2)
@@ -29,6 +29,13 @@ func _ready():
 		placement_preview.hide()
 
 
+func _process(_delta):
+	# Safety: if we exit placement unexpectedly, make sure visuals are hidden.
+	if not is_placing:
+		_clear_range_preview()
+		_clear_ghost_tower()
+
+
 ## Start tower placement mode
 func start_placement(tower_type: String, cost: int):
 	# Check if player can afford
@@ -41,6 +48,10 @@ func start_placement(tower_type: String, cost: int):
 	selected_tower_type = tower_type
 	selected_tower_cost = cost
 	is_placing = true
+
+	# Reset any previous visuals before showing new ones.
+	_clear_range_preview()
+	_clear_ghost_tower()
 
 	if placement_preview:
 		placement_preview.show()
@@ -73,7 +84,7 @@ func _input(event: InputEvent):
 		return
 
 	if event is InputEventMouseMotion:
-		_update_preview_position(event.position)
+		_update_preview_position()
 
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -83,7 +94,7 @@ func _input(event: InputEvent):
 
 
 ## Update placement preview position
-func _update_preview_position(screen_pos: Vector2):
+func _update_preview_position():
 	if not placement_preview:
 		return
 

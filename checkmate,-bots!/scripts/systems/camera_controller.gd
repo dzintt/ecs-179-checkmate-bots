@@ -11,6 +11,9 @@ var _camera: Camera2D
 var _placement_system: Node
 var _dragging: bool = false
 var _last_mouse_world: Vector2
+var _touch_points := {}
+var _touch_dragging: bool = false
+var _last_touch_world: Vector2
 
 
 func _ready():
@@ -33,6 +36,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_mouse_motion(event)
 	elif event is InputEventMagnifyGesture:
 		_handle_magnify(event)
+	elif event is InputEventScreenTouch:
+		_handle_screen_touch(event)
+	elif event is InputEventScreenDrag:
+		_handle_screen_drag(event)
+	elif event is InputEventPanGesture:
+		_handle_pan_gesture(event)
 
 
 func _handle_mouse_button(event: InputEventMouseButton) -> void:
@@ -84,3 +93,61 @@ func _handle_magnify(event: InputEventMagnifyGesture) -> void:
 	if event.factor == 0:
 		return
 	_apply_zoom(event.factor)
+
+
+func _handle_screen_touch(event: InputEventScreenTouch) -> void:
+	if _is_placement_active():
+		return
+
+	if event.pressed:
+		_touch_points[event.index] = event.position
+	else:
+		_touch_points.erase(event.index)
+
+	_update_touch_drag_state()
+
+
+func _handle_screen_drag(event: InputEventScreenDrag) -> void:
+	if _is_placement_active() or _camera == null:
+		return
+
+	_touch_points[event.index] = event.position
+
+	if not _touch_dragging:
+		_update_touch_drag_state()
+		return
+
+	if _touch_points.size() < 2:
+		_touch_dragging = false
+		return
+
+	var avg_screen := _average_touch_position()
+	var current_world_before: Vector2 = _camera.get_viewport().get_camera_2d().unproject_position(
+		avg_screen
+	)
+	var world_delta: Vector2 = (_last_touch_world - current_world_before) * pan_speed
+	_camera.global_position += world_delta
+	_last_touch_world = current_world_before + world_delta
+
+
+func _update_touch_drag_state() -> void:
+	if _touch_points.size() >= 2 and _camera != null:
+		var avg_screen := _average_touch_position()
+		_last_touch_world = _camera.get_viewport().get_camera_2d().unproject_position(avg_screen)
+		_touch_dragging = true
+	else:
+		_touch_dragging = false
+
+
+func _average_touch_position() -> Vector2:
+	var sum := Vector2.ZERO
+	for pos in _touch_points.values():
+		sum += pos
+	return sum / float(_touch_points.size())
+
+
+func _handle_pan_gesture(event: InputEventPanGesture) -> void:
+	if _camera == null or _is_placement_active():
+		return
+	var delta_world := event.delta * _camera.zoom * pan_speed * -1.0
+	_camera.global_position += delta_world

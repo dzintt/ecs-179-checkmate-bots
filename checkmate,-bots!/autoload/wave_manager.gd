@@ -1,21 +1,18 @@
 extends Node
 
 var current_wave: int = 0
-var max_waves: int = 10
+var max_waves: int = 20
 var wave_in_progress: bool = false
 var enemies_alive: int = 0
 var wave_definitions: Array = []
 var path_manager: PathManager = null
 var spawn_parent: Node = null
 var _cancel_spawns: bool = false
+var active_portals: Dictionary = {}
 
-const ENEMY_SCENES := {
-	"pawn": preload("res://scenes/enemies/basic_pawn.tscn"),
-	"runner": preload("res://scenes/enemies/loot_runner.tscn"),
-	"shield": preload("res://scenes/enemies/shielder.tscn"),
-	"bomber": preload("res://scenes/enemies/bomber.tscn"),
-	"caster": preload("res://scenes/enemies/caster.tscn")
-}
+const PortalEffectScene := preload("res://scenes/effects/portal_effect.tscn")
+const EnemyFactoryClass := preload("res://scripts/systems/enemy_factory.gd")
+var enemy_factory: EnemyFactory = null
 
 
 func _ready():
@@ -24,6 +21,9 @@ func _ready():
 	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.enemy_reached_base.connect(_on_enemy_reached_base)
 
+	if enemy_factory == null:
+		enemy_factory = EnemyFactoryClass.new() as EnemyFactory
+	enemy_factory.register_default_specs()
 	_load_wave_definitions()
 
 
@@ -67,160 +67,75 @@ func start_wave():
 
 func _create_procedural_waves():
 	wave_definitions.clear()
+	if enemy_factory == null:
+		enemy_factory = EnemyFactoryClass.new() as EnemyFactory
+		enemy_factory.register_default_specs()
+	var base_score: float = 2.0
+	var increment: float = 2.0
 
-	# Wave 1: Basic pawns, single lane
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				1,
-				[
-					{"direction": "north", "count": 8, "delay": 0.8, "type": "pawn"},
-				]
-			)
+	for i in range(max_waves):
+		var wave_number: int = i + 1
+		var target: float = base_score + increment * i
+		var allowed_ids: Array[String] = _allowed_ids_for_wave(target)
+		var min_enemies: int = 1 + int(floor(i / 2.0))
+		var max_enemies_for_wave: int = 6 + i
+		var delay_floor: float = lerp(1.0, 0.4, float(i) / float(max_waves - 1))
+		var wave_spec := EnemyFactoryClass.WaveSpec.new(
+			wave_number,
+			target,
+			min_enemies,
+			max_enemies_for_wave,
+			allowed_ids,
+			_directions_for_wave(wave_number),
+			Vector2(delay_floor, delay_floor + 0.35),
+			0.0,
+			lerp(-0.25, 0.75, float(i) / float(max_waves - 1))
 		)
-	)
-
-	# Wave 2: Pawns from opposite lane, slightly more
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				2,
-				[
-					{"direction": "south", "count": 10, "delay": 0.75, "type": "pawn"},
-				]
-			)
-		)
-	)
-
-	# Wave 3: One lanes, introduce fast runners
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				3,
-				[
-					{"direction": "east", "count": 10, "delay": 0.7, "type": "pawn"},
-					{"direction": "east", "count": 2, "delay": 1.0, "type": "runner"},
-				]
-			)
-		)
-	)
-
-	# Wave 4: One lanes, add shield bots as mini-tanks
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				4,
-				[
-					{"direction": "west", "count": 12, "delay": 0.65, "type": "pawn"},
-					{"direction": "west", "count": 2, "delay": 1.3, "type": "shield"},
-				]
-			)
-		)
-	)
-
-	# Wave 5: Opposite lanes, mix pawns and runners
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				5,
-				[
-					{"direction": "north", "count": 10, "delay": 0.6, "type": "pawn"},
-					{"direction": "south", "count": 4, "delay": 0.95, "type": "runner"},
-				]
-			)
-		)
-	)
-
-	# Wave 6: East/West, add first bomber
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				6,
-				[
-					{"direction": "east", "count": 12, "delay": 0.6, "type": "pawn"},
-					{"direction": "west", "count": 12, "delay": 0.6, "type": "pawn"},
-					{"direction": "west", "count": 1, "delay": 1.5, "type": "bomber"},
-				]
-			)
-		)
-	)
-
-	# Wave 7: Three directions, more runners and a shield
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				7,
-				[
-					{"direction": "north", "count": 10, "delay": 0.55, "type": "pawn"},
-					{"direction": "east", "count": 6, "delay": 0.8, "type": "runner"},
-					{"direction": "south", "count": 3, "delay": 1.2, "type": "shield"},
-				]
-			)
-		)
-	)
-
-	# Wave 8: All directions, mix pawns, runners, bombers, shields
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				8,
-				[
-					{"direction": "north", "count": 12, "delay": 0.5, "type": "pawn"},
-					{"direction": "east", "count": 6, "delay": 0.75, "type": "runner"},
-					{"direction": "south", "count": 4, "delay": 1.0, "type": "bomber"},
-					{"direction": "west", "count": 4, "delay": 0.9, "type": "shield"},
-				]
-			)
-		)
-	)
-
-	# Wave 9: All directions, introduce casters and more bombers
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				9,
-				[
-					{"direction": "north", "count": 10, "delay": 0.45, "type": "pawn"},
-					{"direction": "east", "count": 8, "delay": 0.65, "type": "runner"},
-					{"direction": "south", "count": 3, "delay": 1.2, "type": "bomber"},
-					{"direction": "west", "count": 3, "delay": 1.0, "type": "caster"},
-				]
-			)
-		)
-	)
-
-	# Wave 10: Final wave - heavy mix, faster pacing
-	(
-		wave_definitions
-		. append(
-			_create_wave(
-				10,
-				[
-					{"direction": "north", "count": 14, "delay": 0.4, "type": "pawn"},
-					{"direction": "east", "count": 8, "delay": 0.6, "type": "runner"},
-					{"direction": "south", "count": 4, "delay": 0.9, "type": "bomber"},
-					{"direction": "west", "count": 4, "delay": 0.9, "type": "caster"},
-					{"direction": "south", "count": 4, "delay": 1.0, "type": "shield"},
-				]
-			)
-		)
-	)
+		wave_definitions.append(enemy_factory.generate_wave(wave_spec))
 
 
-func _create_wave(wave_num: int, spawn_data: Array) -> Dictionary:
-	return {
-		"wave_number": wave_num,
-		"spawn_data": spawn_data,
-	}
+func _allowed_ids_for_wave(target_score: float) -> Array[String]:
+	var ids: Array[String] = []
+	if target_score >= 1.0:
+		ids.append("pawn")
+	if target_score >= 2.0:
+		ids.append("runner")
+	if target_score >= 3.0:
+		ids.append("caster")
+	if target_score >= 4.0:
+		ids.append("bomber")
+	if target_score >= 5.0:
+		ids.append("shield")
+	return ids
+
+
+func _directions_for_wave(wave_number: int) -> Array[String]:
+	# Predefined progression: start single-lane, then expand pairs, then all.
+	var progression = []
+	progression.append(["north", "north2"])  # 1: top
+	progression.append(["east", "east2"])  # 2: right
+	progression.append(["south", "south2"])  # 3: bottom
+	progression.append(["west", "west2"])  # 4: left
+	progression.append(["north", "north2", "east", "east2"])  # 5: top + right
+	progression.append(["east", "east2", "south", "south2"])  # 6: right + bottom
+	progression.append(["south", "south2", "west", "west2"])  # 7: bottom + left
+	progression.append(["west", "west2", "north", "north2"])  # 8: left + top
+	progression.append(["north", "north2", "east", "east2", "south", "south2"])  # 9: top/right/bottom
+	progression.append(["east", "east2", "south", "south2", "west", "west2"])  # 10: right/bottom/left
+	progression.append(["south", "south2", "west", "west2", "north", "north2"])  # 11: bottom/left/top
+	progression.append(["west", "west2", "north", "north2", "east", "east2"])  # 12: left/top/right
+	progression.append(["north", "north2", "east", "east2", "south", "south2", "west", "west2"])  # 13+: all directions
+
+	if wave_number <= progression.size():
+		var dirs: Array[String] = []
+		dirs.assign(progression[wave_number - 1])
+		dirs.shuffle()
+		return dirs
+
+	var fallback: Array[String] = []
+	fallback.assign(progression[progression.size() - 1])
+	fallback.shuffle()
+	return fallback
 
 
 func _spawn_wave_enemies():
@@ -234,6 +149,9 @@ func _spawn_wave_enemies():
 
 	var wave_def = wave_definitions[current_wave - 1]
 	var spawn_data_array = wave_def["spawn_data"]
+
+	_close_all_portals()
+	_show_portals_for_wave(spawn_data_array)
 
 	enemies_alive = 0
 
@@ -259,7 +177,7 @@ func _spawn_enemies_from_direction(direction: String, count: int, delay: float, 
 		if _cancel_spawns or spawn_parent == null or not is_instance_valid(spawn_parent):
 			return
 
-		var scene: PackedScene = ENEMY_SCENES.get(enemy_type, ENEMY_SCENES.get("pawn"))
+		var scene: PackedScene = enemy_factory.get_scene(enemy_type) if enemy_factory else null
 		if scene == null:
 			print(
 				"Spawn failed: missing scene for type ",
@@ -310,6 +228,7 @@ func end_wave():
 		return
 
 	wave_in_progress = false
+	_close_all_portals()
 	EventBus.wave_completed.emit(current_wave)
 	print("Wave ", current_wave, " completed!")
 
@@ -352,6 +271,36 @@ func get_current_wave() -> int:
 	return current_wave
 
 
+func get_wave_summary(wave_number: int) -> String:
+	if wave_number <= 0 or wave_number > wave_definitions.size():
+		return "No wave data"
+
+	var wave_def = wave_definitions[wave_number - 1]
+	var spawn_data: Array = wave_def.get("spawn_data", [])
+	if spawn_data.is_empty():
+		return "No spawns"
+
+	var buckets := {}
+	for spawn_info in spawn_data:
+		var etype: String = spawn_info.get("type", "")
+		var dir: String = spawn_info.get("direction", "")
+		var key := "%s|%s" % [etype, dir]
+		var count: int = int(spawn_info.get("count", 1))
+		buckets[key] = buckets.get(key, 0) + count
+
+	var parts: Array[String] = []
+	for key in buckets.keys():
+		var split = key.split("|")
+		if split.size() != 2:
+			continue
+		var etype = split[0]
+		var dir = split[1]
+		parts.append("%s x%d (%s)" % [etype, buckets[key], dir])
+
+	parts.sort()
+	return "\n".join(parts)
+
+
 ## Check if a wave is in progress
 func is_wave_active() -> bool:
 	return wave_in_progress
@@ -363,6 +312,36 @@ func reset_waves():
 	wave_in_progress = false
 	enemies_alive = 0
 	_cancel_spawns = true
+	_close_all_portals()
 	# Clear any spawned enemies
 	get_tree().call_group("enemies", "queue_free")
+	_load_wave_definitions()
 	print("Waves reset")
+
+
+func _show_portals_for_wave(spawn_data_array: Array):
+	if path_manager == null or spawn_parent == null:
+		return
+
+	var directions := {}
+	for spawn_info in spawn_data_array:
+		if spawn_info.has("direction"):
+			directions[spawn_info["direction"]] = true
+
+	for direction in directions.keys():
+		if active_portals.has(direction) and is_instance_valid(active_portals[direction]):
+			continue
+
+		var start_pos: Vector2 = path_manager.get_start_position(direction)
+		var portal: Node2D = PortalEffectScene.instantiate()
+		spawn_parent.add_child(portal)
+		portal.global_position = start_pos
+		active_portals[direction] = portal
+
+
+func _close_all_portals():
+	for direction in active_portals.keys():
+		var portal: PortalEffect = active_portals[direction]
+		if portal and is_instance_valid(portal):
+			portal.close_and_free()
+	active_portals.clear()
