@@ -1,7 +1,12 @@
 [gd_scene load_steps=16 format=3 uid="uid://htpy0s60dbf"]
 
 [ext_resource type="Script" uid="uid://7nui8o2nunjg" path="res://scripts/ui/game_over_menu.gd" id="1_6ebp1"]
-[ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/VT323-Regular.ttf" id="2_cwb3k"]
+[ext_resource type="Texture2D" uid="uid://c365pkpiawpl6" path="res://assets/images/ui/Card.png" id="2_csn76"]
+[ext_resource type="FontFile" uid="uid://cj1jndiewalai" path="res://assets/fonts/VT323-Regular.ttf" id="2_mvr4g"]
+[ext_resource type="Texture2D" uid="uid://dh61o5vw1s8ey" path="res://assets/images/ui/ButtonA_Unpressed.png" id="3_csn76"]
+[ext_resource type="Texture2D" uid="uid://isurib08fcgt" path="res://assets/images/ui/ButtonA_Pressed.png" id="4_k8pbw"]
+[ext_resource type="Texture2D" uid="uid://h3362gmcfm2d" path="res://assets/images/ui/ButtonA_Highlighted.png" id="5_2nl4x"]
+[ext_resource type="Texture2D" uid="uid://c34stdpt1l72w" path="res://assets/images/ui/BannerA.png" id="7_k8pbw"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2nl4x"]
 texture = ExtResource("2_csn76")
