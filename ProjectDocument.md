@@ -208,8 +208,20 @@ Assets Added
 **Other contributions:**
 
 -   [Tooltip/UI support](https://github.com/dzintt/ecs-179-checkmate-bots/blame/5154ecf967b974b97a5f323cadad55915279a124/checkmate%2C-bots!/scripts/world_controller.gd#L2): tower panels show affordances/stats; world scene includes tooltip asset.
+
+<img width="810" height="144" alt="image" src="https://github.com/user-attachments/assets/3e8d6808-2e0f-4dfd-bf21-dd85b2df0ae2" />
+
 -   Finding visuals for background and animating tile highlight and promotion effect.
 
+
+<img width="104" height="83" alt="image" src="https://github.com/user-attachments/assets/ac96ea42-0705-451c-a773-5182931b2de6" />
+
+<img width="73" height="57" alt="image" src="https://github.com/user-attachments/assets/5d2cdea9-0b7c-4d0f-b8bd-9221ad6b6f05" />
+
+-   Volume Slider in the pause menu and options.
+
+  <img width="449" height="448" alt="image" src="https://github.com/user-attachments/assets/30f51f21-5be4-4da1-9cd2-5e5d6943539a" />
+  
 ## Raymond Wu
 
 I was in charge of creating the user interface of the game, and I handled the inputs of buttons. These features are a vital part of every game as it allows for the game to function and captures the audience’s attention. The style and font of the UI is critical to the look of the game as it helps the player navigate through the ins and outs of the game. I was focused on making sure the UI was clear, readable, and fit the theme of our game being pixelated chess and robots. The choice of font, spacing, layout, and button animations play a major role in how the game is presented.
