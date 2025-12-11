@@ -1,5 +1,7 @@
 # Checkmate, BOTS!
 
+<img width="1153" height="648" alt="image" src="https://github.com/user-attachments/assets/27cdc6a8-8667-4529-a5d2-37b523d8bc64" />
+
 ## Project Resources
 
 [Play our game here!](https://jasonzebra.itch.io/checkmate-bots)  
@@ -35,6 +37,7 @@ Sprites/Images
 Audio
 [Dearly BGM](https://opengameart.org/content/%D0%B4%D0%BE%D1%80%D0%BE%D0%B3%D0%BE%D0%B9-dearly)
 [Curious BGM](https://opengameart.org/content/curious)
+[Other sfx](https://pixabay.com/)
 
 # Team Member Contributions
 
@@ -131,6 +134,8 @@ I built the workflows and modular codebase structure that let the team ship fast
     ```
 
     -   **Implemented a team-wide GDScript standards pipeline:** Required gdformat via pre-commit so every .gd file is auto-formatted locally, and added a GitHub Actions workflow that installs gdtoolkit to check every PR. This kept code style consistent, reduced review churn, and prevented issues from slipping through; reviewers could focus on logic instead of spacing, and CI would flag issues before they reached main. [pre-commit script](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.pre-commit-config.yaml) and [gdformat CI workflow](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.github/workflows/gdformat.yml)
+       <img width="836" height="334" alt="image" src="https://github.com/user-attachments/assets/b5a8ea16-c4ee-462b-b067-5a69072c6937" />
+
 
 -   **Sub-role:** Build and Release Manager
 
@@ -140,7 +145,11 @@ I built the workflows and modular codebase structure that let the team ship fast
 -   **Other contributions**
     -   **UX Improvements:**
         -   **Tower placement** – Added ghost towers previews and attack range overlays so players can see which tiles their towers will cover before placing them. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/30)
+          <img src="https://github.com/user-attachments/assets/c14c9d76-54ee-490e-bdef-b55ad245f787" width="50%" />
+          
         -   **Board navigation** – Built a zoom and pan with smart disablement during placement to prevent misclicks which allowed players to zoom in and move the camera to focus on specific areas. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/37)
+          <img src="https://github.com/user-attachments/assets/bb1410d5-c301-4a0a-b8da-77602a79a791" width="50%" />
+          
         -   **Cursor pointer on hover** - Small addition to make the cursor into a pointer when hovering over buttons to make it obvious for players that it is clickable. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/31)
     -   **UI Additions:**
         -   **King health HUD** – Designed and implemented the King HP bar end-to-end, making health state instantly legible. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/27)
