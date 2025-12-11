@@ -159,6 +159,7 @@ I built the workflows and modular codebase structure that let the team ship fast
     -   **Features**
         -   **Wave controls** – Created the wave-start logic and fixed accidental SPACE double-actions so starting a wave cannot re-enter placement, keeping game state coherent during wave transitions. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/34)
         -   **Projectile and attack feedback** – Implemented homing projectile lifecycle (speed, hit radius, lifetime, target validity) and integrated bounce FX on attacks for snappier feedback across chess pieces. [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/25) and another related [PR Here](https://github.com/dzintt/ecs-179-checkmate-bots/pull/35)
+        
             <img src="https://github.com/user-attachments/assets/f7168482-9a43-42f6-9230-25265a243bec" width="50%" />
 
 ## Justin Lin
