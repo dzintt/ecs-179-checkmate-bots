@@ -1,161 +1,123 @@
-[gd_scene load_steps=13 format=3 uid="uid://ypfncgetve6a"]
+[gd_scene load_steps=16 format=3 uid="uid://ypfncgetve6a"]
 
 [ext_resource type="Script" uid="uid://cxcd1a0woft0s" path="res://scripts/ui/victory_menu.gd" id="1_4ntwv"]
 [ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_y38n5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n4lob"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j4ov5"]
+texture = ExtResource("2_tihof")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3gxct"]
-bg_color = Color(0.74138474, 0.7413847, 0.74138457, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kyf5d"]
+texture = ExtResource("4_kxgey")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vds54"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ckv7e"]
+texture = ExtResource("5_a7waj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m8r0n"]
+texture = ExtResource("6_alani")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tihof"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bktib"]
-bg_color = Color(0.7411765, 0.7411765, 0.7411765, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxgey"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a7waj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alani"]
-bg_color = Color(0.7411765, 0.7411765, 0.7411765, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwkia"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j4ov5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_adwtd"]
+texture = ExtResource("7_dwkia")
 
 [node name="VictoryMenu" type="CanvasLayer"]
 script = ExtResource("1_4ntwv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -275.125
-offset_top = -90.0
-offset_right = 275.125
-offset_bottom = 232.0
+offset_left = -130.25
+offset_top = -130.5
+offset_right = 130.25
+offset_bottom = 130.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_j4ov5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.5
+offset_top = -102.25
+offset_right = 112.5
+offset_bottom = 102.25
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 18
 
-[node name="Restart" type="Button" parent="VBoxContainer"]
+[node name="Restart" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_n4lob")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_3gxct")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vds54")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_bktib")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_kyf5d")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckv7e")
+theme_override_styles/hover = SubResource("StyleBoxTexture_m8r0n")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tihof")
 text = "Restart"
 
-[node name="Return to Main Menu" type="Button" parent="VBoxContainer"]
+[node name="Return to Main Menu" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_n4lob")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bktib")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kxgey")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_bktib")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_kyf5d")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckv7e")
+theme_override_styles/hover = SubResource("StyleBoxTexture_m8r0n")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_a7waj")
-text = "Return to Main Menu"
+text = "Return to 
+Main Menu"
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_n4lob")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_alani")
-theme_override_styles/hover = SubResource("StyleBoxFlat_dwkia")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_bktib")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_kyf5d")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ckv7e")
+theme_override_styles/hover = SubResource("StyleBoxTexture_m8r0n")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_j4ov5")
 text = "Exit"
 
 [node name="Label" type="Label" parent="."]
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.5
-offset_top = -253.0
-offset_right = 193.0
-offset_bottom = -119.0
+offset_left = -196.75
+offset_top = 42.0
+offset_right = 196.75
+offset_bottom = 155.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.27900326, 0.5467102, 0.838938, 1)
+theme_override_colors/font_color = Color(0.20648745, 5.7756904e-07, 0.9649145, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_y = 8
-theme_override_fonts/font = ExtResource("2_y38n5")
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("3_bktib")
 theme_override_font_sizes/font_size = 91
+theme_override_styles/normal = SubResource("StyleBoxTexture_adwtd")
 text = "Victory!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/Restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="VBoxContainer/Return to Main Menu" to="." method="_on_return_to_main_menu_pressed"]
-[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Return to Main Menu" to="." method="_on_return_to_main_menu_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

@@ -24,6 +24,14 @@ WaveManager="*res://autoload/wave_manager.gd"
 SoundManager="*res://autoload/sound_manager.gd"
 UICursorManager="*res://autoload/ui_cursor_manager.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
+[gui]
+
+theme/custom="res://assets/fonts/global_theme.tres"
+
 [layer_names]
 
 2d_physics/layer_1="Towers"
@@ -32,4 +40,5 @@ UICursorManager="*res://autoload/ui_cursor_manager.gd"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"

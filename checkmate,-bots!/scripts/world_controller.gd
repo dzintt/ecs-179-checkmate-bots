@@ -8,11 +8,12 @@ extends Node2D
 @onready var tower_container = $TowerContainer
 @onready var debug_label = $CanvasLayer/DebugLabel
 @onready var path_manager = $PathManager
-@onready var pause_menu = $CanvasLayer/PauseMenu
-@onready var pause_sfx_slider: HSlider = $CanvasLayer/PauseMenu/VBoxContainer/SFX/HSlider
-@onready var pause_bgm_slider: HSlider = $CanvasLayer/PauseMenu/VBoxContainer/BGM/HSlider
-@onready var pause_main_menu_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/MainMenu
-@onready var pause_exit_button: Button = $CanvasLayer/PauseMenu/VBoxContainer/Exit
+@onready var pause_panel = $CanvasLayer/PausePanel
+@onready var pause_sfx_slider: HSlider = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/SFX/HSlider
+@onready var pause_bgm_slider: HSlider = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/BGM/HSlider
+@onready
+var pause_main_menu_button: Button = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/MainMenu
+@onready var pause_exit_button: Button = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/Exit
 @onready var king_health_hud = $CanvasLayer/KingHealthHUD
 
 # Preload enemy scene
@@ -23,6 +24,7 @@ var king_instance: Node2D = null
 
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	# Ensure grid occupancy is clean when entering a world scene
 	GridSystem.reset()
 
@@ -31,8 +33,10 @@ func _ready():
 
 	_sync_audio_sliders()
 
-	if pause_menu:
-		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
+	if pause_panel:
+		pause_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+		pause_panel.visible = false
+		set_process_input(true)
 
 	_connect_pause_menu_signals()
 
@@ -49,10 +53,31 @@ func _ready():
 		print("WaveManager initialized with PathManager")
 
 
-func _input(event: InputEvent):
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		_toggle_pause_menu()
+		get_viewport().set_input_as_handled()
+		return
+	# Avoid selecting/moving while actively placing a tower.
+	if move_mode and not _is_in_placement_mode():
+		if _handle_move_mode_input(event):
+			return
+
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_ESCAPE:
-			_toggle_pause_menu()
+		if promotion_system and promotion_system.handle_input(event):
+			_update_debug_label()
+			return
+
+		# Manual move-mode toggle (only when not in placement and no active wave)
+		if (
+			event.keycode == KEY_M
+			and not _is_in_placement_mode()
+			and not WaveManager.is_wave_active()
+		):
+			if move_mode:
+				_exit_move_mode()
+			else:
+				_enter_move_mode()
 			return
 
 		if event.keycode == KEY_P:
@@ -71,7 +96,7 @@ func _input(event: InputEvent):
 			placement_system.start_placement("queen", 9)
 
 		#elif event.keycode == KEY_K:
-			#_spawn_test_enemy()
+		#_spawn_test_enemy()
 
 		elif event.keycode == KEY_SPACE:
 			if placement_system and placement_system.has_method("cancel_placement"):
@@ -175,10 +200,10 @@ func _get_board_center_world_position() -> Vector2:
 
 
 func _toggle_pause_menu():
-	if not pause_menu:
+	if not pause_panel:
 		return
-	var showing = not pause_menu.visible
-	pause_menu.visible = showing
+	var showing = not pause_panel.visible
+	pause_panel.visible = showing
 	if showing:
 		_sync_audio_sliders()
 		get_tree().paused = true
@@ -187,10 +212,10 @@ func _toggle_pause_menu():
 
 
 func _connect_pause_menu_signals():
-	if not pause_menu:
+	if not pause_panel:
 		return
 
-	var resume_button: Button = pause_menu.get_node_or_null("VBoxContainer/Resume")
+	var resume_button: Button = pause_panel.get_node_or_null("PauseMenu/VBoxContainer/Resume")
 	if resume_button:
 		resume_button.pressed.connect(_on_pause_resume_pressed)
 	if pause_main_menu_button:

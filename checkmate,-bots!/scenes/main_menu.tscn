@@ -1,110 +1,72 @@
-[gd_scene load_steps=18 format=3 uid="uid://wmllul7wsveg"]
+[gd_scene load_steps=28 format=3 uid="uid://wmllul7wsveg"]
 
 [ext_resource type="Script" uid="uid://dlq4xlt27i0uf" path="res://scripts/ui/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://ciei3l0ww7j8u" path="res://assets/images/Background.png" id="1_ekxnf"]
 [ext_resource type="FontFile" uid="uid://dgp8ev2xtwb3o" path="res://assets/fonts/Super Cursed.ttf" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://c7go488ys7vtv" path="res://assets/images/checkmate_bots_title.png" id="2_tbmy8"]
+[ext_resource type="FontFile" uid="uid://cj1jndiewalai" path="res://assets/fonts/VT323-Regular.ttf" id="3_oa1go"]
+[ext_resource type="Texture2D" uid="uid://c365pkpiawpl6" path="res://assets/images/ui/Card.png" id="3_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://dh61o5vw1s8ey" path="res://assets/images/ui/ButtonA_Unpressed.png" id="7_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://isurib08fcgt" path="res://assets/images/ui/ButtonA_Pressed.png" id="8_5dd4i"]
+[ext_resource type="Texture2D" uid="uid://c34stdpt1l72w" path="res://assets/images/ui/BannerA.png" id="8_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://h3362gmcfm2d" path="res://assets/images/ui/ButtonA_Highlighted.png" id="9_lgwnu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wu84c"]
-texture = ExtResource("1_ekxnf")
-modulate_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
+texture = ExtResource("2_tbmy8")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vue75"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8gd2"]
+texture = ExtResource("3_tbmy8")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekxnf"]
-bg_color = Color(0.74138474, 0.7413847, 0.74138457, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jk1qb"]
+texture = ExtResource("7_jk1qb")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bqqt6"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5dd4i"]
+texture = ExtResource("8_5dd4i")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ekxnf"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lgwnu"]
+texture = ExtResource("9_lgwnu")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wu84c"]
-bg_color = Color(0.7411765, 0.7411765, 0.7411765, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_flqon"]
+texture = ExtResource("7_jk1qb")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ln24"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rcqid"]
+texture = ExtResource("8_5dd4i")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bqqt6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1ajci"]
+texture = ExtResource("9_lgwnu")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtw2f"]
-bg_color = Color(0.7411765, 0.7411765, 0.7411765, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rtw2f"]
+texture = ExtResource("7_jk1qb")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa1go"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oa1go"]
+texture = ExtResource("8_5dd4i")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wu84c"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tbmy8"]
+texture = ExtResource("9_lgwnu")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbmy8"]
-bg_color = Color(0.7411765, 0.7411765, 0.7411765, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7b55j"]
+texture = ExtResource("7_jk1qb")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk1qb"]
-bg_color = Color(0.6117647, 0.6117647, 0.6117647, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-shadow_color = Color(0, 0, 0, 0.23137255)
-shadow_size = 5
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5pajh"]
+texture = ExtResource("8_5dd4i")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ln24"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j7ex8"]
+texture = ExtResource("9_lgwnu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hstxw"]
+texture = ExtResource("8_tbmy8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8egab"]
+texture = ExtResource("3_tbmy8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gw5y6"]
+texture = ExtResource("7_jk1qb")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_svtp6"]
+texture = ExtResource("8_5dd4i")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1dfpl"]
+texture = ExtResource("9_lgwnu")
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -114,8 +76,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bqqt6")
+metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -123,91 +86,106 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_wu84c")
+metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -275.125
-offset_top = -90.0
-offset_right = 275.125
-offset_bottom = 232.0
+offset_left = -130.25
+offset_top = -130.5
+offset_right = 130.25
+offset_bottom = 130.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_a8gd2")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.0
+offset_top = -106.5
+offset_right = 113.0
+offset_bottom = 114.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 18
 
-[node name="Play" type="Button" parent="VBoxContainer"]
+[node name="Play" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ekxnf")
-theme_override_styles/hover = SubResource("StyleBoxFlat_bqqt6")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ekxnf")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_jk1qb")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5dd4i")
+theme_override_styles/hover = SubResource("StyleBoxTexture_lgwnu")
 text = "Play"
 
-[node name="Options" type="Button" parent="VBoxContainer"]
+[node name="Options" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wu84c")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8ln24")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_bqqt6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_flqon")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_rcqid")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1ajci")
 text = "Options"
 
-[node name="How to play" type="Button" parent="VBoxContainer"]
+[node name="How to play" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_rtw2f")
-theme_override_styles/hover = SubResource("StyleBoxFlat_oa1go")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_wu84c")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_rtw2f")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_oa1go")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tbmy8")
 text = "How to play"
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Exit" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tbmy8")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jk1qb")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_8ln24")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_7b55j")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5pajh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_j7ex8")
 text = "Exit"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.5
-offset_top = -305.0
-offset_right = 193.0
-offset_bottom = -171.0
+offset_left = -305.125
+offset_top = 42.0
+offset_right = 305.125
+offset_bottom = 163.0
 grow_horizontal = 2
-grow_vertical = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 8
-theme_override_fonts/font = ExtResource("2_bqqt6")
-theme_override_font_sizes/font_size = 91
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 73
+theme_override_styles/normal = SubResource("StyleBoxTexture_hstxw")
 text = "Checkmate, Bots!"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -215,16 +193,19 @@ vertical_alignment = 1
 [node name="OptionsPanel" type="Panel" parent="."]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -231.0
+offset_top = -142.0
+offset_right = 231.0
+offset_bottom = 142.0
 grow_horizontal = 2
 grow_vertical = 2
-offset_left = 100.0
-offset_top = 120.0
-offset_right = -100.0
-offset_bottom = -120.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_wu84c")
+theme_override_styles/panel = SubResource("StyleBoxTexture_8egab")
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OptionsPanel"]
 layout_mode = 1
@@ -233,16 +214,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -140.0
-offset_right = 220.0
-offset_bottom = 140.0
+offset_left = -185.0
+offset_top = -72.5
+offset_right = 185.0
+offset_bottom = 72.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="OptionsPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 20
 text = "Settings"
 horizontal_alignment = 1
 
@@ -252,6 +235,8 @@ alignment = 1
 
 [node name="Label" type="Label" parent="OptionsPanel/VBoxContainer/SFX"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 20
 text = "SFX Volume"
 
 [node name="HSlider" type="HSlider" parent="OptionsPanel/VBoxContainer/SFX"]
@@ -260,7 +245,6 @@ size_flags_horizontal = 3
 min_value = -30.0
 max_value = 6.0
 step = 0.5
-value = 0.0
 
 [node name="BGM" type="HBoxContainer" parent="OptionsPanel/VBoxContainer"]
 layout_mode = 2
@@ -268,6 +252,8 @@ alignment = 1
 
 [node name="Label" type="Label" parent="OptionsPanel/VBoxContainer/BGM"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 20
 text = "BGM Volume"
 
 [node name="HSlider" type="HSlider" parent="OptionsPanel/VBoxContainer/BGM"]
@@ -276,17 +262,21 @@ size_flags_horizontal = 3
 min_value = -30.0
 max_value = 6.0
 step = 0.5
-value = 0.0
 
 [node name="Close" type="Button" parent="OptionsPanel/VBoxContainer"]
 layout_mode = 2
-text = "Close"
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_oa1go")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_gw5y6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_svtp6")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1dfpl")
+text = "Close"
 
-[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="VBoxContainer/How to play" to="." method="_on_how_to_play_pressed"]
-[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/How to play" to="." method="_on_how_to_play_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
 [connection signal="value_changed" from="OptionsPanel/VBoxContainer/SFX/HSlider" to="." method="_on_sfx_slider_changed"]
 [connection signal="value_changed" from="OptionsPanel/VBoxContainer/BGM/HSlider" to="." method="_on_bgm_slider_changed"]
 [connection signal="pressed" from="OptionsPanel/VBoxContainer/Close" to="." method="_on_close_options_pressed"]

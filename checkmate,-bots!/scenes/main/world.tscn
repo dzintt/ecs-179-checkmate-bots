@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=22 format=3 uid="uid://36tyq720fald"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
 [ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
@@ -7,7 +7,14 @@
 [ext_resource type="Script" uid="uid://2ke25wv5voyk" path="res://scripts/core/path_manager.gd" id="5_path"]
 [ext_resource type="PackedScene" uid="uid://bsfhtk3xaimgg" path="res://scenes/gui.tscn" id="6_yshnf"]
 [ext_resource type="Script" uid="uid://pwfrllvgewol" path="res://scripts/ui/king_health_ui.gd" id="7_kinghud"]
-[ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
+[ext_resource type="Script" uid="uid://ddwphamj7mq1f" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
+[ext_resource type="Texture2D" uid="uid://c365pkpiawpl6" path="res://assets/images/ui/Card.png" id="9_3c7vn"]
+[ext_resource type="Texture2D" uid="uid://wp60e3dno38f" path="res://assets/images/hologram_table.png" id="9_holo"]
+[ext_resource type="Texture2D" uid="uid://ikchkr5bqcul" path="res://assets/images/dark_grid_background.png" id="10_bg"]
+[ext_resource type="FontFile" uid="uid://cj1jndiewalai" path="res://assets/fonts/VT323-Regular.ttf" id="10_r1or7"]
+[ext_resource type="Texture2D" uid="uid://dh61o5vw1s8ey" path="res://assets/images/ui/ButtonA_Unpressed.png" id="11_0w3ym"]
+[ext_resource type="Texture2D" uid="uid://isurib08fcgt" path="res://assets/images/ui/ButtonA_Pressed.png" id="12_ailbm"]
+[ext_resource type="Texture2D" uid="uid://h3362gmcfm2d" path="res://assets/images/ui/ButtonA_Highlighted.png" id="13_3wopa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
@@ -23,6 +30,18 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bolsh"]
+texture = ExtResource("9_3c7vn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_shf8f"]
+texture = ExtResource("11_0w3ym")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pasgk"]
+texture = ExtResource("12_ailbm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_moqhu"]
+texture = ExtResource("13_3wopa")
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_controller")
 
@@ -34,6 +53,20 @@ background_margin = 64.0
 script = ExtResource("5_path")
 
 [node name="SetDressing" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="SetDressing"]
+z_index = -20
+texture_filter = 1
+position = Vector2(576, 576)
+scale = Vector2(50, 50)
+texture = ExtResource("10_bg")
+
+[node name="HologramTable" type="Sprite2D" parent="SetDressing"]
+z_index = -5
+texture_filter = 1
+position = Vector2(563.5, 576)
+scale = Vector2(23, 24)
+texture = ExtResource("9_holo")
 
 [node name="BoardLight" type="PointLight2D" parent="SetDressing"]
 position = Vector2(576, 576)
@@ -59,6 +92,18 @@ script = ExtResource("8_cameracontrol")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="BackgroundTexture" type="TextureRect" parent="CanvasLayer"]
+z_index = -100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_bg")
+expand_mode = 1
+stretch_mode = 7
+
 [node name="DebugLabel" type="Label" parent="CanvasLayer"]
 offset_left = 10.0
 offset_top = 110.0
@@ -69,83 +114,6 @@ Press P to place Pawn tower
 Press K to spawn test enemy
 Right-click to cancel placement
 Press ESC for options/pause"
-
-[node name="PauseMenu" type="Panel" parent="CanvasLayer"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -180.0
-offset_right = 220.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 16
-
-[node name="Title" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-text = "Paused"
-horizontal_alignment = 1
-
-[node name="SFX" type="HBoxContainer" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer/SFX"]
-layout_mode = 2
-text = "SFX Volume"
-
-[node name="HSlider" type="HSlider" parent="CanvasLayer/PauseMenu/VBoxContainer/SFX"]
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = -30.0
-max_value = 6.0
-step = 0.5
-
-[node name="BGM" type="HBoxContainer" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/VBoxContainer/BGM"]
-layout_mode = 2
-text = "BGM Volume"
-
-[node name="HSlider" type="HSlider" parent="CanvasLayer/PauseMenu/VBoxContainer/BGM"]
-layout_mode = 2
-size_flags_horizontal = 3
-min_value = -30.0
-max_value = 6.0
-step = 0.5
-
-[node name="Resume" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Resume"
-
-[node name="MainMenu" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Main Menu"
-
-[node name="Exit" type="Button" parent="CanvasLayer/PauseMenu/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Exit"
 
 [node name="KingHealthHUD" type="MarginContainer" parent="CanvasLayer"]
 offset_left = 10.0
@@ -175,5 +143,122 @@ size_flags_vertical = 1
 theme_override_styles/background = SubResource("StyleBoxFlat_KingHealthBg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_KingHealthFill")
 step = 1.0
+
+[node name="PausePanel" type="Panel" parent="CanvasLayer"]
+visible = false
+z_index = -1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -231.0
+offset_top = -229.5
+offset_right = 231.0
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_bolsh")
+metadata/_edit_use_anchors_ = true
+
+[node name="PauseMenu" type="Panel" parent="CanvasLayer/PausePanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -180.0
+offset_right = 205.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PausePanel/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="SFX" type="HBoxContainer" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer/SFX"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+text = "SFX Volume"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer/SFX"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 6.0
+step = 0.5
+
+[node name="BGM" type="HBoxContainer" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer/BGM"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+text = "BGM Volume"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer/BGM"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 6.0
+step = 0.5
+
+[node name="Resume" type="Button" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_shf8f")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pasgk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_moqhu")
+text = "Resume"
+
+[node name="MainMenu" type="Button" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_shf8f")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pasgk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_moqhu")
+text = "Main Menu"
+
+[node name="Exit" type="Button" parent="CanvasLayer/PausePanel/PauseMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("10_r1or7")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_shf8f")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pasgk")
+theme_override_styles/hover = SubResource("StyleBoxTexture_moqhu")
+text = "Exit"
 
 [node name="gui" parent="." instance=ExtResource("6_yshnf")]
