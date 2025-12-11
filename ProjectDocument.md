@@ -226,21 +226,30 @@ I was in charge of creating the user interface of the game, and I handled the in
 
 ## Zijian Liu
 
-In this project, my main role was working on the enemy side of the game and helping make the game easier to understand for new players. I implemented the five-enemy system (different stats and behaviors), set up and integrated the enemy sprites so each type is visually clear on the board, and created the How-To-Play tutorial that walks new players through the basic mechanics. I also helped tweak enemy values and behavior through playtesting so the overall difficulty felt more balanced and fun.
+-   **Main Role**: Enemy Design and Tutorial
+  
+    In this project, my main role was working on the enemy side of the game and helping make the game easier to understand for new players. I implemented the five-enemy system (different stats and behaviors), set up and integrated the enemy sprites so each type is visually clear on the board, and created the How-To-Play tutorial that walks new players through the basic mechanics. I also helped tweak enemy values and behavior through playtesting so the overall difficulty felt more balanced and fun.
 
-_Five Enemy System_ – I implemented five different enemy types (pawn, bomber, caster, loot runner, shielder) with their own stats and behaviors in GDScript. Each enemy knows how to move, take damage, and die inside the game loop, and plugs into the team’s existing spawn/path system. This connects to what we covered about game architecture, update loops, and using simple state machines for enemy behavior.  
+    -   **Enemy System Overview**
+– I implemented five different enemy types (pawn, bomber, caster, loot runner, shielder) with their own stats and behaviors in GDScript. Each enemy knows how to move, take damage, and die inside the game loop, and plugs into the team’s existing spawn/path system. This connects to what we covered about game architecture, update loops, and using simple state machines for enemy behavior.  
 [basic_pawn.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scripts/enemies/basic_pawn.gd),
 [bomber.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scripts/enemies/bomber.gd),
 [caster.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scripts/enemies/caster.gd),
 [loot_runner.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scripts/enemies/loot_runner.gd),
 [shielder.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scripts/enemies/shielder.gd)
 
-_How To Play Tutorial_ – I built the How To Play tutorial scene that walks new players through placing pieces, starting the game, and understanding how enemies go for the king. It’s a small guided flow that reacts to player actions. This relates to the course topics on UI/UX, state machines, and event-driven programming with signals.  
+    -   **How To Play Tutorial**
+– I built the How To Play tutorial scene that walks new players through placing pieces, starting the game, and understanding how enemies go for the king. It’s a small guided flow that reacts to player actions. This relates to the course topics on UI/UX, state machines, and event-driven programming with signals.  
 [how_to_play.gd](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/scenes/main/how_to_play.gd)
 
-_Enemy Sprites & Readability_ – I chose, imported, and set up the enemy sprites so each enemy type looks different and lines up correctly on the board. The goal was to make it easy for players to quickly tell which enemy is which during gameplay. This ties into visual feedback, readability, and game feel from the course.  
+    -   **Enemy Sprites & Readability**
+– I chose, imported, and set up the enemy sprites so each enemy type looks different and lines up correctly on the board. The goal was to make it easy for players to quickly tell which enemy is which during gameplay. This ties into visual feedback, readability, and game feel from the course.  
 [basic_pawn.png](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/assets/enemies/basic_pawn/basic_pawn.png),
 [bomber.png](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/assets/enemies/bomber/bomber.png),
 [caster.png](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/assets/enemies/caster/caster.png),
 [loot_runner.png](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/assets/enemies/loot_runner/loot_runner.png),
 [shielder.png](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/checkmate%2C-bots!/assets/enemies/shielder/shielder.png)
+
+
+-   **Sub-role**: Playtesting and Balancing
+– I also helped with playtesting and balancing by adjusting enemy values and behaviors based on how runs felt. I tweaked stats such as health, speed, and damage to keep the difficulty fair but challenging, making sure the game was beatable without feeling too easy.
