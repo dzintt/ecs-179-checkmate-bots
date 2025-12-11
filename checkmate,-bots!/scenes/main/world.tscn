@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://36tyq720fald"]
+[gd_scene load_steps=14 format=3 uid="uid://36tyq720fald"]
 
 [ext_resource type="PackedScene" uid="uid://cn7ijw3b7e5b1" path="res://scenes/main/board.tscn" id="1_board"]
 [ext_resource type="Script" uid="uid://v5r5mr7d44s" path="res://scripts/world_controller.gd" id="1_controller"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="8_cameracontrol"]
 [ext_resource type="Texture2D" path="res://assets/images/hologram_table.png" id="9_holo"]
 [ext_resource type="Texture2D" path="res://assets/images/dark_grid_background.png" id="10_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/TabbedTooltipTopLeft.png" id="11_speech"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_KingHealthBg"]
 bg_color = Color(0.1, 0.1, 0.1, 1)
@@ -24,6 +25,18 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_PauseSpeech"]
+texture = ExtResource("11_speech")
+texture_margin_left = 18.0
+texture_margin_right = 18.0
+texture_margin_top = 18.0
+texture_margin_bottom = 18.0
+content_margin_left = 14.0
+content_margin_right = 14.0
+content_margin_top = 26.0
+content_margin_bottom = 12.0
+draw_center = true
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_controller")
@@ -122,6 +135,7 @@ offset_right = 220.0
 offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_PauseSpeech")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseMenu"]
 layout_mode = 1

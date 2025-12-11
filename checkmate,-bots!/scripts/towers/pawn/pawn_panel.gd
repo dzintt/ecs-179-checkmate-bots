@@ -3,7 +3,7 @@ extends Panel
 var tower_type: String = "pawn"
 var tower_cost: int = 1
 const TOWER_SCENE_PATH := "res://scenes/towers/"
-const TOWER_DESC := "Attacks with a wave animation like swinging a sword. Basic defensive tower."
+const TOWER_DESC := "Cheap basic defensive tower with a melee attack. Can promote after moving 8 tiles."
 const DamageEngine := preload("res://scripts/core/damage_engine.gd")
 const Enemy := preload("res://scripts/core/enemy.gd")
 const ENEMY_PRESET_LABELS := {

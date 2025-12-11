@@ -2,6 +2,8 @@ extends Node2D
 ## World Controller - Test/debug controls for gameplay
 ## Temporary script for testing the game loop
 
+const TOOLTIP_BG := preload("res://assets/ui/SpeechTooltipRight.png")
+
 @onready var placement_system = $PlacementSystem
 @onready var board = $Board
 @onready var enemy_container = $EnemyContainer
@@ -41,6 +43,7 @@ func _ready():
 		SoundManager.play_game_music()
 
 	_sync_audio_sliders()
+	_setup_tooltip_style()
 
 	if pause_menu:
 		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -69,6 +72,26 @@ func _ready():
 	if path_manager:
 		WaveManager.initialize(path_manager, enemy_container)
 		print("WaveManager initialized with PathManager")
+
+
+func _setup_tooltip_style():
+	if TOOLTIP_BG == null:
+		return
+
+	var sb := StyleBoxTexture.new()
+	sb.texture = TOOLTIP_BG
+	sb.set_content_margin_all(8.0)
+	# Patch margins tuned for the speech bubble shape.
+	sb.set("texture_margin_left", 16.0)
+	sb.set("texture_margin_right", 20.0)
+	sb.set("texture_margin_top", 12.0)
+	sb.set("texture_margin_bottom", 16.0)
+	sb.draw_center = true
+
+	var theme: Theme = ThemeDB.get_default_theme()
+	if theme:
+		theme.set_stylebox("panel", "TooltipPanel", sb)
+		theme.set_stylebox("panel", "TooltipPanelDisabled", sb)
 
 
 func _input(event: InputEvent) -> void:
