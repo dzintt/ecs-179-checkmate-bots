@@ -1,6 +1,5 @@
-extends Node2D
-## World Controller - Test/debug controls for gameplay
-## Temporary script for testing the game loop
+extends Node2D  ## World Controller - Test/debug controls for gameplay ## Temporary script for testing the game loop
+const TOOLTIP_BG := preload("res://assets/ui/SpeechTooltipRight.png")
 
 @onready var placement_system = $PlacementSystem
 @onready var board = $Board
@@ -8,41 +7,61 @@ extends Node2D
 @onready var tower_container = $TowerContainer
 @onready var debug_label = $CanvasLayer/DebugLabel
 @onready var path_manager = $PathManager
+
 @onready var pause_panel = $CanvasLayer/PausePanel
 @onready var pause_sfx_slider: HSlider = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/SFX/HSlider
 @onready var pause_bgm_slider: HSlider = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/BGM/HSlider
 @onready
 var pause_main_menu_button: Button = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/MainMenu
 @onready var pause_exit_button: Button = $CanvasLayer/PausePanel/PauseMenu/VBoxContainer/Exit
+
 @onready var king_health_hud = $CanvasLayer/KingHealthHUD
 
-# Preload enemy scene
-var enemy_scene = preload("res://scenes/enemies/basic_pawn.tscn")
+var move_mode: bool = false
+var move_selected: Tower = null
+var move_valid_tiles: Array[Vector2i] = []
+var move_overlay: Node2D
+var move_selected_outline: Line2D
+var _move_pool: Array[ColorRect] = []
+var _was_placing: bool = false
+var moves_available: int = 1
+
+const MOVE_COLOR := Color(0.1, 0.9, 0.2, 0.28)
+const SELECT_OUTLINE_COLOR := Color(0.1, 0.9, 0.2, 0.95)
+const PromotionSystemScene := preload("res://scripts/systems/promotion_system.gd")
+
+var promotion_system: PromotionSystem
 const KING_SCENE := preload("res://scenes/towers/king.tscn")
 const KING_FOOTPRINT_TILES := 2
 var king_instance: Node2D = null
 
 
 func _ready():
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	# Ensure grid occupancy is clean when entering a world scene
 	GridSystem.reset()
-
 	if SoundManager and not SoundManager.is_music_playing():
 		SoundManager.play_game_music()
-
 	_sync_audio_sliders()
+	_setup_tooltip_style()
 
 	if pause_panel:
 		pause_panel.process_mode = Node.PROCESS_MODE_ALWAYS
-		pause_panel.visible = false
-		set_process_input(true)
 
 	_connect_pause_menu_signals()
+	set_process(true)
 
 	EventBus.gold_changed.connect(_on_gold_changed)
 	EventBus.wave_started.connect(_on_wave_started)
 	EventBus.wave_completed.connect(_on_wave_completed)
+
+	move_overlay = Node2D.new()
+	move_overlay.name = "MoveOverlay"
+	add_child(move_overlay)
+
+	_init_selected_outline()
+
+	promotion_system = PromotionSystemScene.new()
+	add_child(promotion_system)
+	promotion_system.set_tower_container(tower_container)
 
 	_update_debug_label()
 	_spawn_king_base()
@@ -53,12 +72,25 @@ func _ready():
 		print("WaveManager initialized with PathManager")
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		_toggle_pause_menu()
-		get_viewport().set_input_as_handled()
+func _setup_tooltip_style():
+	if TOOLTIP_BG == null:
 		return
-	# Avoid selecting/moving while actively placing a tower.
+	var sb := StyleBoxTexture.new()
+	sb.texture = TOOLTIP_BG
+	sb.set_content_margin_all(8.0)
+	sb.set("texture_margin_left", 16.0)
+	sb.set("texture_margin_right", 20.0)
+	sb.set("texture_margin_top", 12.0)
+	sb.set("texture_margin_bottom", 16.0)
+	sb.draw_center = true
+
+	var theme: Theme = ThemeDB.get_default_theme()
+	if theme:
+		theme.set_stylebox("panel", "TooltipPanel", sb)
+		theme.set_stylebox("panel", "TooltipPanelDisabled", sb)
+
+
+func _input(event: InputEvent) -> void:
 	if move_mode and not _is_in_placement_mode():
 		if _handle_move_mode_input(event):
 			return
@@ -68,66 +100,47 @@ func _input(event: InputEvent) -> void:
 			_update_debug_label()
 			return
 
-		# Manual move-mode toggle (only when not in placement and no active wave)
-		if (
-			event.keycode == KEY_M
-			and not _is_in_placement_mode()
-			and not WaveManager.is_wave_active()
-		):
-			if move_mode:
-				_exit_move_mode()
-			else:
-				_enter_move_mode()
+		if event.keycode == KEY_ESCAPE:
+			_toggle_pause_menu()
 			return
 
+	if (
+		event is InputEventKey
+		and event.pressed
+		and event.keycode == KEY_M
+		and not _is_in_placement_mode()
+		and not WaveManager.is_wave_active()
+	):
+		if move_mode:
+			_exit_move_mode()
+		else:
+			_enter_move_mode()
+		return
+
+	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_P:
-			placement_system.start_placement("pawn", 1)
-
-		elif event.keycode == KEY_N:
-			placement_system.start_placement("knight", 3)
-
+			_start_placement("pawn", 1)
+		elif event.keycode == KEY_K:
+			_start_placement("knight", 3)
 		elif event.keycode == KEY_B:
-			placement_system.start_placement("bishop", 3)
-
+			_start_placement("bishop", 3)
 		elif event.keycode == KEY_R:
-			placement_system.start_placement("rook", 5)
-
+			_start_placement("rook", 5)
 		elif event.keycode == KEY_Q:
-			placement_system.start_placement("queen", 9)
-
-		#elif event.keycode == KEY_K:
-		#_spawn_test_enemy()
-
+			_start_placement("queen", 9)
 		elif event.keycode == KEY_SPACE:
 			if placement_system and placement_system.has_method("cancel_placement"):
 				placement_system.cancel_placement()
 			if not WaveManager.is_wave_active():
 				WaveManager.start_wave()
-				print("Starting wave...")
+			print("Starting wave...")
 
 
-func _spawn_test_enemy():
-	if not enemy_scene:
-		print("ERROR: basic_pawn.tscn not found!")
-		return
-
-	var enemy = enemy_scene.instantiate()
-	enemy_container.add_child(enemy)
-	if EventBus:
-		EventBus.enemy_spawned.emit(enemy)
-
-	# Set a simple path from top to bottom
-	var path: Array[Vector2] = [
-		Vector2(512, 100),
-		Vector2(512, 300),
-		Vector2(512, 500),
-		Vector2(512, 700),
-	]
-	enemy.set_path(path)
-
-	print("Enemy spawned at world pos: ", enemy.global_position)
-	print("Enemy grid pos: ", GridSystem.world_to_grid(enemy.global_position))
-	print("Spawned test enemy")
+func _process(_delta: float) -> void:
+	var placing_now = _is_in_placement_mode()
+	if placing_now and not _was_placing and move_mode:
+		_exit_move_mode()
+	_was_placing = placing_now
 
 
 func _on_gold_changed(_new_amount: int):
@@ -136,37 +149,55 @@ func _on_gold_changed(_new_amount: int):
 
 func _on_wave_started(wave_num: int):
 	print("Wave ", wave_num, " started!")
+	moves_available = 0
+	_exit_move_mode()
 	_update_debug_label()
 
 
 func _on_wave_completed(wave_num: int):
 	print("Wave ", wave_num, " completed!")
+	moves_available = 1
+	_exit_move_mode()
 	_update_debug_label()
 
 
 func _update_debug_label():
 	if debug_label:
 		var wave_status = ""
+		var promotion_status = promotion_system.get_status_text() if promotion_system else ""
+
 		if WaveManager.is_wave_active():
 			wave_status = "Wave %d in progress..." % WaveManager.get_current_wave()
 		elif WaveManager.get_current_wave() >= WaveManager.max_waves:
 			return
 		else:
-			wave_status = (
-				"Press SPACE to start wave %d/%d"
-				% [WaveManager.get_current_wave() + 1, WaveManager.max_waves]
+			var next_wave := WaveManager.get_current_wave() + 1
+			var summary := (
+				WaveManager.get_wave_summary(next_wave)
+				if WaveManager.has_method("get_wave_summary")
+				else ""
 			)
 
+			if move_mode:
+				wave_status = (
+					"Move a tower (click tower, then tile)\nMoves left this wave: %d\nPress M to exit move mode\nPress SPACE to start wave %d/%d\nNext: %s"
+					% [moves_available, next_wave, WaveManager.max_waves, summary]
+				)
+			else:
+				wave_status = (
+					"Moves left this wave: %d\nPress M to enter move mode\nPress SPACE to start wave %d/%d\nNext: %s"
+					% [moves_available, next_wave, WaveManager.max_waves, summary]
+				)
+
 		debug_label.text = (
-			"Gold: %d\n%s\nTowers:\nP = Pawn (Cost = 1)\nN = Knight (Cost = 3)\nB = Bishop (Cost = 3)\nR = Rook (Cost = 5)\nQ = Queen (Cost = 9)\n\nPress K to spawn test enemy\nRight-click to cancel placement\nPress ESC for options/pause"
-			% [CurrencyManager.get_current_gold(), wave_status]
+			"Gold: %d\n%s%s\nRight-click to cancel placement\nPress ESC for options/pause"
+			% [CurrencyManager.get_current_gold(), wave_status, promotion_status]
 		)
 
 
 func _spawn_king_base():
 	if king_instance and is_instance_valid(king_instance):
 		return
-
 	if not tower_container:
 		print("ERROR: TowerContainer not found! Cannot place King.")
 		return
@@ -176,7 +207,6 @@ func _spawn_king_base():
 	if king is KingBase:
 		king.footprint_tiles = KING_FOOTPRINT_TILES
 	king.global_position = king_position
-
 	tower_container.add_child(king)
 	king_instance = king
 	print("King placed at board center: ", king_position)
@@ -199,11 +229,232 @@ func _get_board_center_world_position() -> Vector2:
 	return center
 
 
+func _enter_move_mode():
+	if move_mode:
+		return
+	if moves_available <= 0:
+		return
+	if tower_container == null or tower_container.get_child_count() == 0:
+		return
+
+	move_mode = true
+	move_selected = null
+	move_valid_tiles.clear()
+	_clear_move_overlay()
+	_update_debug_label()
+	print("Move mode: select a tower, then a highlighted tile.")
+
+
+func _exit_move_mode():
+	if not move_mode:
+		return
+	move_mode = false
+	move_selected = null
+	move_valid_tiles.clear()
+	_clear_move_overlay()
+	_update_debug_label()
+
+
+func _handle_move_click():
+	var cam := get_viewport().get_camera_2d()
+	if cam == null:
+		return
+
+	var world_pos = cam.get_global_mouse_position()
+	var grid_pos = GridSystem.world_to_grid(world_pos)
+
+	if move_selected == null:
+		var tower := _tower_at_grid(grid_pos)
+		if tower and _is_moveable_tower(tower):
+			move_selected = tower
+			move_valid_tiles = _compute_move_tiles(tower)
+			_show_move_tiles(move_valid_tiles)
+			_show_selected_outline(tower.grid_position)
+		return
+
+	if move_valid_tiles.has(grid_pos):
+		_move_selected_to(grid_pos)
+		_exit_move_mode()
+		return
+
+	var new_tower := _tower_at_grid(grid_pos)
+	if new_tower and _is_moveable_tower(new_tower):
+		move_selected = new_tower
+		move_valid_tiles = _compute_move_tiles(new_tower)
+		_show_move_tiles(move_valid_tiles)
+		_show_selected_outline(new_tower.grid_position)
+
+
+func _tower_at_grid(grid_pos: Vector2i) -> Tower:
+	if tower_container == null:
+		return null
+	for child in tower_container.get_children():
+		if child is Tower:
+			var t: Tower = child
+			if t.grid_position == grid_pos:
+				return t
+	return null
+
+
+func _compute_move_tiles(tower: Tower) -> Array[Vector2i]:
+	var tiles: Array[Vector2i] = []
+	if not tower:
+		return tiles
+
+	var pattern := tower.get_attack_pattern()
+	for offset in pattern:
+		var target := tower.grid_position + offset
+		if not GridSystem.is_within_board(target):
+			continue
+		if GridSystem.is_cross_tile(target):
+			continue
+		if GridSystem.is_tile_occupied(target) and target != tower.grid_position:
+			continue
+		tiles.append(target)
+	return tiles
+
+
+func _move_selected_to(grid_pos: Vector2i):
+	if move_selected == null:
+		return
+
+	var old_pos := move_selected.grid_position
+	GridSystem.release_tile(old_pos)
+	GridSystem.occupy_tile(grid_pos)
+
+	move_selected.grid_position = grid_pos
+	move_selected.global_position = GridSystem.grid_to_world(grid_pos)
+	move_selected._rest_position = move_selected.position
+
+	if move_selected is PawnTower and promotion_system:
+		promotion_system.track_pawn_move(move_selected, old_pos, grid_pos)
+
+	print("Moved ", move_selected.tower_name, " from ", old_pos, " to ", grid_pos)
+
+	moves_available = max(moves_available - 1, 0)
+	_update_debug_label()
+
+
+func _show_move_tiles(tiles: Array[Vector2i]):
+	_ensure_move_overlay_pool(tiles.size())
+	var tile_size = Vector2(GridSystem.TILE_SIZE, GridSystem.TILE_SIZE)
+	var used := 0
+
+	for pos in tiles:
+		if used >= _move_pool.size():
+			break
+		var rect := _move_pool[used]
+		used += 1
+		rect.visible = true
+		rect.size = tile_size
+		rect.position = GridSystem.grid_to_world(pos) - tile_size / 2.0
+		rect.color = MOVE_COLOR
+
+	for i in range(used, _move_pool.size()):
+		_move_pool[i].visible = false
+
+
+func _clear_move_overlay():
+	for rect in _move_pool:
+		rect.visible = false
+	if move_selected_outline:
+		move_selected_outline.visible = false
+
+
+func _ensure_move_overlay_pool(count: int):
+	while _move_pool.size() < count:
+		var rect = ColorRect.new()
+		rect.visible = false
+		rect.size = Vector2(GridSystem.TILE_SIZE, GridSystem.TILE_SIZE)
+		rect.color = MOVE_COLOR
+		if move_overlay:
+			move_overlay.add_child(rect)
+		_move_pool.append(rect)
+
+
+func _handle_move_mode_input(event: InputEvent) -> bool:
+	if event is InputEventMouseButton and event.pressed:
+		var mouse_event := event as InputEventMouseButton
+		match mouse_event.button_index:
+			MOUSE_BUTTON_RIGHT:
+				if move_selected != null:
+					move_selected = null
+					move_valid_tiles.clear()
+					_clear_move_overlay()
+					_update_debug_label()
+				else:
+					_exit_move_mode()
+				return true
+
+			MOUSE_BUTTON_LEFT:
+				_handle_move_click()
+				return true
+
+	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
+		_exit_move_mode()
+		if not WaveManager.is_wave_active():
+			WaveManager.start_wave()
+		return true
+
+	return false
+
+
+func _is_in_placement_mode() -> bool:
+	return placement_system != null and placement_system.is_placing
+
+
+func _is_moveable_tower(tower: Tower) -> bool:
+	if tower == null:
+		return false
+	if tower is KingBase or tower.tower_class == "king":
+		return false
+	return true
+
+
+func _init_selected_outline():
+	move_selected_outline = Line2D.new()
+	move_selected_outline.width = 2.0
+	move_selected_outline.default_color = SELECT_OUTLINE_COLOR
+	move_selected_outline.closed = true
+
+	var half = float(GridSystem.TILE_SIZE) / 2.0
+	move_selected_outline.points = [
+		Vector2(-half, -half),
+		Vector2(half, -half),
+		Vector2(half, half),
+		Vector2(-half, half),
+	]
+	move_selected_outline.visible = false
+
+	if move_overlay:
+		move_overlay.add_child(move_selected_outline)
+
+
+func _show_selected_outline(grid_pos: Vector2i):
+	if move_selected_outline == null:
+		return
+	move_selected_outline.visible = true
+	move_selected_outline.position = GridSystem.grid_to_world(grid_pos)
+
+
+func _start_placement(tower_type: String, cost: int):
+	if move_mode:
+		_exit_move_mode()
+	if placement_system:
+		placement_system.start_placement(tower_type, cost)
+
+
+func _on_placement_finished(_tower = null, _position = Vector2.ZERO):
+	pass
+
+
 func _toggle_pause_menu():
 	if not pause_panel:
 		return
+
 	var showing = not pause_panel.visible
 	pause_panel.visible = showing
+
 	if showing:
 		_sync_audio_sliders()
 		get_tree().paused = true
@@ -218,8 +469,10 @@ func _connect_pause_menu_signals():
 	var resume_button: Button = pause_panel.get_node_or_null("PauseMenu/VBoxContainer/Resume")
 	if resume_button:
 		resume_button.pressed.connect(_on_pause_resume_pressed)
+
 	if pause_main_menu_button:
 		pause_main_menu_button.pressed.connect(_on_pause_main_menu_pressed)
+
 	if pause_exit_button:
 		pause_exit_button.pressed.connect(_on_pause_exit_pressed)
 
