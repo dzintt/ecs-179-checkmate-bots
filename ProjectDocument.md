@@ -134,6 +134,7 @@ I built the workflows and modular codebase structure that let the team ship fast
     ```
 
     -   **Implemented a team-wide GDScript standards pipeline:** Required gdformat via pre-commit so every .gd file is auto-formatted locally, and added a GitHub Actions workflow that installs gdtoolkit to check every PR. This kept code style consistent, reduced review churn, and prevented issues from slipping through; reviewers could focus on logic instead of spacing, and CI would flag issues before they reached main. [pre-commit script](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.pre-commit-config.yaml) and [gdformat CI workflow](https://github.com/dzintt/ecs-179-checkmate-bots/blob/main/.github/workflows/gdformat.yml)
+      <img width="1146" height="391" alt="image" src="https://github.com/user-attachments/assets/f693ca12-b586-47a4-b22d-e735215e64e8" />
 
 
 -   **Sub-role:** Build and Release Manager
