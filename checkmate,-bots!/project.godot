@@ -13,7 +13,7 @@ config_version=5
 config/name="Checkmate, Bots!"
 run/main_scene="uid://wmllul7wsveg"
 config/features=PackedStringArray("4.5", "Mobile")
-config/icon="res://assets/images/commander_base.png"
+config/icon="res://icon.svg"
 
 [autoload]
 
@@ -23,6 +23,10 @@ CurrencyManager="*res://autoload/currency_manager.gd"
 WaveManager="*res://autoload/wave_manager.gd"
 SoundManager="*res://autoload/sound_manager.gd"
 UICursorManager="*res://autoload/ui_cursor_manager.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [gui]
 
@@ -36,4 +40,5 @@ theme/custom="res://assets/fonts/global_theme.tres"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bsfhtk3xaimgg"]
+[gd_scene load_steps=9 format=3 uid="uid://bsfhtk3xaimgg"]
 
 [ext_resource type="PackedScene" uid="uid://bw63kejk3ky7r" path="res://scenes/towers/pawn_panel.tscn" id="1_efmwq"]
 [ext_resource type="Script" uid="uid://dm5qkgastrhxh" path="res://scripts/towers/pawn/pawn_panel.gd" id="2_xki8e"]
@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://brluchiyt1j3t" path="res://scenes/towers/bishop_panel.tscn" id="4_4yt8u"]
 [ext_resource type="PackedScene" uid="uid://d27yswfkht8lv" path="res://scenes/towers/queen_panel.tscn" id="5_p54wi"]
 [ext_resource type="PackedScene" uid="uid://1uarq4vsyyp5" path="res://scenes/towers/rook_panel.tscn" id="6_xki8e"]
-[ext_resource type="Script" path="res://scripts/ui/wave_control.gd" id="7_wave"]
+[ext_resource type="Script" uid="uid://cstvi35dmt3x3" path="res://scripts/ui/wave_control.gd" id="7_wave"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqlde"]
 bg_color = Color(0.78039217, 0.78039217, 0.78039217, 1)
@@ -19,8 +19,6 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-
-[sub_resource type="SystemFont" id="SystemFont_08a8y"]
 
 [node name="gui" type="CanvasLayer"]
 script = ExtResource("7_wave")
@@ -53,7 +51,6 @@ offset_bottom = -276.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = SubResource("SystemFont_08a8y")
 theme_override_font_sizes/font_size = 21
 text = "Tower Shop"
 horizontal_alignment = 1
@@ -178,7 +175,8 @@ text = "Q - Queen
 uppercase = true
 
 [node name="WaveControl" type="Control" parent="."]
-anchors_preset = 10
+layout_mode = 3
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -191,14 +189,9 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="StartWaveButton" type="Button" parent="WaveControl"]
-layout_mode = 2
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Start Wave"
